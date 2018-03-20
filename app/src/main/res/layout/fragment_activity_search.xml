@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/activitySearchLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center_horizontal"
+        android:text="@string/search_for_activities"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/clientLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/client"
+        android:textAllCaps="true"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/activitySearchLabel" />
+
+    <Spinner
+        android:id="@+id/clientSelect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/activitySearchLabel"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/clientLabel" />
+
+    <TextView
+        android:id="@+id/yearLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/year"
+        android:textAllCaps="true"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/clientSelect" />
+
+    <Spinner
+        android:id="@+id/yearSelect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/activitySearchLabel"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/yearLabel" />
+
+    <TextView
+        android:id="@+id/jobCodeLabel"
+        android:labelFor="@id/jobCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/job_code"
+        android:textAllCaps="true"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/yearSelect" />
+
+    <EditText
+        android:id="@+id/jobCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/activitySearchLabel"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/jobCodeLabel" />
+
+    <TextView
+        android:id="@+id/clientJobCodeLabel"
+        android:labelFor="@id/clientJobCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/client_job_code"
+        android:textAllCaps="true"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/jobCode" />
+
+    <EditText
+        android:id="@+id/clientJobCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/activitySearchLabel"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/clientJobCodeLabel" />
+
+    <TextView
+        android:id="@+id/typeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/type"
+        android:textAllCaps="true"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/clientJobCode" />
+
+    <Spinner
+        android:id="@+id/typeSelect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/activitySearchLabel"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/typeLabel" />
+
+    <TextView
+        android:id="@+id/operationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/operation"
+        android:textAllCaps="true"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/typeSelect" />
+
+    <Spinner
+        android:id="@+id/operationSelect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/activitySearchLabel"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/operationLabel" />
+
+    <TextView
+        android:id="@+id/farmLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/farm"
+        android:textAllCaps="true"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/operationSelect" />
+
+    <Spinner
+        android:id="@+id/farmSelect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/activitySearchLabel"
+        app:layout_constraintStart_toStartOf="@id/activitySearchLabel"
+        app:layout_constraintTop_toBottomOf="@id/farmLabel" />
+
+</android.support.constraint.ConstraintLayout>

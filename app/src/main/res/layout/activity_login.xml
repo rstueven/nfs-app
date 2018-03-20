@@ -1,0 +1,111 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.agsimplified.android.views.LoginActivity">
+
+    <ImageView
+        android:id="@+id/loginLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/login_logo" />
+
+    <ImageView
+        android:id="@+id/loginBg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/login_bkgdimg" />
+
+    <ImageView
+        android:id="@+id/loginBinBg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@id/loginBg"
+        app:layout_constraintLeft_toLeftOf="@id/loginBg"
+        app:layout_constraintRight_toRightOf="@id/loginBg"
+        app:layout_constraintTop_toTopOf="@id/loginBg"
+        app:srcCompat="@drawable/login_bin_bkgd" />
+
+    <TextView
+        android:id="@+id/loginText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/login_to_your_account"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="@id/loginBinBg"
+        app:layout_constraintRight_toRightOf="@id/loginBinBg"
+        app:layout_constraintTop_toTopOf="@id/loginBinBg" />
+
+    <!-- TODO: https://stackoverflow.com/questions/41588148/android-textview-drawabletint-on-pre-v23-devices -->
+    <EditText
+        android:id="@+id/emailField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@android:drawable/ic_dialog_email"
+        android:drawableTint="@color/colorPrimary"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        app:layout_constraintLeft_toLeftOf="@+id/loginBinBg"
+        app:layout_constraintRight_toRightOf="@id/loginBinBg"
+        app:layout_constraintTop_toBottomOf="@id/loginText" />
+
+    <EditText
+        android:id="@+id/passwordField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@android:drawable/ic_lock_lock"
+        android:drawableTint="@color/colorPrimary"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintLeft_toLeftOf="@+id/loginBinBg"
+        app:layout_constraintRight_toRightOf="@id/loginBinBg"
+        app:layout_constraintTop_toBottomOf="@id/emailField" />
+
+    <ImageButton
+        android:id="@+id/loginButton"
+        android:onClick="login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/sign_in"
+        android:src="@drawable/login_btn"
+        app:layout_constraintBottom_toTopOf="@id/forgotPasswordLabel"
+        app:layout_constraintLeft_toLeftOf="@id/loginBinBg"
+        app:layout_constraintRight_toRightOf="@id/loginBinBg"
+        app:layout_constraintTop_toBottomOf="@id/passwordField" />
+
+    <TextView
+        android:id="@+id/forgotPasswordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/forgot_your_password"
+        app:layout_constraintBottom_toBottomOf="@+id/loginBinBg"
+        app:layout_constraintLeft_toLeftOf="@id/loginBinBg"
+        app:layout_constraintRight_toRightOf="@id/loginBinBg" />
+
+</android.support.constraint.ConstraintLayout>
