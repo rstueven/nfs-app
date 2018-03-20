@@ -5,173 +5,158 @@
     android:layout_height="match_parent"
     tools:context="com.agsimplified.android.views.JobSetupFragment">
 
-    <!--<android.support.constraint.ConstraintLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <!--<TextView-->
-            <!--android:id="@+id/jobSetupLabel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:text="@string/job_setup"-->
-            <!--android:textAllCaps="true"-->
-            <!--android:textSize="24sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <TextView
+            android:id="@+id/jobDetailsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/job_details"
+            android:textAllCaps="true"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/milesLabel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:labelFor="@id/miles"-->
-            <!--android:text="@string/miles"-->
-            <!--android:textAllCaps="true"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/jobSetupLabel" />-->
+        <TextView
+            android:id="@+id/timeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:labelFor="@id/time"
+            android:text="@string/time"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/jobDetailsLabel" />
 
-        <!--<EditText-->
-            <!--android:id="@+id/miles"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:ems="10"-->
-            <!--android:inputType="numberDecimal"-->
-            <!--android:textSize="18sp"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/milesLabel"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/milesLabel" />-->
+        <EditText
+            android:id="@+id/time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/timeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/timeLabel" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/loaderLabel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:text="@string/loader_operator"-->
-            <!--android:textAllCaps="true"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/miles" />-->
+        <TextView
+            android:id="@+id/amountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:labelFor="@id/amount"
+            android:text="@string/amount"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/timeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/time" />
 
-        <!--<Spinner-->
-            <!--android:id="@+id/loaderOperator"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/loaderLabel"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/loaderLabel" />-->
+        <EditText
+            android:id="@+id/amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/amountLabel"
+            app:layout_constraintTop_toBottomOf="@+id/amountLabel" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/loadingCompanyLabel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:text="@string/loading_company"-->
-            <!--android:textAllCaps="true"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/loaderOperator" />-->
+        <TextView
+            android:id="@+id/grossLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:labelFor="@id/gross"
+            android:text="@string/gross_weight_lbs"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/amountLabel"
+            app:layout_constraintTop_toBottomOf="@+id/amount" />
 
-        <!--<Spinner-->
-            <!--android:id="@+id/loadingCompany"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/loadingCompanyLabel"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/loadingCompanyLabel" />-->
+        <EditText
+            android:id="@+id/gross"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/grossLabel"
+            app:layout_constraintTop_toBottomOf="@+id/grossLabel" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/truckingCompanyLabel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:text="@string/trucking_company"-->
-            <!--android:textAllCaps="true"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/loadingCompany" />-->
+        <TextView
+            android:id="@+id/tareLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:labelFor="@id/tare"
+            android:text="@string/tare_weight_lbs"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/grossLabel"
+            app:layout_constraintTop_toBottomOf="@+id/gross" />
 
-        <!--<Spinner-->
-            <!--android:id="@+id/truckingCompany"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/truckingCompanyLabel"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/truckingCompanyLabel" />-->
+        <EditText
+            android:id="@+id/tare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tareLabel"
+            app:layout_constraintTop_toBottomOf="@+id/tareLabel" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/fromLabel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:text="@string/from_storage_inventory"-->
-            <!--android:textAllCaps="true"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/truckingCompany" />-->
+        <TextView
+            android:id="@+id/scaleTicketLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:labelFor="@id/scaleTicket"
+            android:text="@string/scale_ticket"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tareLabel"
+            app:layout_constraintTop_toBottomOf="@+id/tare" />
 
-        <!--<Spinner-->
-            <!--android:id="@+id/fromStorageInventory"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/fromLabel"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/fromLabel" />-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/notesLabel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:labelFor="@id/notes"-->
-            <!--android:text="@string/notes"-->
-            <!--android:textAllCaps="true"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/fromStorageInventory" />-->
-
-        <!--<EditText-->
-            <!--android:id="@+id/notes"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:ems="10"-->
-            <!--android:inputType="textMultiLine"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/notesLabel"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/notesLabel" />-->
+        <EditText
+            android:id="@+id/scaleTicket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/scaleTicketLabel"
+            app:layout_constraintTop_toBottomOf="@+id/scaleTicketLabel" />
 
         <!--<Button-->
             <!--android:id="@+id/closeButton"-->
@@ -186,5 +171,5 @@
             <!--app:layout_constraintEnd_toEndOf="parent"-->
             <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <!--</android.support.constraint.ConstraintLayout>-->
+    </android.support.constraint.ConstraintLayout>
 </FrameLayout>

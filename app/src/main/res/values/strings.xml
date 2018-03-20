@@ -66,4 +66,7 @@
     <string name="loader_operator">Loader Operator</string>
     <string name="loading_company">Loading Company</string>
     <string name="trucking_company">Trucking Company</string>
+    <string name="job_details">Job Details</string>
+    <string name="gross_weight_lbs">Gross Weight (lbs)</string>
+    <string name="tare_weight_lbs">Tare Weight (lbs)</string>
 </resources>
