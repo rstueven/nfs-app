@@ -70,4 +70,5 @@
     <string name="gross_weight_lbs">Gross Weight (lbs)</string>
     <string name="tare_weight_lbs">Tare Weight (lbs)</string>
     <string name="amount_ton">Amount (ton)</string>
+    <string name="add">Add</string>
 </resources>
