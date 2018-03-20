@@ -16,8 +16,10 @@ public class FieldActivity implements Serializable {
     private String activityType;
     private String operation;
     private String farm;
+    private Double acresPlanned;
+    private Double acresApplied;
 
-    public FieldActivity(int id, Integer jobCode, Integer clientJobCode, int year, String activityType, String operation, String farm) {
+    public FieldActivity(int id, Integer jobCode, Integer clientJobCode, int year, String activityType, String operation, String farm, Double acresPlanned, Double acresApplied) {
         this.id = id;
         this.jobCode = jobCode;
         this.clientJobCode = clientJobCode;
@@ -25,6 +27,8 @@ public class FieldActivity implements Serializable {
         this.activityType = activityType;
         this.operation = operation;
         this.farm = farm;
+        this.acresApplied = acresApplied;
+        this.acresPlanned = acresPlanned;
     }
 
     public int getId() {
@@ -93,5 +97,25 @@ public class FieldActivity implements Serializable {
 
     public void setFarm(String farm) {
         this.farm = farm;
+    }
+
+    public String getLocation() {
+        return operation + "—" + farm;
+    }
+
+    public Double getAcresPlanned() {
+        return acresPlanned;
+    }
+
+    public void setAcresPlanned(Double a) {
+        acresPlanned = a;
+    }
+
+    public Double getAcresApplied() {
+        return acresApplied;
+    }
+
+    public void setAcresApplied(Double a) {
+        acresApplied = a;
     }
 }

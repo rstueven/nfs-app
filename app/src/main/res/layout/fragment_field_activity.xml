@@ -145,17 +145,17 @@
             android:id="@+id/plannedLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/planned_amount"
+            android:layout_marginStart="8dp"
+            android:text="@string/acres_planned"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/jobTypeLabel"
-            app:layout_constraintTop_toBottomOf="@+id/jobTypeLabel" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/jobTypeLabel"
+            app:layout_constraintStart_toEndOf="@+id/jobType" />
 
         <TextView
-            android:id="@+id/plannedAmount"
+            android:id="@+id/acresPlanned"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -167,52 +167,28 @@
             app:layout_constraintStart_toEndOf="@+id/plannedLabel" />
 
         <TextView
-            android:id="@+id/tonLabel1"
+            android:id="@+id/appliedLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/ton"
-            android:textAllCaps="true"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/plannedAmount"
-            app:layout_constraintStart_toEndOf="@+id/plannedAmount" />
-
-        <TextView
-            android:id="@+id/hauledLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/hauled_amount"
+            android:text="@string/acres_applied"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tonLabel1"
-            app:layout_constraintStart_toEndOf="@+id/tonLabel1" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/plannedLabel"
+            app:layout_constraintStart_toEndOf="@+id/acresPlanned" />
 
         <TextView
-            android:id="@+id/hauledAmount"
+            android:id="@+id/acresApplied"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/zero_point_zero_zero"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/hauledLabel"
-            app:layout_constraintStart_toEndOf="@+id/hauledLabel" />
-
-        <TextView
-            android:id="@+id/tonLabel2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/ton"
-            android:textAllCaps="true"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/hauledAmount"
-            app:layout_constraintStart_toEndOf="@+id/hauledAmount" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/appliedLabel"
+            app:layout_constraintStart_toEndOf="@+id/appliedLabel" />
 
         <Button
             android:id="@+id/closeButton"

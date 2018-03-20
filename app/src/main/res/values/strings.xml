@@ -75,4 +75,6 @@
     <string name="field_activity">Field Activity</string>
     <string name="location">Location</string>
     <string name="job_type">Job Type</string>
+    <string name="acres_planned">Acres Planned</string>
+    <string name="acres_applied">Acres Applied</string>
 </resources>
