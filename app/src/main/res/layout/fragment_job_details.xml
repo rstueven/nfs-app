@@ -27,149 +27,146 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:labelFor="@id/time"
             android:text="@string/time"
             android:textAllCaps="true"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jobDetailsLabel" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/time"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:inputType="numberDecimal"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/timeLabel"
-            app:layout_constraintTop_toBottomOf="@+id/timeLabel" />
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/jobDetailsLabel" />
 
         <TextView
             android:id="@+id/amountLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:labelFor="@id/amount"
-            android:text="@string/amount"
+            android:text="@string/amount_ton"
             android:textAllCaps="true"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/timeLabel"
-            app:layout_constraintTop_toBottomOf="@+id/time" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/amount"
+            app:layout_constraintStart_toStartOf="@id/timeLabel" />
 
         <EditText
             android:id="@+id/amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:inputType="numberDecimal"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/amountLabel"
-            app:layout_constraintTop_toBottomOf="@+id/amountLabel" />
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/time" />
 
         <TextView
             android:id="@+id/grossLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:labelFor="@id/gross"
             android:text="@string/gross_weight_lbs"
             android:textAllCaps="true"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/amountLabel"
-            app:layout_constraintTop_toBottomOf="@+id/amount" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/gross"
+            app:layout_constraintStart_toStartOf="@id/amountLabel" />
 
         <EditText
             android:id="@+id/gross"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:inputType="numberDecimal"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/grossLabel"
-            app:layout_constraintTop_toBottomOf="@+id/grossLabel" />
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/amount" />
 
         <TextView
             android:id="@+id/tareLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:labelFor="@id/tare"
             android:text="@string/tare_weight_lbs"
             android:textAllCaps="true"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/grossLabel"
-            app:layout_constraintTop_toBottomOf="@+id/gross" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/tare"
+            app:layout_constraintStart_toStartOf="@id/grossLabel" />
 
         <EditText
             android:id="@+id/tare"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:inputType="numberDecimal"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tareLabel"
-            app:layout_constraintTop_toBottomOf="@+id/tareLabel" />
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/gross" />
 
         <TextView
             android:id="@+id/scaleTicketLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:labelFor="@id/scaleTicket"
             android:text="@string/scale_ticket"
             android:textAllCaps="true"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/tareLabel"
-            app:layout_constraintTop_toBottomOf="@+id/tare" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/scaleTicket"
+            app:layout_constraintStart_toStartOf="@id/tareLabel" />
 
         <EditText
             android:id="@+id/scaleTicket"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:inputType="numberDecimal"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/scaleTicketLabel"
-            app:layout_constraintTop_toBottomOf="@+id/scaleTicketLabel" />
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/tare" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="192dp" />
 
         <!--<Button-->
-            <!--android:id="@+id/closeButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:text="@string/close"-->
-            <!--android:textAllCaps="true"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <!--android:id="@+id/closeButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="@string/close"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
