@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
@@ -77,6 +78,14 @@ public class LoadSheetFragment extends Fragment {
             if (hauledAmount != null) {
                 hauledView.setText(String.format(Locale.getDefault(), "%.2f", hauledAmount));
             }
+
+            Button closeButton = view.findViewById(R.id.closeButton);
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().finish();
+                }
+            });
         }
 
         return view;
