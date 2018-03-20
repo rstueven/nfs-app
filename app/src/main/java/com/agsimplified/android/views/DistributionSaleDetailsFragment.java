@@ -3,12 +3,15 @@ package com.agsimplified.android.views;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.DistributionSale;
+import com.google.android.gms.maps.SupportMapFragment;
 
 /**
  * Created by rstueven on 3/13/18.
@@ -17,6 +20,7 @@ import com.agsimplified.android.models.DistributionSale;
 
 public class DistributionSaleDetailsFragment extends Fragment {
     public static DistributionSaleDetailsFragment newInstance(DistributionSale ds) {
+        Log.d("nfs", "DistributionSaleDetailsFragment.newInstance()");
         if (ds == null) {
             throw new IllegalArgumentException("null ds");
         }
@@ -29,19 +33,35 @@ public class DistributionSaleDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        Bundle args = getArguments();
-        if (args == null) {
-            throw new IllegalStateException("null args");
-        }
-        DistributionSale ds = (DistributionSale) args.getSerializable("ds");
-        if (ds == null) {
-            throw new IllegalStateException("null ds");
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("nfs", "DistributionSaleDetailsFragment.onCreateView()");
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_distribution_sale_details, container, false);
 
-        ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_distribution_sale_details, container, false);
+        if (savedInstanceState == null) {
+            Bundle args = getArguments();
+            if (args == null) {
+                throw new IllegalStateException("null args");
+            }
+
+            DistributionSale ds = (DistributionSale) args.getSerializable("ds");
+            if (ds == null) {
+                throw new IllegalStateException("null ds");
+            }
+
+            FragmentManager fm = getChildFragmentManager();
+
+            LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(ds);
+
+            JobSetupFragment jobSetupFragment = JobSetupFragment.newInstance(ds);
+
+            JobDetailsFragment jobDetailsFragment = JobDetailsFragment.newInstance(ds);
+
+            fm.beginTransaction()
+                    .add(R.id.loadSheetFrame, loadSheetFragment, "loadSheet")
+                    .add(R.id.jobSetupFrame, jobSetupFragment, "jobSetup")
+                    .add(R.id.jobDetailsFrame, jobDetailsFragment, "jobDetails")
+                    .commit();
+        }
 
         return rootView;
     }
