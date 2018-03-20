@@ -1,12 +1,14 @@
 package com.agsimplified.android.models;
 
+import java.io.Serializable;
+
 /**
  * Created by rstueven on 3/1/18.
  *
  * A FieldActivity object.
  */
 
-public class FieldActivity {
+public class FieldActivity implements Serializable {
     private int id;
     private Integer jobCode;
     private Integer clientJobCode;

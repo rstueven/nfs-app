@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.DistributionSale;
+import com.agsimplified.android.models.FieldActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,30 +22,30 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by rstueven on 3/13/18.
- * <p>DS Map and Directions</p>
+ * <p>Field Activity Map and Directions</p>
  */
 
-public class DistributionSaleMapFragment extends Fragment
+public class FieldActivityMapFragment extends Fragment
         implements OnMapReadyCallback, AgSimplifiedActivity.LocationListener {
     private GoogleMap mMap;
 
-    public static DistributionSaleMapFragment newInstance(DistributionSale ds) {
-        Log.d("nfs", "DistributionSaleMapFragment.newInstance()");
-        if (ds == null) {
-            throw new IllegalArgumentException("null ds");
+    public static FieldActivityMapFragment newInstance(FieldActivity fa) {
+        Log.d("nfs", "FieldActivityMapFragment.newInstance()");
+        if (fa == null) {
+            throw new IllegalArgumentException("null fa");
         }
 
-        DistributionSaleMapFragment frag = new DistributionSaleMapFragment();
+        FieldActivityMapFragment frag = new FieldActivityMapFragment();
         Bundle args = new Bundle();
-        args.putSerializable("ds", ds);
+        args.putSerializable("fa", fa);
         frag.setArguments(args);
         return frag;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("nfs", "DistributionSaleMapFragment.onCreateView()");
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_distribution_sale_map, container, false);
+        Log.d("nfs", "FieldActivityMapFragment.onCreateView()");
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_field_activity_map, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
@@ -53,21 +53,21 @@ public class DistributionSaleMapFragment extends Fragment
                 throw new IllegalStateException("null args");
             }
 
-            DistributionSale ds = (DistributionSale) args.getSerializable("ds");
-            if (ds == null) {
-                throw new IllegalStateException("null ds");
+            FieldActivity fa = (FieldActivity) args.getSerializable("fa");
+            if (fa == null) {
+                throw new IllegalStateException("null fa");
             }
 
             FragmentManager fm = getChildFragmentManager();
 
-            LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(ds);
+            FieldActivityFragment fieldActivityFragment = FieldActivityFragment.newInstance(fa);
 
             DirectionsFragment directionsFragment = DirectionsFragment.newInstance("DIRECTIONS");
 
             SupportMapFragment mapFragment = new SupportMapFragment();
 
             fm.beginTransaction()
-                    .add(R.id.loadSheetFrame, loadSheetFragment, "loadSheet")
+                    .add(R.id.fieldActivityFrame, fieldActivityFragment, "fieldActivity")
                     .add(R.id.directionsFrame, directionsFragment, "directions")
                     .add(R.id.mapFrame, mapFragment, "map")
                     .commit();
@@ -81,7 +81,7 @@ public class DistributionSaleMapFragment extends Fragment
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap map) {
-        Log.d("nfs", "DistributionSaleMapFragment.onMapReady()");
+        Log.d("nfs", "FieldActivityMapFragment.onMapReady()");
 
         mMap = map;
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
@@ -105,7 +105,7 @@ public class DistributionSaleMapFragment extends Fragment
 
     @Override
     public void onLocationUpdated(Location location) {
-        Log.d("nfs", "DistributionSaleMapFragment.onLocationUpdated()");
+        Log.d("nfs", "FieldActivityMapFragment.onLocationUpdated()");
         Log.d("nfs", "DS MAP FRAG LOCATION");
         if (location != null) {
             Log.d("nfs", location.toString());

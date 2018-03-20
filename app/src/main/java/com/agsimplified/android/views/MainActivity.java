@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +40,8 @@ public class MainActivity extends AgSimplifiedActivity
     }
 
     private ListView searchResultsView;
-    DSAdapter loadSheetsAdapter;
-    FAAdapter fieldActivitiesAdapter;
+    DistributionSaleAdapter loadSheetsAdapter;
+    FieldActivityAdapter fieldActivitiesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,8 @@ public class MainActivity extends AgSimplifiedActivity
         setContentView(R.layout.activity_main);
 
         searchResultsView = findViewById(R.id.searchResultsView);
-        loadSheetsAdapter = new DSAdapter(this, distributionSales);
-        fieldActivitiesAdapter = new FAAdapter(this, fieldActivities);
+        loadSheetsAdapter = new DistributionSaleAdapter(this, distributionSales);
+        fieldActivitiesAdapter = new FieldActivityAdapter(this, fieldActivities);
     }
 
     public void showLoadSheetSearch(View v) {
@@ -72,8 +71,8 @@ public class MainActivity extends AgSimplifiedActivity
         });
     }
 
-    public class DSAdapter extends ArrayAdapter<DistributionSale> {
-        DSAdapter(Context context, ArrayList<DistributionSale> list) {
+    public class DistributionSaleAdapter extends ArrayAdapter<DistributionSale> {
+        DistributionSaleAdapter(Context context, ArrayList<DistributionSale> list) {
             super(context, 0, list);
         }
 
@@ -81,6 +80,9 @@ public class MainActivity extends AgSimplifiedActivity
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             DistributionSale ds = getItem(position);
+            if (ds == null) {
+                throw new IllegalStateException("null ds");
+            }
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_load_sheet, parent, false);
@@ -111,10 +113,19 @@ public class MainActivity extends AgSimplifiedActivity
 
     public void searchFieldActivities(String client, int year, Integer jobCode, Integer clientJobCode, String activityType, String operation, String farm) {
         searchResultsView.setAdapter(fieldActivitiesAdapter);
+        searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FieldActivity fa = (FieldActivity) adapterView.getItemAtPosition(i);
+                Intent intent = new Intent(MainActivity.this, FieldActivityActivity.class);
+                intent.putExtra("fa", fa);
+                startActivity(intent);
+            }
+        });
     }
 
-    public class FAAdapter extends ArrayAdapter<FieldActivity> {
-        FAAdapter(Context context, ArrayList<FieldActivity> list) {
+    public class FieldActivityAdapter extends ArrayAdapter<FieldActivity> {
+        FieldActivityAdapter(Context context, ArrayList<FieldActivity> list) {
             super(context, 0, list);
         }
 
@@ -122,6 +133,9 @@ public class MainActivity extends AgSimplifiedActivity
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             FieldActivity fa = getItem(position);
+            if (fa == null) {
+                throw new IllegalStateException("null fa");
+            }
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_field_activity, parent, false);

@@ -34,7 +34,8 @@
     <string name="farm">Farm</string>
     <string name="from">From</string>
     <string name="to">To</string>
-    <string name="title_activity_load_sheet">Load Sheet</string>
+    <string name="title_activity_distribution_sale">Distribution Sale</string>
+    <string name="title_activity_field_activity">Field Activity</string>
     <string name="planned_amount">Planned Amount</string>
     <string name="zero_point_zero_zero">0.00</string>
     <string name="ton">Ton</string>
@@ -71,4 +72,7 @@
     <string name="tare_weight_lbs">Tare Weight (lbs)</string>
     <string name="amount_ton">Amount (ton)</string>
     <string name="add">Add</string>
+    <string name="field_activity">Field Activity</string>
+    <string name="location">Location</string>
+    <string name="job_type">Job Type</string>
 </resources>

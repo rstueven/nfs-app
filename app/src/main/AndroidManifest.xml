@@ -30,8 +30,13 @@
             android:label="@string/app_name"
             android:windowSoftInputMode="stateUnchanged" />
         <activity
-            android:name=".views.LoadSheetActivity"
-            android:label="@string/title_activity_load_sheet"
+            android:name=".views.DistributionSaleActivity"
+            android:label="@string/title_activity_distribution_sale"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged" />
+        <activity
+            android:name=".views.FieldActivityActivity"
+            android:label="@string/title_activity_field_activity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateUnchanged" />
 
@@ -41,8 +46,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity android:name=".views.DistributionSaleActivity"></activity>
     </application>
 
 </manifest>
