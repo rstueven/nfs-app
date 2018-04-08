@@ -33,12 +33,12 @@
             android:name=".views.DistributionSaleActivity"
             android:label="@string/title_activity_distribution_sale"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateUnchanged" />
+            android:windowSoftInputMode="stateUnchanged|adjustPan" />
         <activity
             android:name=".views.FieldActivityActivity"
             android:label="@string/title_activity_field_activity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateUnchanged" />
+            android:windowSoftInputMode="stateUnchanged|adjustPan" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
