@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.DistributionSale;
+import com.google.android.gms.maps.SupportMapFragment;
 
 public class DistributionSaleActivity extends AgSimplifiedActivity {
     @Override
@@ -23,7 +24,17 @@ public class DistributionSaleActivity extends AgSimplifiedActivity {
         DistributionSale ds = (DistributionSale) intent.getSerializableExtra("ds");
         if (ds == null) {
             throw new IllegalStateException("null ds");
+
         }
+
+        SupportMapFragment mapFragment = new SupportMapFragment();
+        LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(ds);
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction()
+                .add(R.id.loadSheetFrame, loadSheetFragment, "loadSheet")
+                .commit();
 
         ViewPager mPager = findViewById(R.id.pager);
         PagerAdapter mPagerAdapter = new DSPagerAdapter(getSupportFragmentManager(), ds);

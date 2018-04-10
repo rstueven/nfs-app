@@ -59,7 +59,6 @@ public class DistributionSaleDetailsFragment extends Fragment {
             JobDetailsFragment jobDetailsFragment = JobDetailsFragment.newInstance(ds);
 
             fm.beginTransaction()
-                    .add(R.id.loadSheetFrame, loadSheetFragment, "loadSheet")
                     .add(R.id.jobSetupFrame, jobSetupFragment, "jobSetup")
                     .add(R.id.loadTotalsFrame, loadTotalsFragment, "loadTotals")
                     .add(R.id.jobDetailsFrame, jobDetailsFragment, "jobDetails")

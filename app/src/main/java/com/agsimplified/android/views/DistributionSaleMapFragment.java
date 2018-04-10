@@ -60,14 +60,11 @@ public class DistributionSaleMapFragment extends Fragment
 
             FragmentManager fm = getChildFragmentManager();
 
-            LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(ds);
-
             DirectionsFragment directionsFragment = DirectionsFragment.newInstance("DIRECTIONS");
 
             SupportMapFragment mapFragment = new SupportMapFragment();
 
             fm.beginTransaction()
-                    .add(R.id.loadSheetFrame, loadSheetFragment, "loadSheet")
                     .add(R.id.directionsFrame, directionsFragment, "directions")
                     .add(R.id.mapFrame, mapFragment, "map")
                     .commit();
