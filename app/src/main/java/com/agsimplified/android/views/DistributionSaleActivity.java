@@ -27,7 +27,6 @@ public class DistributionSaleActivity extends AgSimplifiedActivity {
 
         }
 
-        SupportMapFragment mapFragment = new SupportMapFragment();
         LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(ds);
 
         FragmentManager fm = getSupportFragmentManager();

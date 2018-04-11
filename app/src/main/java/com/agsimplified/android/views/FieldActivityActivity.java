@@ -30,6 +30,14 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
             throw new IllegalStateException("null fa");
         }
 
+        FieldActivityFragment fieldActivityFragment = FieldActivityFragment.newInstance(fa);
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction()
+                .add(R.id.fieldActivityFrame, fieldActivityFragment, "fieldActivity")
+                .commit();
+
         ViewPager mPager = findViewById(R.id.pager);
         PagerAdapter mPagerAdapter = new FieldActivityActivity.FAPagerAdapter(getSupportFragmentManager(), fa);
         mPager.setAdapter(mPagerAdapter);
@@ -37,7 +45,7 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
 
     private class FAPagerAdapter extends FragmentPagerAdapter {
         private static final int TAB_COUNT = 2;
-        private final String tabTitles[] = new String[]{"MAP AND DIRECTIONS", "JOB DETAILS"};
+        private final String tabTitles[] = new String[]{"JOB SETUP", "JOB DETAILS"};
         private FieldActivity fa;
 
         FAPagerAdapter(FragmentManager fm, FieldActivity fa) {
@@ -53,10 +61,11 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return FieldActivityMapFragment.newInstance(fa);
-                case 1:
-                    return FieldActivityMapFragment.newInstance(fa);
-//                    return FieldActivityDetailsFragment.newInstance(fa);
+
+                    NEED TO REFACTOR EVERYTHING — D&S / LOAD SHEETS / FIELD ACTIVITY / APPLICATION
+                    return JobSetupFragment.newInstance(fa);
+//                case 1:
+//                    return FieldActivityMapFragment.newInstance(fa);
                 default:
                     throw new IllegalStateException("unknown tab #" + position);
             }
