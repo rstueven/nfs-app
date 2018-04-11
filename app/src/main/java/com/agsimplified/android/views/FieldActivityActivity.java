@@ -61,8 +61,6 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-
-                    NEED TO REFACTOR EVERYTHING — D&S / LOAD SHEETS / FIELD ACTIVITY / APPLICATION
                     return JobSetupFragment.newInstance(fa);
 //                case 1:
 //                    return FieldActivityMapFragment.newInstance(fa);

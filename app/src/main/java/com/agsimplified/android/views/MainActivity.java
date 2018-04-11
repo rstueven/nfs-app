@@ -20,7 +20,7 @@ import com.agsimplified.android.models.FieldActivity;
 import java.util.ArrayList;
 
 public class MainActivity extends AgSimplifiedActivity
-        implements LoadSheetSearchFragment.LoadSheetSearcher, ActivitySearchFragment.FieldActivitySearcher {
+        implements LoadSheetSearchFragment.LoadSheetSearcher, FieldActivitySearchFragment.FieldActivitySearcher {
     private static ArrayList<DistributionSale> distributionSales = new ArrayList<>();
 
     static {
@@ -40,7 +40,7 @@ public class MainActivity extends AgSimplifiedActivity
     }
 
     private ListView searchResultsView;
-    DistributionSaleAdapter loadSheetsAdapter;
+    DistributionSaleAdapter distributionSaleAdapter;
     FieldActivityAdapter fieldActivitiesAdapter;
 
     @Override
@@ -49,17 +49,17 @@ public class MainActivity extends AgSimplifiedActivity
         setContentView(R.layout.activity_main);
 
         searchResultsView = findViewById(R.id.searchResultsView);
-        loadSheetsAdapter = new DistributionSaleAdapter(this, distributionSales);
+        distributionSaleAdapter = new DistributionSaleAdapter(this, distributionSales);
         fieldActivitiesAdapter = new FieldActivityAdapter(this, fieldActivities);
     }
 
-    public void showLoadSheetSearch(View v) {
+    public void showDistributionSaleSearch(View v) {
         DialogFragment newFragment = new LoadSheetSearchFragment();
         newFragment.show(getFragmentManager(), "loadSheetSearch");
     }
 
-    public void searchLoadSheets(String client, int year, Integer jobCode, Integer clientJobCode, String fromOperation, String toOperation, String product) {
-        searchResultsView.setAdapter(loadSheetsAdapter);
+    public void searchDistributionSales(String client, int year, Integer jobCode, Integer clientJobCode, String fromOperation, String toOperation, String product) {
+        searchResultsView.setAdapter(distributionSaleAdapter);
         searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -85,7 +85,7 @@ public class MainActivity extends AgSimplifiedActivity
             }
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_load_sheet, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_distribution_sale, parent, false);
             }
 
             TextView jobCodeView = convertView.findViewById(R.id.jobCode);
@@ -106,9 +106,9 @@ public class MainActivity extends AgSimplifiedActivity
         }
     }
 
-    public void showActivitySearch(View v) {
-        DialogFragment newFragment = new ActivitySearchFragment();
-        newFragment.show(getFragmentManager(), "activitySearch");
+    public void showFieldActivitySearch(View v) {
+        DialogFragment newFragment = new FieldActivitySearchFragment();
+        newFragment.show(getFragmentManager(), "fieldActivitySearch");
     }
 
     public void searchFieldActivities(String client, int year, Integer jobCode, Integer clientJobCode, String activityType, String operation, String farm) {

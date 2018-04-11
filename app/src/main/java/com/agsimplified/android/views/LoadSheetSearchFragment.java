@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -30,7 +29,7 @@ public class LoadSheetSearchFragment extends DialogFragment {
     Spinner productSelect;
 
     public interface LoadSheetSearcher {
-        void searchLoadSheets(String client, int year, Integer jobCode, Integer clientJobCode, String fromOperation, String toOperation, String product);
+        void searchDistributionSales(String client, int year, Integer jobCode, Integer clientJobCode, String fromOperation, String toOperation, String product);
     }
 
     public LoadSheetSearchFragment() {
@@ -111,7 +110,7 @@ public class LoadSheetSearchFragment extends DialogFragment {
                         String toOperation = toSelect.getSelectedItem().toString();
                         String product = productSelect.getSelectedItem().toString();
 
-                        searcher.searchLoadSheets(client, year, jobCode, clientJobCode, fromOperation, toOperation, product);
+                        searcher.searchDistributionSales(client, year, jobCode, clientJobCode, fromOperation, toOperation, product);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

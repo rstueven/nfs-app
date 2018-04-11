@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,7 +19,7 @@ import com.agsimplified.android.R;
  * Set search parameters.
  */
 
-public class ActivitySearchFragment extends DialogFragment {
+public class FieldActivitySearchFragment extends DialogFragment {
     Spinner clientSelect;
     Spinner yearSelect;
     EditText jobCodeView;
@@ -33,7 +32,7 @@ public class ActivitySearchFragment extends DialogFragment {
         void searchFieldActivities(String client, int year, Integer jobCode, Integer clientJobCode, String jobType, String operation, String farm);
     }
 
-    public ActivitySearchFragment() {
+    public FieldActivitySearchFragment() {
         super();
     }
 
@@ -115,7 +114,7 @@ public class ActivitySearchFragment extends DialogFragment {
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ActivitySearchFragment.this.getDialog().cancel();
+                        FieldActivitySearchFragment.this.getDialog().cancel();
                     }
                 });
         return builder.create();
