@@ -3,20 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <FrameLayout
+        android:id="@+id/fieldActivityFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.agsimplified.android.views.FieldActivityActivity">
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp" />
 
-        <android.support.v4.view.PagerTabStrip
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:textColor="@color/colorPrimaryDark" />
-    </android.support.v4.view.ViewPager>
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/pager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--tools:context="com.agsimplified.android.views.FieldActivityActivity">-->
+
+        <!--<android.support.v4.view.PagerTabStrip-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="top"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:textColor="@color/colorPrimaryDark" />-->
+    <!--</android.support.v4.view.ViewPager>-->
 </LinearLayout>

@@ -116,9 +116,9 @@ public class MainActivity extends AgSimplifiedActivity
         searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                FieldActivity fa = (FieldActivity) adapterView.getItemAtPosition(i);
+                FieldActivity fieldActivity = (FieldActivity) adapterView.getItemAtPosition(i);
                 Intent intent = new Intent(MainActivity.this, FieldActivityActivity.class);
-                intent.putExtra("fa", fa);
+                intent.putExtra("fieldActivity", fieldActivity);
                 startActivity(intent);
             }
         });
