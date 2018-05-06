@@ -77,4 +77,7 @@
     <string name="job_type">Job Type</string>
     <string name="acres_planned">Acres Planned</string>
     <string name="acres_applied">Acres Applied</string>
+    <string name="title_location_permission">Location Permission</string>
+    <string name="text_location_permission">Location access is required.</string>
+    <string name="ok">OK</string>
 </resources>
