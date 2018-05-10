@@ -38,45 +38,45 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
                 .add(R.id.fieldActivityFrame, fieldActivityFragment, "fieldActivity")
                 .commit();
 
-//        ViewPager mPager = findViewById(R.id.pager);
-//        PagerAdapter mPagerAdapter = new FieldActivityActivity.FAPagerAdapter(getSupportFragmentManager(), fieldActivity);
-//        mPager.setAdapter(mPagerAdapter);
+        ViewPager mPager = findViewById(R.id.pager);
+        PagerAdapter mPagerAdapter = new FieldActivityActivity.FAPagerAdapter(getSupportFragmentManager(), fieldActivity);
+        mPager.setAdapter(mPagerAdapter);
     }
 
-//    private class FAPagerAdapter extends FragmentPagerAdapter {
-//        private static final int TAB_COUNT = 2;
-//        private final String tabTitles[] = new String[]{"JOB SETUP", "JOB DETAILS"};
-//        private FieldActivity fa;
-//
-//        FAPagerAdapter(FragmentManager fm, FieldActivity fa) {
-//            super(fm);
-//
-//            if (fa == null) {
-//                throw new IllegalStateException("null fa");
-//            }
-//            this.fa = fa;
-//        }
-//
-//        @Override
-//        public Fragment getItem(int position) {
-//            switch (position) {
-//                case 0:
-//                    return JobSetupFragment.newInstance(fa);
-////                case 1:
-////                    return FieldActivityMapFragment.newInstance(fa);
-//                default:
-//                    throw new IllegalStateException("unknown tab #" + position);
-//            }
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return TAB_COUNT;
-//        }
-//
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            return tabTitles[position];
-//        }
-//    }
+    private class FAPagerAdapter extends FragmentPagerAdapter {
+        private static final int TAB_COUNT = 1;
+        private final String tabTitles[] = new String[]{"JOB DETAILS"};
+        private FieldActivity fieldActivity;
+
+        FAPagerAdapter(FragmentManager fm, FieldActivity fieldActivity) {
+            super(fm);
+
+            if (fieldActivity == null) {
+                throw new IllegalStateException("null fieldActivity");
+            }
+            this.fieldActivity = fieldActivity;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return FieldActivityDetailsFragment.newInstance(fieldActivity);
+//                case 1:
+//                    return FieldActivityMapFragment.newInstance(fieldActivity);
+                default:
+                    throw new IllegalStateException("unknown tab #" + position);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return TAB_COUNT;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+    }
 }
