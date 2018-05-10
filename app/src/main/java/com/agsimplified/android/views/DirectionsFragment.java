@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.DistributionSale;
 
 public class DirectionsFragment extends Fragment {
     public static DirectionsFragment newInstance(String directions) {

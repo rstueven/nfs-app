@@ -33,10 +33,10 @@ public class MainActivity extends AgSimplifiedActivity
     private static ArrayList<FieldActivity> fieldActivities = new ArrayList<>();
 
     static {
-        fieldActivities.add(new FieldActivity(2048, 17171, null, 2018, "Fertilizing", "Shawn Jespersen", "Grant", 100.0, 0.0));
-        fieldActivities.add(new FieldActivity(2304, 17293, null, 2018, "Fertilizing", "David Staben", "Home Place", 200.0, null));
-        fieldActivities.add(new FieldActivity(2560, 18102, null, 2018, "Fertilizing", "Dammann Farms", "Beh Farm", 300.0, 150.0));
-        fieldActivities.add(new FieldActivity(2560, 18102, null, 2018, "Fertilizing", "Dammann Farms", "Beh Farm #2", null, null));
+        fieldActivities.add(new FieldActivity(2048, 17171, null, 2018, "Fertilizing", "Shawn Jespersen", "Shawn Jespersen", "Grant", "GrantJorg228a", 173.49));
+        fieldActivities.add(new FieldActivity(2304, 17293, null, 2018, "Fertilizing", "David Staben", "David Staben", "Home Place", "Home", 57.43));
+        fieldActivities.add(new FieldActivity(2560, 18012, null, 2018, "Fertilizing", "Dammann Farms", "Dammann Farms", "Beh Farm", "Beh 578 E6ac", 6.31));
+        fieldActivities.add(new FieldActivity(2049, 17171, null, 2018, "Fertilizing", "Shawn Jespersen", "Shawn Jespersen", "Grant", "GrantSmithS78a", 78.14));
     }
 
     private ListView searchResultsView;

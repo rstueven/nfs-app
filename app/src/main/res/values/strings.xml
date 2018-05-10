@@ -80,4 +80,8 @@
     <string name="title_location_permission">Location Permission</string>
     <string name="text_location_permission">Location access is required.</string>
     <string name="ok">OK</string>
+    <string name="none">none</string>
+    <string name="crop_year">Crop Year</string>
+    <string name="main_activity">Main Activity</string>
+    <string name="field">Field</string>
 </resources>
