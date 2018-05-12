@@ -1,4 +1,4 @@
-package com.agsimplified.android.views;
+package com.agsimplified.android.views.distributionsale;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.DistributionSale;
+import com.agsimplified.android.models.distributionsale.DistributionSale;
 
 import java.util.Locale;
 

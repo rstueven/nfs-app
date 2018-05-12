@@ -17,7 +17,7 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.agsimplified.android.views.FieldActivityActivity">
+        tools:context="com.agsimplified.android.views.fieldactivity.FieldActivityActivity">
 
         <android.support.v4.view.PagerTabStrip
             android:layout_width="match_parent"

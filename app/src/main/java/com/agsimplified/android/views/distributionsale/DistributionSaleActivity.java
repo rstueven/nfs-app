@@ -1,4 +1,4 @@
-package com.agsimplified.android.views;
+package com.agsimplified.android.views.distributionsale;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.DistributionSale;
+import com.agsimplified.android.models.distributionsale.DistributionSale;
+import com.agsimplified.android.views.AgSimplifiedActivity;
 
 public class DistributionSaleActivity extends AgSimplifiedActivity {
     @Override

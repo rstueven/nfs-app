@@ -1,4 +1,4 @@
-package com.agsimplified.android.models;
+package com.agsimplified.android.models.distributionsale;
 
 import java.io.Serializable;
 

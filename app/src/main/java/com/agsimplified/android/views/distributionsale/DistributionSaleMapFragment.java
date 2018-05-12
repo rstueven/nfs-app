@@ -1,4 +1,4 @@
-package com.agsimplified.android.views;
+package com.agsimplified.android.views.distributionsale;
 
 import android.annotation.SuppressLint;
 import android.location.Location;
@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.DistributionSale;
+import com.agsimplified.android.models.distributionsale.DistributionSale;
+import com.agsimplified.android.views.AgSimplifiedActivity;
+import com.agsimplified.android.views.DirectionsFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

@@ -30,12 +30,12 @@
             android:label="@string/app_name"
             android:windowSoftInputMode="stateUnchanged" />
         <activity
-            android:name=".views.DistributionSaleActivity"
+            android:name=".views.distributionsale.DistributionSaleActivity"
             android:label="@string/title_activity_distribution_sale"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateUnchanged|adjustPan" />
         <activity
-            android:name=".views.FieldActivityActivity"
+            android:name=".views.fieldactivity.FieldActivityActivity"
             android:label="@string/title_activity_field_activity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateUnchanged|adjustPan" />

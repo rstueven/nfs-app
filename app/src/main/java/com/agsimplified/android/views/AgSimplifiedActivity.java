@@ -31,12 +31,12 @@ import java.util.List;
  * Includes location tracking.
  */
 
-abstract class AgSimplifiedActivity extends AppCompatActivity {
+public abstract class AgSimplifiedActivity extends AppCompatActivity {
     private static final String PERMISSIONS_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int REQUEST_FINE_LOCATION = 1;
     private static final String IS_REQUESTING_LOCATION_UPDATES = "isRequestingLocationUpdates";
 
-    interface LocationListener {
+    public interface LocationListener {
         void onLocationUpdated(Location location);
     }
 
@@ -159,7 +159,7 @@ abstract class AgSimplifiedActivity extends AppCompatActivity {
         }
     }
 
-    protected void registerLocationListener(LocationListener listener) {
+    public void registerLocationListener(LocationListener listener) {
         Log.d("nfs", "AgSimplifiedActivity.registerLocationListener()");
         if (listener != null && !locationListeners.contains(listener)) {
             locationListeners.add(listener);

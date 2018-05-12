@@ -14,8 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.DistributionSale;
-import com.agsimplified.android.models.FieldActivity;
+import com.agsimplified.android.models.distributionsale.DistributionSale;
+import com.agsimplified.android.models.fieldactivity.FieldActivity;
+import com.agsimplified.android.views.distributionsale.DistributionSaleActivity;
+import com.agsimplified.android.views.distributionsale.LoadSheetSearchFragment;
+import com.agsimplified.android.views.fieldactivity.FieldActivityActivity;
+import com.agsimplified.android.views.fieldactivity.FieldActivitySearchFragment;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.agsimplified.android.views;
+package com.agsimplified.android.views.distributionsale;
 
 import android.content.Context;
 import android.net.Uri;

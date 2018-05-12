@@ -1,4 +1,4 @@
-package com.agsimplified.android.views;
+package com.agsimplified.android.views.distributionsale;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.DistributionSale;
+import com.agsimplified.android.models.distributionsale.DistributionSale;
 
 public class LoadTotalsFragment extends Fragment {
     public static LoadTotalsFragment newInstance(DistributionSale ds) {
