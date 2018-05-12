@@ -16,15 +16,15 @@ import android.widget.TextView;
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
 import com.agsimplified.android.models.fieldactivity.FieldActivity;
-import com.agsimplified.android.views.distributionsale.DistributionSaleActivity;
-import com.agsimplified.android.views.distributionsale.LoadSheetSearchFragment;
-import com.agsimplified.android.views.fieldactivity.FieldActivityActivity;
-import com.agsimplified.android.views.fieldactivity.FieldActivitySearchFragment;
+import com.agsimplified.android.views.distributionsale.DSActivity;
+import com.agsimplified.android.views.distributionsale.DSSearchFragment;
+import com.agsimplified.android.views.fieldactivity.FAActivity;
+import com.agsimplified.android.views.fieldactivity.FASearchFragment;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AgSimplifiedActivity
-        implements LoadSheetSearchFragment.LoadSheetSearcher, FieldActivitySearchFragment.FieldActivitySearcher {
+        implements DSSearchFragment.LoadSheetSearcher, FASearchFragment.FieldActivitySearcher {
     private static ArrayList<DistributionSale> distributionSales = new ArrayList<>();
 
     static {
@@ -58,7 +58,7 @@ public class MainActivity extends AgSimplifiedActivity
     }
 
     public void showDistributionSaleSearch(View v) {
-        DialogFragment newFragment = new LoadSheetSearchFragment();
+        DialogFragment newFragment = new DSSearchFragment();
         newFragment.show(getFragmentManager(), "loadSheetSearch");
     }
 
@@ -68,7 +68,7 @@ public class MainActivity extends AgSimplifiedActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 DistributionSale ds = (DistributionSale) adapterView.getItemAtPosition(i);
-                Intent intent = new Intent(MainActivity.this, DistributionSaleActivity.class);
+                Intent intent = new Intent(MainActivity.this, DSActivity.class);
                 intent.putExtra("ds", ds);
                 startActivity(intent);
             }
@@ -111,7 +111,7 @@ public class MainActivity extends AgSimplifiedActivity
     }
 
     public void showFieldActivitySearch(View v) {
-        DialogFragment newFragment = new FieldActivitySearchFragment();
+        DialogFragment newFragment = new FASearchFragment();
         newFragment.show(getFragmentManager(), "fieldActivitySearch");
     }
 
@@ -121,7 +121,7 @@ public class MainActivity extends AgSimplifiedActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 FieldActivity fieldActivity = (FieldActivity) adapterView.getItemAtPosition(i);
-                Intent intent = new Intent(MainActivity.this, FieldActivityActivity.class);
+                Intent intent = new Intent(MainActivity.this, FAActivity.class);
                 intent.putExtra("fieldActivity", fieldActivity);
                 startActivity(intent);
             }

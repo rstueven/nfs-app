@@ -14,13 +14,13 @@ import com.agsimplified.android.models.distributionsale.DistributionSale;
 
 import java.util.Locale;
 
-public class LoadSheetFragment extends Fragment {
-    public static LoadSheetFragment newInstance(DistributionSale ds) {
+public class DSLoadSheetFragment extends Fragment {
+    public static DSLoadSheetFragment newInstance(DistributionSale ds) {
         if (ds == null) {
             throw new IllegalArgumentException("null ds");
         }
 
-        LoadSheetFragment frag = new LoadSheetFragment();
+        DSLoadSheetFragment frag = new DSLoadSheetFragment();
         Bundle args = new Bundle();
         args.putSerializable("ds", ds);
         frag.setArguments(args);

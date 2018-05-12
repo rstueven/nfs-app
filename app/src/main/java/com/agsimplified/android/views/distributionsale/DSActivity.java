@@ -13,10 +13,10 @@ import com.agsimplified.android.R;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
 import com.agsimplified.android.views.AgSimplifiedActivity;
 
-public class DistributionSaleActivity extends AgSimplifiedActivity {
+public class DSActivity extends AgSimplifiedActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("nfs", "DistributionSaleActivity.onCreate()");
+        Log.d("nfs", "DSActivity.onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ds_activity);
 
@@ -26,7 +26,7 @@ public class DistributionSaleActivity extends AgSimplifiedActivity {
             throw new IllegalStateException("null ds");
         }
 
-        LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(ds);
+        DSLoadSheetFragment loadSheetFragment = DSLoadSheetFragment.newInstance(ds);
 
         FragmentManager fm = getSupportFragmentManager();
 
@@ -58,9 +58,9 @@ public class DistributionSaleActivity extends AgSimplifiedActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return DistributionSaleMapFragment.newInstance(ds);
+                    return DSMapFragment.newInstance(ds);
                 case 1:
-                    return DistributionSaleDetailsFragment.newInstance(ds);
+                    return DSDetailsFragment.newInstance(ds);
                 default:
                     throw new IllegalStateException("unknown tab #" + position);
             }

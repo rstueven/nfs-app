@@ -27,17 +27,17 @@ import com.google.android.gms.maps.model.LatLng;
  * <p>DS Map and Directions</p>
  */
 
-public class DistributionSaleMapFragment extends Fragment
+public class DSMapFragment extends Fragment
         implements OnMapReadyCallback, AgSimplifiedActivity.LocationListener {
     private GoogleMap mMap;
 
-    public static DistributionSaleMapFragment newInstance(DistributionSale ds) {
-        Log.d("nfs", "DistributionSaleMapFragment.newInstance()");
+    public static DSMapFragment newInstance(DistributionSale ds) {
+        Log.d("nfs", "DSMapFragment.newInstance()");
         if (ds == null) {
             throw new IllegalArgumentException("null ds");
         }
 
-        DistributionSaleMapFragment frag = new DistributionSaleMapFragment();
+        DSMapFragment frag = new DSMapFragment();
         Bundle args = new Bundle();
         args.putSerializable("ds", ds);
         frag.setArguments(args);
@@ -46,7 +46,7 @@ public class DistributionSaleMapFragment extends Fragment
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("nfs", "DistributionSaleMapFragment.onCreateView()");
+        Log.d("nfs", "DSMapFragment.onCreateView()");
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.ds_map_fragment, container, false);
 
         if (savedInstanceState == null) {
@@ -80,7 +80,7 @@ public class DistributionSaleMapFragment extends Fragment
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap map) {
-        Log.d("nfs", "DistributionSaleMapFragment.onMapReady()");
+        Log.d("nfs", "DSMapFragment.onMapReady()");
 
         mMap = map;
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
@@ -104,7 +104,7 @@ public class DistributionSaleMapFragment extends Fragment
 
     @Override
     public void onLocationUpdated(Location location) {
-        Log.d("nfs", "DistributionSaleMapFragment.onLocationUpdated()");
+        Log.d("nfs", "DSMapFragment.onLocationUpdated()");
         Log.d("nfs", "DS MAP FRAG LOCATION");
         if (location != null) {
             Log.d("nfs", location.toString());

@@ -16,10 +16,10 @@ import com.agsimplified.android.R;
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LoadFragment#newInstance} factory method to
+ * Use the {@link DSLoadFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoadFragment extends Fragment {
+public class DSLoadFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,7 +31,7 @@ public class LoadFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public LoadFragment() {
+    public DSLoadFragment() {
         // Required empty public constructor
     }
 
@@ -41,11 +41,11 @@ public class LoadFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LoadFragment.
+     * @return A new instance of fragment DSLoadFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LoadFragment newInstance(String param1, String param2) {
-        LoadFragment fragment = new LoadFragment();
+    public static DSLoadFragment newInstance(String param1, String param2) {
+        DSLoadFragment fragment = new DSLoadFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

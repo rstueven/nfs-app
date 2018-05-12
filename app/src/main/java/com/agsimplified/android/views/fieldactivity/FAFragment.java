@@ -14,13 +14,13 @@ import com.agsimplified.android.models.fieldactivity.FieldActivity;
 
 import java.util.Locale;
 
-public class FieldActivityFragment extends Fragment {
-    public static FieldActivityFragment newInstance(FieldActivity fieldActivity) {
+public class FAFragment extends Fragment {
+    public static FAFragment newInstance(FieldActivity fieldActivity) {
         if (fieldActivity == null) {
             throw new IllegalArgumentException("null fieldActivity");
         }
 
-        FieldActivityFragment frag = new FieldActivityFragment();
+        FAFragment frag = new FAFragment();
         Bundle args = new Bundle();
         args.putSerializable("fieldActivity", fieldActivity);
         frag.setArguments(args);

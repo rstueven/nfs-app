@@ -19,7 +19,7 @@ import com.agsimplified.android.R;
  * Set search parameters.
  */
 
-public class LoadSheetSearchFragment extends DialogFragment {
+public class DSSearchFragment extends DialogFragment {
     Spinner clientSelect;
     Spinner yearSelect;
     EditText jobCodeView;
@@ -32,7 +32,7 @@ public class LoadSheetSearchFragment extends DialogFragment {
         void searchDistributionSales(String client, int year, Integer jobCode, Integer clientJobCode, String fromOperation, String toOperation, String product);
     }
 
-    public LoadSheetSearchFragment() {
+    public DSSearchFragment() {
         super();
     }
 
@@ -115,7 +115,7 @@ public class LoadSheetSearchFragment extends DialogFragment {
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        LoadSheetSearchFragment.this.getDialog().cancel();
+                        DSSearchFragment.this.getDialog().cancel();
                     }
                 });
         return builder.create();

@@ -18,10 +18,10 @@ import com.agsimplified.android.views.AgSimplifiedActivity;
  * <p>The Field Activity page</p>
  */
 
-public class FieldActivityActivity extends AgSimplifiedActivity {
+public class FAActivity extends AgSimplifiedActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("nfs", "FieldActivityActivity.onCreate()");
+        Log.d("nfs", "FAActivity.onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fa_activity);
 
@@ -31,7 +31,7 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
             throw new IllegalStateException("null fieldActivity");
         }
 
-        FieldActivityFragment fieldActivityFragment = FieldActivityFragment.newInstance(fieldActivity);
+        FAFragment fieldActivityFragment = FAFragment.newInstance(fieldActivity);
 
         FragmentManager fm = getSupportFragmentManager();
 
@@ -40,7 +40,7 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
                 .commit();
 
         ViewPager mPager = findViewById(R.id.pager);
-        PagerAdapter mPagerAdapter = new FieldActivityActivity.FAPagerAdapter(getSupportFragmentManager(), fieldActivity);
+        PagerAdapter mPagerAdapter = new FAActivity.FAPagerAdapter(getSupportFragmentManager(), fieldActivity);
         mPager.setAdapter(mPagerAdapter);
     }
 
@@ -63,7 +63,7 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return FieldActivityDetailsFragment.newInstance(fieldActivity);
+                    return FADetailsFragment.newInstance(fieldActivity);
                 default:
                     throw new IllegalStateException("unknown tab #" + position);
             }

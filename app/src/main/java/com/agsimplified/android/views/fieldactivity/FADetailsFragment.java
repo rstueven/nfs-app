@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.fieldactivity.FieldActivity;
 
-public class FieldActivityDetailsFragment extends Fragment {
-    public static FieldActivityDetailsFragment newInstance(FieldActivity fieldActivity) {
+public class FADetailsFragment extends Fragment {
+    public static FADetailsFragment newInstance(FieldActivity fieldActivity) {
         if (fieldActivity == null) {
             throw new IllegalArgumentException("null fieldActivity");
         }
 
-        FieldActivityDetailsFragment frag = new FieldActivityDetailsFragment();
+        FADetailsFragment frag = new FADetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable("fieldActivity", fieldActivity);
         frag.setArguments(args);

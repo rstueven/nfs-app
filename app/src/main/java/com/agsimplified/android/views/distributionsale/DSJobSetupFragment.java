@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
 
-public class JobSetupFragment extends Fragment {
-    public static JobSetupFragment newInstance(DistributionSale ds) {
+public class DSJobSetupFragment extends Fragment {
+    public static DSJobSetupFragment newInstance(DistributionSale ds) {
         if (ds == null) {
             throw new IllegalArgumentException("null ds");
         }
 
-        JobSetupFragment fragment = new JobSetupFragment();
+        DSJobSetupFragment fragment = new DSJobSetupFragment();
         Bundle args = new Bundle();
         args.putSerializable("ds", ds);
         fragment.setArguments(args);

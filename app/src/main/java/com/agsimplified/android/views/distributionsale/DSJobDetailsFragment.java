@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
 
-public class LoadTotalsFragment extends Fragment {
-    public static LoadTotalsFragment newInstance(DistributionSale ds) {
+public class DSJobDetailsFragment extends Fragment {
+    public static DSJobDetailsFragment newInstance(DistributionSale ds) {
         if (ds == null) {
             throw new IllegalArgumentException("null ds");
         }
 
-        LoadTotalsFragment fragment = new LoadTotalsFragment();
+        DSJobDetailsFragment fragment = new DSJobDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable("ds", ds);
         fragment.setArguments(args);
@@ -26,7 +26,7 @@ public class LoadTotalsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.ds_load_totals_fragment, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.ds_job_details_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();

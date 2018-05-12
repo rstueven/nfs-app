@@ -17,14 +17,14 @@ import com.agsimplified.android.models.distributionsale.DistributionSale;
  * <p>DS Job details and job sheets</p>
  */
 
-public class DistributionSaleDetailsFragment extends Fragment {
-    public static DistributionSaleDetailsFragment newInstance(DistributionSale ds) {
-        Log.d("nfs", "DistributionSaleDetailsFragment.newInstance()");
+public class DSDetailsFragment extends Fragment {
+    public static DSDetailsFragment newInstance(DistributionSale ds) {
+        Log.d("nfs", "DSDetailsFragment.newInstance()");
         if (ds == null) {
             throw new IllegalArgumentException("null ds");
         }
 
-        DistributionSaleDetailsFragment frag = new DistributionSaleDetailsFragment();
+        DSDetailsFragment frag = new DSDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable("ds", ds);
         frag.setArguments(args);
@@ -33,7 +33,7 @@ public class DistributionSaleDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("nfs", "DistributionSaleDetailsFragment.onCreateView()");
+        Log.d("nfs", "DSDetailsFragment.onCreateView()");
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.ds_details_fragment, container, false);
 
         if (savedInstanceState == null) {
@@ -49,13 +49,13 @@ public class DistributionSaleDetailsFragment extends Fragment {
 
             FragmentManager fm = getChildFragmentManager();
 
-            LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(ds);
+            DSLoadSheetFragment loadSheetFragment = DSLoadSheetFragment.newInstance(ds);
 
-            JobSetupFragment jobSetupFragment = JobSetupFragment.newInstance(ds);
+            DSJobSetupFragment jobSetupFragment = DSJobSetupFragment.newInstance(ds);
 
-            LoadTotalsFragment loadTotalsFragment = LoadTotalsFragment.newInstance(ds);
+            DSLoadTotalsFragment loadTotalsFragment = DSLoadTotalsFragment.newInstance(ds);
 
-            JobDetailsFragment jobDetailsFragment = JobDetailsFragment.newInstance(ds);
+            DSJobDetailsFragment jobDetailsFragment = DSJobDetailsFragment.newInstance(ds);
 
             fm.beginTransaction()
                     .add(R.id.jobSetupFrame, jobSetupFragment, "jobSetup")
