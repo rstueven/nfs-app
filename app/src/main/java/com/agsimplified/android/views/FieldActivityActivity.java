@@ -44,8 +44,8 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
     }
 
     private class FAPagerAdapter extends FragmentPagerAdapter {
-        private static final int TAB_COUNT = 1;
-        private final String tabTitles[] = new String[]{"JOB DETAILS"};
+        private static final int TAB_COUNT = 2;
+        private final String tabTitles[] = new String[]{"JOB DETAILS", "map"};
         private FieldActivity fieldActivity;
 
         FAPagerAdapter(FragmentManager fm, FieldActivity fieldActivity) {
@@ -54,6 +54,7 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
             if (fieldActivity == null) {
                 throw new IllegalStateException("null fieldActivity");
             }
+
             this.fieldActivity = fieldActivity;
         }
 
@@ -62,8 +63,8 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
             switch (position) {
                 case 0:
                     return FieldActivityDetailsFragment.newInstance(fieldActivity);
-//                case 1:
-//                    return FieldActivityMapFragment.newInstance(fieldActivity);
+                case 1:
+                    return FieldActivityDetailsFragment.newInstance(fieldActivity);
                 default:
                     throw new IllegalStateException("unknown tab #" + position);
             }

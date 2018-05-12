@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.DistributionSale;
-import com.google.android.gms.maps.SupportMapFragment;
 
 public class DistributionSaleActivity extends AgSimplifiedActivity {
     @Override
@@ -24,7 +23,6 @@ public class DistributionSaleActivity extends AgSimplifiedActivity {
         DistributionSale ds = (DistributionSale) intent.getSerializableExtra("ds");
         if (ds == null) {
             throw new IllegalStateException("null ds");
-
         }
 
         LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(ds);
@@ -51,6 +49,7 @@ public class DistributionSaleActivity extends AgSimplifiedActivity {
             if (ds == null) {
                 throw new IllegalStateException("null ds");
             }
+
             this.ds = ds;
         }
 
