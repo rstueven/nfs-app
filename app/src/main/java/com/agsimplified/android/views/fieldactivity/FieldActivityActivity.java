@@ -23,7 +23,7 @@ public class FieldActivityActivity extends AgSimplifiedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("nfs", "FieldActivityActivity.onCreate()");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_field_activity);
+        setContentView(R.layout.fa_activity);
 
         Intent intent = getIntent();
         FieldActivity fieldActivity = (FieldActivity) intent.getSerializableExtra("fieldActivity");

@@ -34,7 +34,7 @@ public class DistributionSaleDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("nfs", "DistributionSaleDetailsFragment.onCreateView()");
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_distribution_sale_details, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.ds_details_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();

@@ -50,7 +50,7 @@ public class MainActivity extends AgSimplifiedActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
         searchResultsView = findViewById(R.id.searchResultsView);
         distributionSaleAdapter = new DistributionSaleAdapter(this, distributionSales);
@@ -89,7 +89,7 @@ public class MainActivity extends AgSimplifiedActivity
             }
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_distribution_sale, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.ds_item, parent, false);
             }
 
             TextView jobCodeView = convertView.findViewById(R.id.jobCode);
@@ -142,7 +142,7 @@ public class MainActivity extends AgSimplifiedActivity
             }
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_field_activity, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.fa_item, parent, false);
             }
 
             TextView jobCodeView = convertView.findViewById(R.id.jobCode);

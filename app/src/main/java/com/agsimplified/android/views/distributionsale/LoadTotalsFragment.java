@@ -26,7 +26,7 @@ public class LoadTotalsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_load_totals, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.ds_load_totals_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();

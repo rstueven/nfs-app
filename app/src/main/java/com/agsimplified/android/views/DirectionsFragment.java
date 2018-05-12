@@ -23,7 +23,7 @@ public class DirectionsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_directions, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.directions_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();

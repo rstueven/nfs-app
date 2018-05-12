@@ -18,7 +18,7 @@ public class DistributionSaleActivity extends AgSimplifiedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("nfs", "DistributionSaleActivity.onCreate()");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_distribution_sale);
+        setContentView(R.layout.ds_activity);
 
         Intent intent = getIntent();
         DistributionSale ds = (DistributionSale) intent.getSerializableExtra("ds");

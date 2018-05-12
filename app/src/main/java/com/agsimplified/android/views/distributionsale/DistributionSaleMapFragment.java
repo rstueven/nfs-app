@@ -47,7 +47,7 @@ public class DistributionSaleMapFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("nfs", "DistributionSaleMapFragment.onCreateView()");
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_distribution_sale_map, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.ds_map_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();

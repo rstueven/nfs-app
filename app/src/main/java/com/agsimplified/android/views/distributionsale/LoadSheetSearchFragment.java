@@ -43,7 +43,7 @@ public class LoadSheetSearchFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        View view = inflater.inflate(R.layout.fragment_load_sheet_search, null);
+        View view = inflater.inflate(R.layout.ds_search_fragment, null);
 
         jobCodeView = view.findViewById(R.id.jobCode);
         clientJobCodeView = view.findViewById(R.id.clientJobCode);

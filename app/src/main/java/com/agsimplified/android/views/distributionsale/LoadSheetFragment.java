@@ -31,7 +31,7 @@ public class LoadSheetFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(
-                R.layout.fragment_load_sheet, container, false);
+                R.layout.ds_load_sheet_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
