@@ -90,4 +90,8 @@
     <string name="vehicle">Vehicle</string>
     <string name="implement_owner">Implement Owner</string>
     <string name="implement">Implement</string>
+    <string name="tons_per_acre">Tons per Acre</string>
+    <string name="planned_application_rate">Planned Application Rate</string>
+    <string name="average_tons_per_acre">Average Tons Per Acre</string>
+    <string name="tons_per_hour">Tons Per Hour</string>
 </resources>

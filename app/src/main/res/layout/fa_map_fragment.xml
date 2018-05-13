@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/plannedRateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/planned_application_rate"
+            app:layout_constraintBaseline_toBaselineOf="@+id/plannedRate"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/plannedRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/zero_point_zero_zero"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tonsPerAcreLabel"
+            app:layout_constraintStart_toEndOf="@+id/plannedRateLabel" />
+
+        <TextView
+            android:id="@+id/tonsPerAcreLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/tons_per_acre"
+            app:layout_constraintBaseline_toBaselineOf="@+id/addLoadButton"
+            app:layout_constraintStart_toEndOf="@+id/plannedRate" />
+
+        <Button
+            android:id="@+id/addLoadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/add_load"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addLoadButton"
+            app:layout_constraintBottom_toTopOf="@+id/avgTonsPerAcre" />
+
+        <TextView
+            android:id="@+id/avgTonsPerAcre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/zero_point_zero_zero"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/avgTonsPerAcreLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/average_tons_per_acre"
+            app:layout_constraintBaseline_toBaselineOf="@+id/avgTonsPerAcre"
+            app:layout_constraintStart_toEndOf="@+id/avgTonsPerAcre" />
+
+        <TextView
+            android:id="@+id/tonsPerHourLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/tons_per_hour"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tonsPerHour"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tonsPerHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="@string/zero_point_zero_zero"
+            app:layout_constraintBaseline_toBaselineOf="@+id/avgTonsPerAcreLabel"
+            app:layout_constraintEnd_toStartOf="@+id/tonsPerHourLabel" />
+</android.support.constraint.ConstraintLayout>

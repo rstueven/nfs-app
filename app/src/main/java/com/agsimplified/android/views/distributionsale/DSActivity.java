@@ -45,7 +45,6 @@ public class DSActivity extends AgSimplifiedActivity {
     }
 
     private class DSPagerAdapter extends FragmentPagerAdapter {
-        private static final int TAB_COUNT = 2;
         private final String tabTitles[] = new String[]{"MAP AND DIRECTIONS", "JOB DETAILS"};
         private DistributionSale distributionSale;
 
@@ -73,7 +72,7 @@ public class DSActivity extends AgSimplifiedActivity {
 
         @Override
         public int getCount() {
-            return TAB_COUNT;
+            return tabTitles.length;
         }
 
         @Override
