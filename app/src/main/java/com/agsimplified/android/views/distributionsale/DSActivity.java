@@ -13,6 +13,11 @@ import com.agsimplified.android.R;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
 import com.agsimplified.android.views.AgSimplifiedActivity;
 
+/**
+ * Created by rstueven on 3/20/18.
+ * <p>The Load Sheet page</p>
+ */
+
 public class DSActivity extends AgSimplifiedActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +26,12 @@ public class DSActivity extends AgSimplifiedActivity {
         setContentView(R.layout.ds_activity);
 
         Intent intent = getIntent();
-        DistributionSale ds = (DistributionSale) intent.getSerializableExtra("ds");
-        if (ds == null) {
-            throw new IllegalStateException("null ds");
+        DistributionSale distributionSale = (DistributionSale) intent.getSerializableExtra("distributionSale");
+        if (distributionSale == null) {
+            throw new IllegalStateException("null distributionSale");
         }
 
-        DSLoadSheetFragment loadSheetFragment = DSLoadSheetFragment.newInstance(ds);
+        DSLoadSheetFragment loadSheetFragment = DSLoadSheetFragment.newInstance(distributionSale);
 
         FragmentManager fm = getSupportFragmentManager();
 
@@ -35,32 +40,32 @@ public class DSActivity extends AgSimplifiedActivity {
                 .commit();
 
         ViewPager mPager = findViewById(R.id.pager);
-        PagerAdapter mPagerAdapter = new DSPagerAdapter(getSupportFragmentManager(), ds);
+        PagerAdapter mPagerAdapter = new DSPagerAdapter(getSupportFragmentManager(), distributionSale);
         mPager.setAdapter(mPagerAdapter);
     }
 
     private class DSPagerAdapter extends FragmentPagerAdapter {
         private static final int TAB_COUNT = 2;
         private final String tabTitles[] = new String[]{"MAP AND DIRECTIONS", "JOB DETAILS"};
-        private DistributionSale ds;
+        private DistributionSale distributionSale;
 
-        DSPagerAdapter(FragmentManager fm, DistributionSale ds) {
+        DSPagerAdapter(FragmentManager fm, DistributionSale distributionSale) {
             super(fm);
 
-            if (ds == null) {
-                throw new IllegalStateException("null ds");
+            if (distributionSale == null) {
+                throw new IllegalStateException("null distributionSale");
             }
 
-            this.ds = ds;
+            this.distributionSale = distributionSale;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return DSMapFragment.newInstance(ds);
+                    return DSMapFragment.newInstance(distributionSale);
                 case 1:
-                    return DSDetailsFragment.newInstance(ds);
+                    return DSDetailsFragment.newInstance(distributionSale);
                 default:
                     throw new IllegalStateException("unknown tab #" + position);
             }

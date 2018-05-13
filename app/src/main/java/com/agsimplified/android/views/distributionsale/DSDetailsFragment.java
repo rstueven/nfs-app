@@ -18,15 +18,15 @@ import com.agsimplified.android.models.distributionsale.DistributionSale;
  */
 
 public class DSDetailsFragment extends Fragment {
-    public static DSDetailsFragment newInstance(DistributionSale ds) {
+    public static DSDetailsFragment newInstance(DistributionSale distributionSale) {
         Log.d("nfs", "DSDetailsFragment.newInstance()");
-        if (ds == null) {
-            throw new IllegalArgumentException("null ds");
+        if (distributionSale == null) {
+            throw new IllegalArgumentException("null distributionSale");
         }
 
         DSDetailsFragment frag = new DSDetailsFragment();
         Bundle args = new Bundle();
-        args.putSerializable("ds", ds);
+        args.putSerializable("distributionSale", distributionSale);
         frag.setArguments(args);
         return frag;
     }
@@ -34,7 +34,7 @@ public class DSDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("nfs", "DSDetailsFragment.onCreateView()");
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.ds_details_fragment, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.ds_details_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
@@ -42,20 +42,18 @@ public class DSDetailsFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-            DistributionSale ds = (DistributionSale) args.getSerializable("ds");
-            if (ds == null) {
-                throw new IllegalStateException("null ds");
+            DistributionSale distributionSale = (DistributionSale) args.getSerializable("distributionSale");
+            if (distributionSale == null) {
+                throw new IllegalStateException("null distributionSale");
             }
 
             FragmentManager fm = getChildFragmentManager();
 
-            DSLoadSheetFragment loadSheetFragment = DSLoadSheetFragment.newInstance(ds);
+            DSJobSetupFragment jobSetupFragment = DSJobSetupFragment.newInstance(distributionSale);
 
-            DSJobSetupFragment jobSetupFragment = DSJobSetupFragment.newInstance(ds);
+            DSLoadTotalsFragment loadTotalsFragment = DSLoadTotalsFragment.newInstance(distributionSale);
 
-            DSLoadTotalsFragment loadTotalsFragment = DSLoadTotalsFragment.newInstance(ds);
-
-            DSJobDetailsFragment jobDetailsFragment = DSJobDetailsFragment.newInstance(ds);
+            DSJobDetailsFragment jobDetailsFragment = DSJobDetailsFragment.newInstance(distributionSale);
 
             fm.beginTransaction()
                     .add(R.id.jobSetupFrame, jobSetupFragment, "jobSetup")
@@ -64,6 +62,6 @@ public class DSDetailsFragment extends Fragment {
                     .commit();
         }
 
-        return rootView;
+        return view;
     }
 }

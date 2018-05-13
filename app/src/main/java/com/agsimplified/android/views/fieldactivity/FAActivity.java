@@ -46,7 +46,7 @@ public class FAActivity extends AgSimplifiedActivity {
 
     private class FAPagerAdapter extends FragmentPagerAdapter {
         private static final int TAB_COUNT = 1;
-        private final String tabTitles[] = new String[]{"JOB DETAILS"};
+        private final String tabTitles[] = new String[]{"JOB SETUP"};
         private FieldActivity fieldActivity;
 
         FAPagerAdapter(FragmentManager fm, FieldActivity fieldActivity) {
