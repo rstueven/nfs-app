@@ -20,13 +20,13 @@ import com.agsimplified.android.R;
  */
 
 public class DSSearchFragment extends DialogFragment {
-    Spinner clientSelect;
-    Spinner yearSelect;
-    EditText jobCodeView;
-    EditText clientJobCodeView;
-    Spinner fromSelect;
-    Spinner toSelect;
-    Spinner productSelect;
+    private Spinner clientSelect;
+    private Spinner yearSelect;
+    private EditText jobCodeView;
+    private EditText clientJobCodeView;
+    private Spinner fromSelect;
+    private Spinner toSelect;
+    private Spinner productSelect;
 
     public interface LoadSheetSearcher {
         void searchDistributionSales(String client, int year, Integer jobCode, Integer clientJobCode, String fromOperation, String toOperation, String product);

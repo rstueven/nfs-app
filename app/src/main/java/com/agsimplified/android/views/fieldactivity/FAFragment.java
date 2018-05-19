@@ -1,5 +1,6 @@
 package com.agsimplified.android.views.fieldactivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -88,15 +89,16 @@ public class FAFragment extends Fragment {
 
             TextView plannedView = view.findViewById(R.id.acresPlanned);
             Double acresPlanned = fieldActivity.getAcresPlanned();
-            if (acresPlanned != null) {
-                plannedView.setText(String.format(Locale.getDefault(), "%.2f", acresPlanned));
-            }
-            
+            plannedView.setText(String.format(Locale.getDefault(), "%.2f", acresPlanned));
+
             Button closeButton = view.findViewById(R.id.closeButton);
             closeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getActivity().finish();
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        activity.finish();
+                    }
                 }
             });
 

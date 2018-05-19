@@ -20,13 +20,13 @@ import com.agsimplified.android.R;
  */
 
 public class FASearchFragment extends DialogFragment {
-    Spinner clientSelect;
-    Spinner yearSelect;
-    EditText jobCodeView;
-    EditText clientJobCodeView;
-    Spinner typeSelect;
-    Spinner operationSelect;
-    Spinner farmSelect;
+    private Spinner clientSelect;
+    private Spinner yearSelect;
+    private EditText jobCodeView;
+    private EditText clientJobCodeView;
+    private Spinner typeSelect;
+    private Spinner operationSelect;
+    private Spinner farmSelect;
 
     public interface FieldActivitySearcher {
         void searchFieldActivities(String client, int year, Integer jobCode, Integer clientJobCode, String jobType, String operation, String farm);

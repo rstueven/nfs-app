@@ -9,7 +9,7 @@ import android.app.Application;
 
 public class AgSimplified extends Application {
     // Server configuration
-    public static String getBaseUrl() {
+    private static String getBaseUrl() {
         String scheme = "http";
         String host;
 

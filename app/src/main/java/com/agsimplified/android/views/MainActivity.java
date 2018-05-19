@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AgSimplifiedActivity
         implements DSSearchFragment.LoadSheetSearcher, FASearchFragment.FieldActivitySearcher {
-    private static ArrayList<DistributionSale> distributionSales = new ArrayList<>();
+    private static final ArrayList<DistributionSale> distributionSales = new ArrayList<>();
 
     static {
         distributionSales.add(new DistributionSale(1, 17263, null, 2018, "Beef-Solid- Open Lot-Pen Scrape", "Natural Fertilizer Products, Inc.:Crossroads Stockpile - E Pen - Solid Manure", "Tom Barry:Moms NE100a", 700.0, 660.06));
@@ -34,7 +34,7 @@ public class MainActivity extends AgSimplifiedActivity
         distributionSales.add(new DistributionSale(4, 17332, null, 2018, "Dairy-Solid-Veal calves, 250 lb.", "Natural Fertilizer Products, Inc.:Compost Yard at Kirkman Farms Dairy - Solid Manure", "Stoberl Farms Ltd:Bin Site E 169ac", 480.0, 616.21));
     }
 
-    private static ArrayList<FieldActivity> fieldActivities = new ArrayList<>();
+    private static final ArrayList<FieldActivity> fieldActivities = new ArrayList<>();
 
     static {
         fieldActivities.add(new FieldActivity(2048, 17171, null, 2018, "Fertilizing", "Shawn Jespersen", "Shawn Jespersen", "Grant", "GrantJorg228a", 173.49, 10.1, 5.0));
@@ -44,8 +44,8 @@ public class MainActivity extends AgSimplifiedActivity
     }
 
     private ListView searchResultsView;
-    DistributionSaleAdapter distributionSaleAdapter;
-    FieldActivityAdapter fieldActivitiesAdapter;
+    private DistributionSaleAdapter distributionSaleAdapter;
+    private FieldActivityAdapter fieldActivitiesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class MainActivity extends AgSimplifiedActivity
         });
     }
 
-    public class DistributionSaleAdapter extends ArrayAdapter<DistributionSale> {
+    class DistributionSaleAdapter extends ArrayAdapter<DistributionSale> {
         DistributionSaleAdapter(Context context, ArrayList<DistributionSale> list) {
             super(context, 0, list);
         }
@@ -128,7 +128,7 @@ public class MainActivity extends AgSimplifiedActivity
         });
     }
 
-    public class FieldActivityAdapter extends ArrayAdapter<FieldActivity> {
+    class FieldActivityAdapter extends ArrayAdapter<FieldActivity> {
         FieldActivityAdapter(Context context, ArrayList<FieldActivity> list) {
             super(context, 0, list);
         }

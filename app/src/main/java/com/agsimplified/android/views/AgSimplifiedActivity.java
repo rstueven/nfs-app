@@ -41,10 +41,10 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
     }
 
     private FusedLocationProviderClient mFusedLocationClient;
-    protected Location mCurrentLocation;
-    protected boolean isRequestingLocationUpdates = false;
-    protected LocationCallback mLocationCallback;
-    private List<LocationListener> locationListeners = new ArrayList<>();
+    private Location mCurrentLocation;
+    private boolean isRequestingLocationUpdates = false;
+    private LocationCallback mLocationCallback;
+    private final List<LocationListener> locationListeners = new ArrayList<>();
 
     private LocationRequest mLocationRequest;
 
@@ -177,7 +177,7 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
         }
     }
 
-    protected void startLocationUpdates() {
+    private void startLocationUpdates() {
         Log.d("nfs", "AgSimplifiedActivity.startLocationUpdates()");
         if (mFusedLocationClient != null) {
             if (ContextCompat.checkSelfPermission(this, PERMISSIONS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -186,14 +186,14 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
         }
     }
 
-    protected void stopLocationUpdates() {
+    private void stopLocationUpdates() {
         Log.d("nfs", "AgSimplifiedActivity.stopLocationUpdates()");
         if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
     }
 
-    public void checkCurrentLocation() {
+    private void checkCurrentLocation() {
         Log.d("nfs", "AgSimplifiedActivity.checkCurrentLocation()");
         if (mCurrentLocation == null) {
             if (ContextCompat.checkSelfPermission(this, PERMISSIONS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
