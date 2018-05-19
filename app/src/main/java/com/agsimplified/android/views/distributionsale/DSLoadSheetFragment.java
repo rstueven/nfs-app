@@ -1,5 +1,6 @@
 package com.agsimplified.android.views.distributionsale;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,14 +16,14 @@ import com.agsimplified.android.models.distributionsale.DistributionSale;
 import java.util.Locale;
 
 public class DSLoadSheetFragment extends Fragment {
-    public static DSLoadSheetFragment newInstance(DistributionSale ds) {
-        if (ds == null) {
-            throw new IllegalArgumentException("null ds");
+    public static DSLoadSheetFragment newInstance(DistributionSale distributionSale) {
+        if (distributionSale == null) {
+            throw new IllegalArgumentException("null distributionSale");
         }
 
         DSLoadSheetFragment frag = new DSLoadSheetFragment();
         Bundle args = new Bundle();
-        args.putSerializable("ds", ds);
+        args.putSerializable("distributionSale", distributionSale);
         frag.setArguments(args);
         return frag;
     }
@@ -38,43 +39,43 @@ public class DSLoadSheetFragment extends Fragment {
             if (args == null) {
                 throw new IllegalStateException("null args");
             }
-            DistributionSale ds = (DistributionSale) args.getSerializable("ds");
-            if (ds == null) {
-                throw new IllegalStateException("null ds");
+            DistributionSale distributionSale = (DistributionSale) args.getSerializable("distributionSale");
+            if (distributionSale == null) {
+                throw new IllegalStateException("null distributionSale");
             }
 
             TextView jobCodeView = view.findViewById(R.id.jobCode);
-            Integer jobCode = ds.getJobCode();
+            Integer jobCode = distributionSale.getJobCode();
             if (jobCode != null) {
                 jobCodeView.setText(String.format(Locale.getDefault(), "%d", jobCode));
             }
 
             TextView clientJobCodeView = view.findViewById(R.id.clientJobCode);
-            Integer clientJobCode = ds.getClientJobCode();
+            Integer clientJobCode = distributionSale.getClientJobCode();
             if (clientJobCode != null) {
-                clientJobCodeView.setText(String.format(Locale.getDefault(), "%d", ds.getClientJobCode()));
+                clientJobCodeView.setText(String.format(Locale.getDefault(), "%d", distributionSale.getClientJobCode()));
             }
 
             TextView yearView = view.findViewById(R.id.year);
-            yearView.setText(ds.getYearString());
+            yearView.setText(distributionSale.getYearString());
 
             TextView productView = view.findViewById(R.id.product);
-            productView.setText(ds.getProduct());
+            productView.setText(distributionSale.getProduct());
 
             TextView fromView = view.findViewById(R.id.fromOperation);
-            fromView.setText(ds.getFromOperation());
+            fromView.setText(distributionSale.getFromOperation());
 
             TextView toView = view.findViewById(R.id.toOperation);
-            toView.setText(ds.getToOperation());
+            toView.setText(distributionSale.getToOperation());
 
             TextView plannedView = view.findViewById(R.id.plannedAmount);
-            Double plannedAmount = ds.getPlannedAmount();
+            Double plannedAmount = distributionSale.getPlannedAmount();
             if (plannedAmount != null) {
-                plannedView.setText(String.format(Locale.getDefault(), "%.2f", ds.getPlannedAmount()));
+                plannedView.setText(String.format(Locale.getDefault(), "%.2f", distributionSale.getPlannedAmount()));
             }
 
             TextView hauledView = view.findViewById(R.id.hauledAmount);
-            Double hauledAmount = ds.getHauledAmount();
+            Double hauledAmount = distributionSale.getHauledAmount();
             if (hauledAmount != null) {
                 hauledView.setText(String.format(Locale.getDefault(), "%.2f", hauledAmount));
             }
@@ -83,7 +84,10 @@ public class DSLoadSheetFragment extends Fragment {
             closeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getActivity().finish();
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        activity.finish();
+                    }
                 }
             });
         }

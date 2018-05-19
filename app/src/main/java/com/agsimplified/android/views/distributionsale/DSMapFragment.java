@@ -24,22 +24,22 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by rstueven on 3/13/18.
- * <p>DS Map and Directions</p>
+ * <p>distributionSale Map and Directions</p>
  */
 
 public class DSMapFragment extends Fragment
         implements OnMapReadyCallback, AgSimplifiedActivity.LocationListener {
     private GoogleMap mMap;
 
-    public static DSMapFragment newInstance(DistributionSale ds) {
+    public static DSMapFragment newInstance(DistributionSale distributionSale) {
         Log.d("nfs", "DSMapFragment.newInstance()");
-        if (ds == null) {
-            throw new IllegalArgumentException("null ds");
+        if (distributionSale == null) {
+            throw new IllegalArgumentException("null distributionSale");
         }
 
         DSMapFragment frag = new DSMapFragment();
         Bundle args = new Bundle();
-        args.putSerializable("ds", ds);
+        args.putSerializable("distributionSale", distributionSale);
         frag.setArguments(args);
         return frag;
     }
@@ -55,9 +55,9 @@ public class DSMapFragment extends Fragment
                 throw new IllegalStateException("null args");
             }
 
-            DistributionSale ds = (DistributionSale) args.getSerializable("ds");
-            if (ds == null) {
-                throw new IllegalStateException("null ds");
+            DistributionSale distributionSale = (DistributionSale) args.getSerializable("distributionSale");
+            if (distributionSale == null) {
+                throw new IllegalStateException("null distributionSale");
             }
 
             FragmentManager fm = getChildFragmentManager();
@@ -105,7 +105,7 @@ public class DSMapFragment extends Fragment
     @Override
     public void onLocationUpdated(Location location) {
         Log.d("nfs", "DSMapFragment.onLocationUpdated()");
-        Log.d("nfs", "DS MAP FRAG LOCATION");
+        Log.d("nfs", "distributionSale MAP FRAG LOCATION");
         if (location != null) {
             Log.d("nfs", location.toString());
             mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));

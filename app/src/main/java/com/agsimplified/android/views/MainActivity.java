@@ -67,9 +67,9 @@ public class MainActivity extends AgSimplifiedActivity
         searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DistributionSale ds = (DistributionSale) adapterView.getItemAtPosition(i);
+                DistributionSale distributionSale = (DistributionSale) adapterView.getItemAtPosition(i);
                 Intent intent = new Intent(MainActivity.this, DSActivity.class);
-                intent.putExtra("ds", ds);
+                intent.putExtra("distributionSale", distributionSale);
                 startActivity(intent);
             }
         });
@@ -83,9 +83,9 @@ public class MainActivity extends AgSimplifiedActivity
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            DistributionSale ds = getItem(position);
-            if (ds == null) {
-                throw new IllegalStateException("null ds");
+            DistributionSale distributionSale = getItem(position);
+            if (distributionSale == null) {
+                throw new IllegalStateException("null distributionSale");
             }
 
             if (convertView == null) {
@@ -99,12 +99,12 @@ public class MainActivity extends AgSimplifiedActivity
             TextView fromView = convertView.findViewById(R.id.fromOperation);
             TextView toView = convertView.findViewById(R.id.toOperation);
 
-            jobCodeView.setText(ds.getJobCodeString());
-            clientJobCodeView.setText(ds.getClientJobCodeString());
-            yearView.setText(ds.getYearString());
-            productView.setText(ds.getProduct());
-            fromView.setText(ds.getFromOperation());
-            toView.setText(ds.getToOperation());
+            jobCodeView.setText(distributionSale.getJobCodeString());
+            clientJobCodeView.setText(distributionSale.getClientJobCodeString());
+            yearView.setText(distributionSale.getYearString());
+            productView.setText(distributionSale.getProduct());
+            fromView.setText(distributionSale.getFromOperation());
+            toView.setText(distributionSale.getToOperation());
 
             return convertView;
         }
@@ -136,9 +136,9 @@ public class MainActivity extends AgSimplifiedActivity
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            FieldActivity fa = getItem(position);
-            if (fa == null) {
-                throw new IllegalStateException("null fa");
+            FieldActivity fieldActivity = getItem(position);
+            if (fieldActivity == null) {
+                throw new IllegalStateException("null fieldActivity");
             }
 
             if (convertView == null) {
@@ -152,12 +152,12 @@ public class MainActivity extends AgSimplifiedActivity
             TextView operationView = convertView.findViewById(R.id.operation);
             TextView farmView = convertView.findViewById(R.id.farm);
 
-            jobCodeView.setText(fa.getJobCodeString());
-            clientJobCodeView.setText(fa.getClientJobCodeString());
-            yearView.setText(fa.getYearString());
-            typeView.setText(fa.getActivityType());
-            operationView.setText(fa.getOperation());
-            farmView.setText(fa.getFarm());
+            jobCodeView.setText(fieldActivity.getJobCodeString());
+            clientJobCodeView.setText(fieldActivity.getClientJobCodeString());
+            yearView.setText(fieldActivity.getYearString());
+            typeView.setText(fieldActivity.getActivityType());
+            operationView.setText(fieldActivity.getOperation());
+            farmView.setText(fieldActivity.getFarm());
 
             return convertView;
         }

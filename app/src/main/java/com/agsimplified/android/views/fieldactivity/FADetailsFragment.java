@@ -15,7 +15,7 @@ import java.util.Locale;
 
 /**
  * Created by rstueven on 5/13/18.
- * <p>FA Job details and job sheets</p>
+ * <p>fieldActivity Job details and job sheets</p>
  */
 
 public class FADetailsFragment extends Fragment {

@@ -14,7 +14,7 @@ import com.agsimplified.android.models.distributionsale.DistributionSale;
 
 /**
  * Created by rstueven on 3/13/18.
- * <p>DS Job details and job sheets</p>
+ * <p>distributionSale Job details and job sheets</p>
  */
 
 public class DSDetailsFragment extends Fragment {

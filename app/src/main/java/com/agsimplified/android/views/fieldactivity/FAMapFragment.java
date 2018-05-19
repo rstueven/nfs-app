@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by rstueven on 35/13/18.
- * <p>FA Application Map</p>
+ * <p>fieldActivity Application Map</p>
  */
 
 public class FAMapFragment extends Fragment
@@ -64,7 +64,7 @@ public class FAMapFragment extends Fragment
     @Override
     public void onLocationUpdated(Location location) {
         Log.d("nfs", "FAMapFragment.onLocationUpdated()");
-        Log.d("nfs", "FA MAP LOCATION");
+        Log.d("nfs", "fieldActivity MAP LOCATION");
         if (location != null) {
             Log.d("nfs", location.toString());
             mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));

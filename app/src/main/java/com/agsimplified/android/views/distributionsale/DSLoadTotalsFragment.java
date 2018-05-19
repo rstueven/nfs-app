@@ -11,14 +11,14 @@ import com.agsimplified.android.R;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
 
 public class DSLoadTotalsFragment extends Fragment {
-    public static DSLoadTotalsFragment newInstance(DistributionSale ds) {
-        if (ds == null) {
-            throw new IllegalArgumentException("null ds");
+    public static DSLoadTotalsFragment newInstance(DistributionSale distributionSale) {
+        if (distributionSale == null) {
+            throw new IllegalArgumentException("null distributionSale");
         }
 
         DSLoadTotalsFragment fragment = new DSLoadTotalsFragment();
         Bundle args = new Bundle();
-        args.putSerializable("ds", ds);
+        args.putSerializable("distributionSale", distributionSale);
         fragment.setArguments(args);
         return fragment;
     }
@@ -33,9 +33,9 @@ public class DSLoadTotalsFragment extends Fragment {
             if (args == null) {
                 throw new IllegalStateException("null args");
             }
-            DistributionSale ds = (DistributionSale) args.getSerializable("ds");
-            if (ds == null) {
-                throw new IllegalStateException("null ds");
+            DistributionSale distributionSale = (DistributionSale) args.getSerializable("distributionSale");
+            if (distributionSale == null) {
+                throw new IllegalStateException("null distributionSale");
             }
 
         }
