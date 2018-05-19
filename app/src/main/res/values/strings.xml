@@ -94,4 +94,6 @@
     <string name="planned_application_rate">Planned Application Rate</string>
     <string name="average_tons_per_acre">Average Tons Per Acre</string>
     <string name="tons_per_hour">Tons Per Hour</string>
+    <string name="add_application">Add Application</string>
+    <string name="depth">Depth</string>
 </resources>

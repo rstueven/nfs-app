@@ -19,8 +19,10 @@ public class FieldActivity implements Serializable {
     private String farm;
     private String field;
     private Double acresPlanned;
+    private Double ratePerAcre;
+    private Double depth;
 
-    public FieldActivity(int id, Integer jobCode, Integer clientJobCode, int year, String activityType, String client, String operation, String farm, String field, Double acresPlanned) {
+    public FieldActivity(int id, Integer jobCode, Integer clientJobCode, int year, String activityType, String client, String operation, String farm, String field, Double acresPlanned, Double ratePerAcre, Double depth) {
         this.id = id;
         this.jobCode = jobCode;
         this.clientJobCode = clientJobCode;
@@ -31,6 +33,8 @@ public class FieldActivity implements Serializable {
         this.farm = farm;
         this.field = field;
         this.acresPlanned = acresPlanned;
+        this.ratePerAcre = ratePerAcre;
+        this.depth = depth;
     }
 
     public int getId() {
@@ -105,12 +109,20 @@ public class FieldActivity implements Serializable {
         return operation + "—" + farm;
     }
 
-    public Double getAcresPlanned() {
+    public double getAcresPlanned() {
         return acresPlanned;
     }
 
     public void setAcresPlanned(Double a) {
         acresPlanned = a;
+    }
+
+    public double getRatePerAcre() {
+        return ratePerAcre == null ? 0.0 : ratePerAcre;
+    }
+
+    public void setRatePerAcre(Double a) {
+        ratePerAcre = a;
     }
 
     public String getClient() {
@@ -127,5 +139,13 @@ public class FieldActivity implements Serializable {
 
     public void setField(String field) {
         this.field = field;
+    }
+
+    public double getDepth() {
+        return depth == null ? 0.0 : depth;
+    }
+
+    public void setDepth(Double depth) {
+        this.depth = depth;
     }
 }

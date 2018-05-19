@@ -3,13 +3,15 @@ package com.agsimplified.android.views.fieldactivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.fieldactivity.FieldActivity;
+
+import java.util.Locale;
 
 /**
  * Created by rstueven on 5/13/18.
@@ -44,13 +46,11 @@ public class FADetailsFragment extends Fragment {
                 throw new IllegalStateException("null fieldActivity");
             }
 
-            FragmentManager fm = getChildFragmentManager();
+            TextView rate = view.findViewById(R.id.rate);
+            rate.setText(String.format(Locale.getDefault(), "%.2f", fieldActivity.getRatePerAcre()));
 
-            FAJobSetupFragment jobSetupFragment = FAJobSetupFragment.newInstance(fieldActivity);
-
-            fm.beginTransaction()
-                    .add(R.id.jobSetupFrame, jobSetupFragment, "jobSetup")
-                    .commit();
+            TextView depth = view.findViewById(R.id.depth);
+            depth.setText(String.format(Locale.getDefault(), "%.2f", fieldActivity.getDepth()));
         }
 
         return view;
