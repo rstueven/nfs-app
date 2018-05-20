@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -51,15 +52,27 @@
         android:id="@+id/rate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
         android:text="@string/zero"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/rateLabel"
+        app:layout_constraintStart_toEndOf="@+id/rateLabel" />
+
+    <TextView
+        android:id="@+id/tonsPerAcreLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/tons_per_acre"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/rate"
         app:layout_constraintEnd_toStartOf="@+id/columnSplit"
-        app:layout_constraintStart_toStartOf="@+id/rateLabel"
-        app:layout_constraintTop_toBottomOf="@+id/rateLabel" />
+        app:layout_constraintStart_toEndOf="@+id/rate"
+        tools:layout_editor_absoluteY="48dp" />
 
     <TextView
         android:id="@+id/depthLabel"
@@ -72,21 +85,19 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rate" />
+        app:layout_constraintTop_toBottomOf="@+id/rateLabel" />
 
     <TextView
         android:id="@+id/depth"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/zero"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/depthLabel"
         app:layout_constraintEnd_toStartOf="@+id/columnSplit"
-        app:layout_constraintStart_toStartOf="@+id/depthLabel"
-        app:layout_constraintTop_toBottomOf="@+id/depthLabel" />
+        app:layout_constraintStart_toStartOf="@+id/rate" />
 
     <TextView
         android:id="@+id/plannedMethodLabel"
