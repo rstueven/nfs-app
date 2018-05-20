@@ -28,14 +28,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:labelFor="@id/miles"
             android:text="@string/miles"
             android:textAllCaps="true"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jobSetupLabel" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/miles"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/miles"
@@ -44,15 +43,14 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:ems="10"
             android:inputType="numberDecimal"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/milesLabel"
-            app:layout_constraintTop_toBottomOf="@+id/milesLabel" />
+            app:layout_constraintStart_toEndOf="@+id/milesLabel"
+            app:layout_constraintTop_toBottomOf="@+id/jobSetupLabel" />
 
         <TextView
-            android:id="@+id/loaderLabel"
+            android:id="@+id/loaderOperatorLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -72,8 +70,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/loaderLabel"
-            app:layout_constraintTop_toBottomOf="@+id/loaderLabel" />
+            app:layout_constraintStart_toStartOf="@+id/loaderOperatorLabel"
+            app:layout_constraintTop_toBottomOf="@+id/loaderOperatorLabel" />
 
         <TextView
             android:id="@+id/loadingCompanyLabel"
@@ -168,7 +166,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:ems="10"
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/notesLabel"
