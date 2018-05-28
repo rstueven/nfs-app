@@ -20,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -83,8 +84,6 @@ public class DSMapFragment extends Fragment
         Log.d("nfs", "DSMapFragment.onMapReady()");
 
         mMap = map;
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(41.736533, -95.701810)));
 
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.setMyLocationEnabled(true);
@@ -98,6 +97,12 @@ public class DSMapFragment extends Fragment
         if (activity == null) {
             throw new IllegalStateException("null activity");
         }
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(41.736533, -95.701810))
+                .zoom(17)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         activity.registerLocationListener(this);
     }

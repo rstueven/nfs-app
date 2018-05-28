@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.distributionsale.DistributionSale;
 import com.agsimplified.android.models.fieldactivity.FieldActivity;
 import com.agsimplified.android.views.AgSimplifiedActivity;
 import com.agsimplified.android.views.DirectionsFragment;
@@ -21,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -63,12 +63,9 @@ public class FAMapFragment extends Fragment
 
             FragmentManager fm = getChildFragmentManager();
 
-            DirectionsFragment directionsFragment = DirectionsFragment.newInstance("DIRECTIONS");
-
             SupportMapFragment mapFragment = new SupportMapFragment();
 
             fm.beginTransaction()
-//                    .add(R.id.directionsFrame, directionsFragment, "directions")
                     .add(R.id.mapFrame, mapFragment, "map")
                     .commit();
 
@@ -84,8 +81,6 @@ public class FAMapFragment extends Fragment
         Log.d("nfs", "FAMapFragment.onMapReady()");
 
         mMap = map;
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(41.736533, -95.701810)));
 
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.setMyLocationEnabled(true);
@@ -99,6 +94,12 @@ public class FAMapFragment extends Fragment
         if (activity == null) {
             throw new IllegalStateException("null activity");
         }
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(41.736533, -95.701810))
+                .zoom(17)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         activity.registerLocationListener(this);
     }
