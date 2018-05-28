@@ -62,6 +62,7 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
     }
 
     private void checkLocationPermission() {
+        Log.d("nfs", "AgSimplifiedActivity.checkLocationPermission()");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 final Activity activity = this;
@@ -79,10 +80,13 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
             } else {
                 ActivityCompat.requestPermissions(this, new String[] {PERMISSIONS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
             }
+        } else {
+            setupLocationClient();
         }
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        Log.d("nfs", "AgSimplifiedActivity.onRequestPermissionsResult()");
         if (requestCode == REQUEST_FINE_LOCATION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 setupLocationClient();
@@ -91,6 +95,7 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
     }
 
     private void setupLocationClient() {
+        Log.d("nfs", "AgSimplifiedActivity.setupLocationClient()");
         if (mFusedLocationClient == null) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -153,8 +158,7 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
         Log.d("nfs", "AgSimplifiedActivity.updateValuesFromBundle()");
         if (savedInstanceState != null) {
             if (savedInstanceState.keySet().contains(IS_REQUESTING_LOCATION_UPDATES)) {
-                isRequestingLocationUpdates = savedInstanceState.getBoolean(
-                        IS_REQUESTING_LOCATION_UPDATES);
+                isRequestingLocationUpdates = savedInstanceState.getBoolean(IS_REQUESTING_LOCATION_UPDATES);
             }
         }
     }
@@ -164,6 +168,7 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
         if (listener != null && !locationListeners.contains(listener)) {
             locationListeners.add(listener);
             isRequestingLocationUpdates = true;
+            startLocationUpdates();
         }
     }
 
@@ -173,6 +178,7 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
             locationListeners.remove(listener);
             if (locationListeners.size() == 0) {
                 isRequestingLocationUpdates = false;
+                stopLocationUpdates();
             }
         }
     }
