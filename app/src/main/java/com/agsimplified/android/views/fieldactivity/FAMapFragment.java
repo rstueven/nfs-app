@@ -3,19 +3,28 @@ package com.agsimplified.android.views.fieldactivity;
 import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.agsimplified.android.R;
+import com.agsimplified.android.models.distributionsale.DistributionSale;
 import com.agsimplified.android.models.fieldactivity.FieldActivity;
 import com.agsimplified.android.views.AgSimplifiedActivity;
+import com.agsimplified.android.views.DirectionsFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by rstueven on 35/13/18.
+ * Created by rstueven on 5/13/18.
  * <p>fieldActivity Application Map</p>
  */
 
@@ -36,6 +45,39 @@ public class FAMapFragment extends Fragment
         return frag;
     }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("nfs", "FAMapFragment.onCreateView()");
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fa_map_fragment, container, false);
+
+        if (savedInstanceState == null) {
+            Bundle args = getArguments();
+            if (args == null) {
+                throw new IllegalStateException("null args");
+            }
+
+            FieldActivity fieldActivity = (FieldActivity) args.getSerializable("fieldActivity");
+            if (fieldActivity == null) {
+                throw new IllegalStateException("null fieldActivity");
+            }
+
+            FragmentManager fm = getChildFragmentManager();
+
+            DirectionsFragment directionsFragment = DirectionsFragment.newInstance("DIRECTIONS");
+
+            SupportMapFragment mapFragment = new SupportMapFragment();
+
+            fm.beginTransaction()
+//                    .add(R.id.directionsFrame, directionsFragment, "directions")
+                    .add(R.id.mapFrame, mapFragment, "map")
+                    .commit();
+
+            mapFragment.getMapAsync(this);
+        }
+
+        return rootView;
+    }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap map) {
@@ -49,8 +91,8 @@ public class FAMapFragment extends Fragment
         mMap.setMyLocationEnabled(true);
 
         UiSettings uiSettings = mMap.getUiSettings();
-        uiSettings.setZoomControlsEnabled(false);
-        uiSettings.setMapToolbarEnabled(false);
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setMapToolbarEnabled(true);
         uiSettings.setTiltGesturesEnabled(false);
 
         AgSimplifiedActivity activity = (AgSimplifiedActivity) getActivity();
