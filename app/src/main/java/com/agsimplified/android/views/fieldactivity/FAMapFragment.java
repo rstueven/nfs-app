@@ -23,10 +23,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Math.asin;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.toDegrees;
+import static java.lang.Math.toRadians;
 
 /**
  * Created by rstueven on 5/13/18.
@@ -38,6 +46,8 @@ public class FAMapFragment extends Fragment
     private GoogleMap mMap;
     private boolean isTrackingLocation = false;
     private List<Location> path;
+
+    private static final double IMPLEMENT_WIDTH = 30.0; // Feet
 
     public static FAMapFragment newInstance(FieldActivity fieldActivity) {
         Log.d("nfs", "FAMapFragment.newInstance()");
@@ -130,14 +140,42 @@ public class FAMapFragment extends Fragment
             LatLng newPoint = new LatLng(location.getLatitude(), location.getLongitude());
             path.add(location);
             mMap.animateCamera(CameraUpdateFactory.newLatLng(newPoint));
+
             if (path.size() > 1) {
-                LatLng oldPoint = new LatLng(path.get(path.size()-2).getLatitude(), path.get(path.size()-2).getLongitude());
+                Location lastLocation = path.get(path.size() -1);
+                LatLng oldPoint = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
                 mMap.addPolyline(new PolylineOptions()
                         .add(oldPoint, newPoint)
                         .width(1)
                         .color(Color.GREEN));
+
+
+                float bearing = lastLocation.bearingTo(location);
+                LatLng start_left = pointAt(IMPLEMENT_WIDTH, bearing, lastLocation);
+                double dLat = oldPoint.latitude - start_left.latitude;
+                double dLng = oldPoint.longitude - start_left.longitude;
+                LatLng start_right = new LatLng(oldPoint.latitude + dLat, oldPoint.longitude + dLng);
+                mMap.addMarker(new MarkerOptions().position(start_left));
+                mMap.addMarker(new MarkerOptions().position(start_right));
             }
         }
+    }
+
+    private static final double R_EARTH = 20903520; // FEET, because implement width will likely be given in feet
+
+    private LatLng pointAt(final double distance, final float bearing, final Location point) {
+        // RADIANS!
+        // lat2 = math.asin(math.sin(lat1)*math.cos(d/R) + math.cos(lat1)*math.sin(d/R)*math.cos(brng))
+        // lon2 = lon1 + math.atan2(math.sin(brng)*math.sin(d/R)*math.cos(lat1), math.cos(d/R)-math.sin(lat1)*math.sin(lat2))
+
+        double lat1 = toRadians(point.getLatitude());
+        double lng1 = toRadians(point.getLongitude());
+        double dOverR = distance / R_EARTH;
+
+        double lat2 = asin(sin(lat1) * cos(dOverR) + cos(lat1) * sin(dOverR) * cos(bearing));
+        double lng2 = lng1 + atan2(sin(bearing) * sin(dOverR) * cos(lat1), cos(dOverR) - sin(lat1) * sin(lat2));
+
+        return new LatLng(toDegrees(lat2), toDegrees(lng2));
     }
 
 //    private static final List<LatLng> fakePoints = new ArrayList<>();
