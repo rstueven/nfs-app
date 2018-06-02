@@ -97,6 +97,7 @@ public class FAMapFragment extends Fragment
                         activity.registerLocationListener(FAMapFragment.this);
                         path = new ArrayList<>();
                         isTrackingLocation = true;
+//                        fakePath();
                     }
                 }
             });
@@ -114,6 +115,7 @@ public class FAMapFragment extends Fragment
 
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.setMyLocationEnabled(true);
+        mMap.setIndoorEnabled(false);
 
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
@@ -132,6 +134,8 @@ public class FAMapFragment extends Fragment
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
+    private Location lastLocation;
+
     @Override
     public void onLocationUpdated(Location location) {
         Log.d("nfs", "FAMapFragment.onLocationUpdated()");
@@ -142,7 +146,6 @@ public class FAMapFragment extends Fragment
             mMap.animateCamera(CameraUpdateFactory.newLatLng(newPoint));
 
             if (path.size() > 1) {
-                Location lastLocation = path.get(path.size() -1);
                 LatLng oldPoint = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
                 mMap.addPolyline(new PolylineOptions()
                         .add(oldPoint, newPoint)
@@ -150,14 +153,16 @@ public class FAMapFragment extends Fragment
                         .color(Color.GREEN));
 
 
-                float bearing = lastLocation.bearingTo(location);
-                LatLng start_left = pointAt(IMPLEMENT_WIDTH, bearing, lastLocation);
+                float leftBearing = lastLocation.bearingTo(location) - 90;
+                LatLng start_left = pointAt(IMPLEMENT_WIDTH, leftBearing, lastLocation);
                 double dLat = oldPoint.latitude - start_left.latitude;
                 double dLng = oldPoint.longitude - start_left.longitude;
                 LatLng start_right = new LatLng(oldPoint.latitude + dLat, oldPoint.longitude + dLng);
                 mMap.addMarker(new MarkerOptions().position(start_left));
                 mMap.addMarker(new MarkerOptions().position(start_right));
             }
+
+            lastLocation = location;
         }
     }
 
@@ -168,12 +173,13 @@ public class FAMapFragment extends Fragment
         // lat2 = math.asin(math.sin(lat1)*math.cos(d/R) + math.cos(lat1)*math.sin(d/R)*math.cos(brng))
         // lon2 = lon1 + math.atan2(math.sin(brng)*math.sin(d/R)*math.cos(lat1), math.cos(d/R)-math.sin(lat1)*math.sin(lat2))
 
+        double brg = toRadians(bearing);
         double lat1 = toRadians(point.getLatitude());
         double lng1 = toRadians(point.getLongitude());
         double dOverR = distance / R_EARTH;
 
-        double lat2 = asin(sin(lat1) * cos(dOverR) + cos(lat1) * sin(dOverR) * cos(bearing));
-        double lng2 = lng1 + atan2(sin(bearing) * sin(dOverR) * cos(lat1), cos(dOverR) - sin(lat1) * sin(lat2));
+        double lat2 = asin(sin(lat1) * cos(dOverR) + cos(lat1) * sin(dOverR) * cos(brg));
+        double lng2 = lng1 + atan2(sin(brg) * sin(dOverR) * cos(lat1), cos(dOverR) - sin(lat1) * sin(lat2));
 
         return new LatLng(toDegrees(lat2), toDegrees(lng2));
     }
@@ -218,8 +224,8 @@ public class FAMapFragment extends Fragment
 //        fakePoints.add(new LatLng(41.734156, -95.698320));
 //        fakePoints.add(new LatLng(41.734267, -95.698231));
 //        fakePoints.add(new LatLng(41.734368, -95.698147));
-//    };
-
+//    }
+//
 //    public void fakePath() {
 //        final AgSimplifiedActivity activity = (AgSimplifiedActivity) getActivity();
 //        new Thread(new Runnable() {
@@ -233,11 +239,11 @@ public class FAMapFragment extends Fragment
 //                    activity.runOnUiThread(new Runnable() {
 //                        @Override
 //                        public void run() {
-//                            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(l.getLatitude(), l.getLongitude())));
+//                            onLocationUpdated(l);
 //                        }
 //                    });
 //                    try {
-//                        Thread.sleep(5000);
+//                        Thread.sleep(2000);
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
