@@ -22,8 +22,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -46,6 +49,9 @@ public class FAMapFragment extends Fragment
     private GoogleMap mMap;
     private boolean isTrackingLocation = false;
     private List<Location> path;
+    private List<LatLng> outline = new ArrayList<>();
+    private Polygon trail;
+    private Location lastLocation;
 
     private static final double IMPLEMENT_WIDTH = 30.0; // Feet
 
@@ -127,14 +133,17 @@ public class FAMapFragment extends Fragment
             throw new IllegalStateException("null activity");
         }
 
+        Location loc = activity.getCurrentLocation();
+        LatLng ll = new LatLng(41.736533, -95.701810);
+        if (loc != null) {
+            ll = new LatLng(loc.getLatitude(), loc.getLongitude());
+        }
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(41.736533, -95.701810))
+                .target(ll)
                 .zoom(17)
                 .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
-
-    private Location lastLocation;
 
     @Override
     public void onLocationUpdated(Location location) {
@@ -147,19 +156,48 @@ public class FAMapFragment extends Fragment
 
             if (path.size() > 1) {
                 LatLng oldPoint = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                mMap.addPolyline(new PolylineOptions()
-                        .add(oldPoint, newPoint)
-                        .width(1)
-                        .color(Color.GREEN));
-
+//                mMap.addPolyline(new PolylineOptions()
+//                        .add(oldPoint, newPoint)
+//                        .width(1)
+//                        .color(Color.GREEN));
 
                 float leftBearing = lastLocation.bearingTo(location) - 90;
+
                 LatLng start_left = pointAt(IMPLEMENT_WIDTH, leftBearing, lastLocation);
+
                 double dLat = oldPoint.latitude - start_left.latitude;
                 double dLng = oldPoint.longitude - start_left.longitude;
+
                 LatLng start_right = new LatLng(oldPoint.latitude + dLat, oldPoint.longitude + dLng);
-                mMap.addMarker(new MarkerOptions().position(start_left));
-                mMap.addMarker(new MarkerOptions().position(start_right));
+                LatLng end_left = new LatLng(newPoint.latitude - dLat, newPoint.longitude - dLng);
+                LatLng end_right = new LatLng(newPoint.latitude + dLat, newPoint.longitude + dLng);
+
+//                mMap.addMarker(new MarkerOptions().position(start_left));
+//                mMap.addMarker(new MarkerOptions().position(start_right));
+//                mMap.addMarker(new MarkerOptions().position(end_left));
+//                mMap.addMarker(new MarkerOptions().position(end_right));
+
+                int n = outline.size();
+                Log.d("nfs", "SIZE: " + n);
+                int i = n / 2;
+                Log.d("nfs", " IDX: " + i);
+
+                outline.add(i, start_left);
+                outline.add(i+1, end_left);
+                outline.add(i+2, end_right);
+                outline.add(i+3, start_right);
+
+                if (trail == null) {
+                    trail = mMap.addPolygon(new PolygonOptions()
+                            .addAll(outline)
+//                            .fillColor(Color.GREEN)
+                            .strokeColor(Color.GREEN)
+                            .strokeWidth(2f)
+                            .strokeJointType(JointType.BEVEL)
+                    );
+                } else {
+                    trail.setPoints(outline);
+                }
             }
 
             lastLocation = location;
