@@ -18,6 +18,10 @@ import com.agsimplified.android.models.distributionsale.DistributionSale;
  */
 
 public class DSDetailsFragment extends Fragment {
+    DSJobSetupFragment jobSetupFragment;
+    DSLoadTotalsFragment loadTotalsFragment;
+    DSJobDetailsFragment jobDetailsFragment;
+
     public static DSDetailsFragment newInstance(DistributionSale distributionSale) {
         Log.d("nfs", "DSDetailsFragment.newInstance()");
         if (distributionSale == null) {
@@ -49,11 +53,11 @@ public class DSDetailsFragment extends Fragment {
 
             FragmentManager fm = getChildFragmentManager();
 
-            DSJobSetupFragment jobSetupFragment = DSJobSetupFragment.newInstance(distributionSale);
+            jobSetupFragment = DSJobSetupFragment.newInstance(distributionSale);
 
-            DSLoadTotalsFragment loadTotalsFragment = DSLoadTotalsFragment.newInstance(distributionSale);
+            loadTotalsFragment = DSLoadTotalsFragment.newInstance(distributionSale);
 
-            DSJobDetailsFragment jobDetailsFragment = DSJobDetailsFragment.newInstance(distributionSale);
+            jobDetailsFragment = DSJobDetailsFragment.newInstance(distributionSale);
 
             fm.beginTransaction()
                     .add(R.id.jobSetupFrame, jobSetupFragment, "jobSetup")
@@ -63,5 +67,13 @@ public class DSDetailsFragment extends Fragment {
         }
 
         return view;
+    }
+
+    public void addLoad() {
+        Log.d("nfs", "DSDetailsFragment");
+        Log.d("nfs", "jobDetailsFragment: " + (jobDetailsFragment == null));
+
+        float amount = jobDetailsFragment.getAmount();
+        loadTotalsFragment.addLoad(amount);
     }
 }

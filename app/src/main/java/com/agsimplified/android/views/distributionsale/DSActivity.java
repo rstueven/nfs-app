@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
@@ -19,6 +20,9 @@ import com.agsimplified.android.views.AgSimplifiedActivity;
  */
 
 public class DSActivity extends AgSimplifiedActivity {
+    DSMapFragment dsMapFragment;
+    DSDetailsFragment dsDetailsFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("nfs", "DSActivity.onCreate()");
@@ -32,6 +36,8 @@ public class DSActivity extends AgSimplifiedActivity {
         }
 
         DSLoadSheetFragment loadSheetFragment = DSLoadSheetFragment.newInstance(distributionSale);
+        dsMapFragment = DSMapFragment.newInstance(distributionSale);
+        dsDetailsFragment = DSDetailsFragment.newInstance(distributionSale);
 
         FragmentManager fm = getSupportFragmentManager();
 
@@ -42,6 +48,11 @@ public class DSActivity extends AgSimplifiedActivity {
         ViewPager mPager = findViewById(R.id.pager);
         PagerAdapter mPagerAdapter = new DSPagerAdapter(getSupportFragmentManager(), distributionSale);
         mPager.setAdapter(mPagerAdapter);
+    }
+
+    public void addLoad(View view) {
+        Log.d("nfs", "DSActivity");
+        dsDetailsFragment.addLoad();
     }
 
     private class DSPagerAdapter extends FragmentPagerAdapter {
