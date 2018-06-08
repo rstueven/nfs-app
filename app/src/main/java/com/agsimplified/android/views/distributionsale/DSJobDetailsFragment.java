@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.agsimplified.android.R;
@@ -54,26 +55,18 @@ public class DSJobDetailsFragment extends Fragment {
         tareView = view.findViewById(R.id.tare);
         scaleTicketView = view.findViewById(R.id.scaleTicket);
 
+        Button addLoadButton = view.findViewById(R.id.addLoadButton);
+        addLoadButton.setOnClickListener(addLoadListener);
+
         return view;
     }
 
-    public int getTime() { // TODO: int for now, DateTime later
-        return Integer.parseInt(timeView.getText().toString());
-    }
-
-    public float getAmount() {
-        return Float.parseFloat(amountView.getText().toString());
-    }
-
-    public float getGross() {
-        return Float.parseFloat(grossView.getText().toString());
-    }
-
-    public float getTare() {
-        return Float.parseFloat(tareView.getText().toString());
-    }
-
-    public String getScaleTicket() {
-        return scaleTicketView.getText().toString();
-    }
+    private View.OnClickListener addLoadListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            DSDetailsFragment detailsFragment = (DSDetailsFragment)getParentFragment();
+            float amount = Float.parseFloat(amountView.getText().toString());
+            detailsFragment.addLoad(amount);
+        }
+    };
 }

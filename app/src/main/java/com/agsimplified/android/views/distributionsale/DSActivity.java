@@ -50,9 +50,9 @@ public class DSActivity extends AgSimplifiedActivity {
         mPager.setAdapter(mPagerAdapter);
     }
 
-    public void addLoad(View view) {
+    public void addLoad(float amount) {
         Log.d("nfs", "DSActivity");
-        dsDetailsFragment.addLoad();
+        dsDetailsFragment.addLoad(amount);
     }
 
     private class DSPagerAdapter extends FragmentPagerAdapter {

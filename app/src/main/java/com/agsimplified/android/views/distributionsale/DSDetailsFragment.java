@@ -69,11 +69,7 @@ public class DSDetailsFragment extends Fragment {
         return view;
     }
 
-    public void addLoad() {
-        Log.d("nfs", "DSDetailsFragment");
-        Log.d("nfs", "jobDetailsFragment: " + (jobDetailsFragment == null));
-
-        float amount = jobDetailsFragment.getAmount();
+    public void addLoad(float amount) {
         loadTotalsFragment.addLoad(amount);
     }
 }
