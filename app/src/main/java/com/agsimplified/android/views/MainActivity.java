@@ -3,6 +3,7 @@ package com.agsimplified.android.views;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -106,6 +107,8 @@ public class MainActivity extends AgSimplifiedActivity
             fromView.setText(distributionSale.getFromOperation());
             toView.setText(distributionSale.getToOperation());
 
+            convertView.setBackgroundColor(Color.parseColor(position % 2 == 0 ? "#ffffff" : "#e0e0e0"));
+
             return convertView;
         }
     }
@@ -158,6 +161,8 @@ public class MainActivity extends AgSimplifiedActivity
             typeView.setText(fieldActivity.getActivityType());
             operationView.setText(fieldActivity.getOperation());
             farmView.setText(fieldActivity.getFarm());
+
+            convertView.setBackgroundColor(Color.parseColor(position % 2 == 0 ? "#ffffff" : "#e0e0e0"));
 
             return convertView;
         }
