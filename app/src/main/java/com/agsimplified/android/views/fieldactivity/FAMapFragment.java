@@ -22,7 +22,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
@@ -47,10 +46,8 @@ public class FAMapFragment extends Fragment
     private GoogleMap mMap;
     private boolean isTrackingLocation = false;
     private List<Location> path;
-    private List<LatLng> outline = new ArrayList<>();
-    private Polygon trail;
+    private List<Polygon> trails = new ArrayList<>();
     private Location oldLocation;
-    private float oldBearing = 0;
 
     private static final double IMPLEMENT_WIDTH = 30.0; // Feet
 
@@ -155,30 +152,9 @@ public class FAMapFragment extends Fragment
 
             if (path.size() > 1) {
                 LatLng oldPoint = new LatLng(oldLocation.getLatitude(), oldLocation.getLongitude());
-//                mMap.addPolyline(new PolylineOptions()
-//                        .add(oldPoint, newPoint)
-//                        .width(1)
-//                        .color(Color.GREEN));
 
                 float newBearing = oldLocation.bearingTo(location);
                 float leftBearing = newBearing - 90;
-
-                Log.d("nfs", "OLD <" + oldBearing + "> NEW <" + newBearing + "> DIFF <" + (oldBearing - newBearing) + ">");
-                if (oldBearing > newBearing) {
-                    if (Math.abs(oldBearing-newBearing) < 180) {
-                        Log.d("nfs", "LEFT TURN");
-                    } else {
-                        Log.d("nfs", "RIGHT TURN");
-                    }
-                } else if (oldBearing < newBearing) {
-                    if (Math.abs(oldBearing-newBearing) < 180) {
-                        Log.d("nfs", "RIGHT TURN");
-                    } else {
-                        Log.d("nfs", "LEFT TURN");
-                    }
-                } else {
-                    Log.d("nfs", "STAY THE COURSE");
-                }
 
                 LatLng start_left = pointAt(IMPLEMENT_WIDTH, leftBearing, oldLocation);
 
@@ -189,33 +165,19 @@ public class FAMapFragment extends Fragment
                 LatLng end_left = new LatLng(newPoint.latitude - dLat, newPoint.longitude - dLng);
                 LatLng end_right = new LatLng(newPoint.latitude + dLat, newPoint.longitude + dLng);
 
-//                mMap.addMarker(new MarkerOptions().position(start_left));
-//                mMap.addMarker(new MarkerOptions().position(start_right));
-//                mMap.addMarker(new MarkerOptions().position(end_left));
-//                mMap.addMarker(new MarkerOptions().position(end_right));
+                List<LatLng> outline = new ArrayList<>();
+                outline.add(start_left);
+                outline.add(end_left);
+                outline.add(end_right);
+                outline.add(start_right);
 
-                int n = outline.size();
-                int i = n / 2;
-//                Log.d("nfs", "SIZE: " + n + " IDX: " + i);
+                Polygon trail = mMap.addPolygon(new PolygonOptions()
+                        .addAll(outline)
+                        .fillColor(Color.parseColor("#6000ff00"))
+                        .strokeColor(Color.TRANSPARENT)
+                );
 
-                outline.add(i, start_left);
-                outline.add(i+1, end_left);
-                outline.add(i+2, end_right);
-                outline.add(i+3, start_right);
-
-                if (trail == null) {
-                    trail = mMap.addPolygon(new PolygonOptions()
-                            .addAll(outline)
-                            .fillColor(Color.GREEN)
-                            .strokeColor(Color.GREEN)
-                            .strokeWidth(2f)
-                            .strokeJointType(JointType.BEVEL)
-                    );
-                } else {
-                    trail.setPoints(outline);
-                }
-
-                oldBearing = newBearing;
+                trails.add(trail);
             }
 
             oldLocation = location;
@@ -240,25 +202,25 @@ public class FAMapFragment extends Fragment
         return new LatLng(toDegrees(lat2), toDegrees(lng2));
     }
 
-//    private static final List<LatLng> fakePoints = new ArrayList<>();
-//    static {
-//        fakePoints.add(new LatLng(41.733228, -95.699589));
-//        fakePoints.add(new LatLng(41.734228, -95.699589));
-//        fakePoints.add(new LatLng(41.734228, -95.698589));
-//        fakePoints.add(new LatLng(41.735228, -95.698589));
-//        fakePoints.add(new LatLng(41.736228, -95.699589));
-//        fakePoints.add(new LatLng(41.737228, -95.698589));
-//        fakePoints.add(new LatLng(41.737228, -95.694589));
-//        fakePoints.add(new LatLng(41.738228, -95.693589));
-//        fakePoints.add(new LatLng(41.739228, -95.694589));
-//        fakePoints.add(new LatLng(41.738228, -95.695589));
-//        fakePoints.add(new LatLng(41.737228, -95.694589));
-//        fakePoints.add(new LatLng(41.734228, -95.693589));
-//        fakePoints.add(new LatLng(41.733228, -95.694589));
-//        fakePoints.add(new LatLng(41.734228, -95.695589));
-//        fakePoints.add(new LatLng(41.735228, -95.694589));
-//        fakePoints.add(new LatLng(41.734228, -95.693589));
-//        fakePoints.add(new LatLng(41.734228, -95.688589));
+    private static final List<LatLng> fakePoints = new ArrayList<>();
+    static {
+        fakePoints.add(new LatLng(41.733228, -95.699589));
+        fakePoints.add(new LatLng(41.734228, -95.699589));
+        fakePoints.add(new LatLng(41.734228, -95.698589));
+        fakePoints.add(new LatLng(41.735228, -95.698589));
+        fakePoints.add(new LatLng(41.736228, -95.699589));
+        fakePoints.add(new LatLng(41.737228, -95.698589));
+        fakePoints.add(new LatLng(41.737228, -95.694589));
+        fakePoints.add(new LatLng(41.738228, -95.693589));
+        fakePoints.add(new LatLng(41.739228, -95.694589));
+        fakePoints.add(new LatLng(41.738228, -95.695589));
+        fakePoints.add(new LatLng(41.737228, -95.694589));
+        fakePoints.add(new LatLng(41.734228, -95.693589));
+        fakePoints.add(new LatLng(41.733228, -95.694589));
+        fakePoints.add(new LatLng(41.734228, -95.695589));
+        fakePoints.add(new LatLng(41.735228, -95.694589));
+        fakePoints.add(new LatLng(41.734228, -95.693589));
+        fakePoints.add(new LatLng(41.734228, -95.688589));
 
 //        fakePoints.add(new LatLng(41.733228, -95.699589));
 //        fakePoints.add(new LatLng(41.733405, -95.699441));
@@ -298,31 +260,31 @@ public class FAMapFragment extends Fragment
 //        fakePoints.add(new LatLng(41.734156, -95.698320));
 //        fakePoints.add(new LatLng(41.734267, -95.698231));
 //        fakePoints.add(new LatLng(41.734368, -95.698147));
-//    }
+    }
 
     public void fakePath() {
-//        final AgSimplifiedActivity activity = (AgSimplifiedActivity) getActivity();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                for (LatLng p : fakePoints) {
-//                    final Location l = new Location("fake");
-//                    l.setLatitude(p.latitude);
-//                    l.setLongitude(p.longitude);
-//                    Log.d("nfs", "FAKE: " + l.toString());
-//                    activity.runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            onLocationUpdated(l);
-//                        }
-//                    });
-//                    try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }).start();
+        final AgSimplifiedActivity activity = (AgSimplifiedActivity) getActivity();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (LatLng p : fakePoints) {
+                    final Location l = new Location("fake");
+                    l.setLatitude(p.latitude);
+                    l.setLongitude(p.longitude);
+                    Log.d("nfs", "FAKE: " + l.toString());
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            onLocationUpdated(l);
+                        }
+                    });
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }
