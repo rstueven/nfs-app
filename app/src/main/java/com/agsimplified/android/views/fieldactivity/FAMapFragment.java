@@ -24,10 +24,8 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +49,8 @@ public class FAMapFragment extends Fragment
     private List<Location> path;
     private List<LatLng> outline = new ArrayList<>();
     private Polygon trail;
-    private Location lastLocation;
+    private Location oldLocation;
+    private float oldBearing = 0;
 
     private static final double IMPLEMENT_WIDTH = 30.0; // Feet
 
@@ -103,7 +102,7 @@ public class FAMapFragment extends Fragment
                         activity.registerLocationListener(FAMapFragment.this);
                         path = new ArrayList<>();
                         isTrackingLocation = true;
-//                        fakePath();
+                        fakePath();
                     }
                 }
             });
@@ -155,15 +154,33 @@ public class FAMapFragment extends Fragment
             mMap.animateCamera(CameraUpdateFactory.newLatLng(newPoint));
 
             if (path.size() > 1) {
-                LatLng oldPoint = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                LatLng oldPoint = new LatLng(oldLocation.getLatitude(), oldLocation.getLongitude());
 //                mMap.addPolyline(new PolylineOptions()
 //                        .add(oldPoint, newPoint)
 //                        .width(1)
 //                        .color(Color.GREEN));
 
-                float leftBearing = lastLocation.bearingTo(location) - 90;
+                float newBearing = oldLocation.bearingTo(location);
+                float leftBearing = newBearing - 90;
 
-                LatLng start_left = pointAt(IMPLEMENT_WIDTH, leftBearing, lastLocation);
+                Log.d("nfs", "OLD <" + oldBearing + "> NEW <" + newBearing + "> DIFF <" + (oldBearing - newBearing) + ">");
+                if (oldBearing > newBearing) {
+                    if (Math.abs(oldBearing-newBearing) < 180) {
+                        Log.d("nfs", "LEFT TURN");
+                    } else {
+                        Log.d("nfs", "RIGHT TURN");
+                    }
+                } else if (oldBearing < newBearing) {
+                    if (Math.abs(oldBearing-newBearing) < 180) {
+                        Log.d("nfs", "RIGHT TURN");
+                    } else {
+                        Log.d("nfs", "LEFT TURN");
+                    }
+                } else {
+                    Log.d("nfs", "STAY THE COURSE");
+                }
+
+                LatLng start_left = pointAt(IMPLEMENT_WIDTH, leftBearing, oldLocation);
 
                 double dLat = oldPoint.latitude - start_left.latitude;
                 double dLng = oldPoint.longitude - start_left.longitude;
@@ -178,9 +195,8 @@ public class FAMapFragment extends Fragment
 //                mMap.addMarker(new MarkerOptions().position(end_right));
 
                 int n = outline.size();
-                Log.d("nfs", "SIZE: " + n);
                 int i = n / 2;
-                Log.d("nfs", " IDX: " + i);
+//                Log.d("nfs", "SIZE: " + n + " IDX: " + i);
 
                 outline.add(i, start_left);
                 outline.add(i+1, end_left);
@@ -190,7 +206,7 @@ public class FAMapFragment extends Fragment
                 if (trail == null) {
                     trail = mMap.addPolygon(new PolygonOptions()
                             .addAll(outline)
-//                            .fillColor(Color.GREEN)
+                            .fillColor(Color.GREEN)
                             .strokeColor(Color.GREEN)
                             .strokeWidth(2f)
                             .strokeJointType(JointType.BEVEL)
@@ -198,9 +214,11 @@ public class FAMapFragment extends Fragment
                 } else {
                     trail.setPoints(outline);
                 }
+
+                oldBearing = newBearing;
             }
 
-            lastLocation = location;
+            oldLocation = location;
         }
     }
 
@@ -224,6 +242,24 @@ public class FAMapFragment extends Fragment
 
 //    private static final List<LatLng> fakePoints = new ArrayList<>();
 //    static {
+//        fakePoints.add(new LatLng(41.733228, -95.699589));
+//        fakePoints.add(new LatLng(41.734228, -95.699589));
+//        fakePoints.add(new LatLng(41.734228, -95.698589));
+//        fakePoints.add(new LatLng(41.735228, -95.698589));
+//        fakePoints.add(new LatLng(41.736228, -95.699589));
+//        fakePoints.add(new LatLng(41.737228, -95.698589));
+//        fakePoints.add(new LatLng(41.737228, -95.694589));
+//        fakePoints.add(new LatLng(41.738228, -95.693589));
+//        fakePoints.add(new LatLng(41.739228, -95.694589));
+//        fakePoints.add(new LatLng(41.738228, -95.695589));
+//        fakePoints.add(new LatLng(41.737228, -95.694589));
+//        fakePoints.add(new LatLng(41.734228, -95.693589));
+//        fakePoints.add(new LatLng(41.733228, -95.694589));
+//        fakePoints.add(new LatLng(41.734228, -95.695589));
+//        fakePoints.add(new LatLng(41.735228, -95.694589));
+//        fakePoints.add(new LatLng(41.734228, -95.693589));
+//        fakePoints.add(new LatLng(41.734228, -95.688589));
+
 //        fakePoints.add(new LatLng(41.733228, -95.699589));
 //        fakePoints.add(new LatLng(41.733405, -95.699441));
 //        fakePoints.add(new LatLng(41.733607, -95.699275));
@@ -263,8 +299,8 @@ public class FAMapFragment extends Fragment
 //        fakePoints.add(new LatLng(41.734267, -95.698231));
 //        fakePoints.add(new LatLng(41.734368, -95.698147));
 //    }
-//
-//    public void fakePath() {
+
+    public void fakePath() {
 //        final AgSimplifiedActivity activity = (AgSimplifiedActivity) getActivity();
 //        new Thread(new Runnable() {
 //            @Override
@@ -288,5 +324,5 @@ public class FAMapFragment extends Fragment
 //                }
 //            }
 //        }).start();
-//    }
+    }
 }
