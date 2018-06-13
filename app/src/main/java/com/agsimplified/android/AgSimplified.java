@@ -10,24 +10,23 @@ import android.app.Application;
 public class AgSimplified extends Application {
     // Server configuration
     private static String getBaseUrl() {
-        String scheme = "http";
         String host;
 
         switch(BuildConfig.FLAVOR) {
             case "local":
-                host = "127.0.0.1:3000";
+                host = "http://10.0.2.2:3000";
                 break;
             case "development":
-                host = "test.agsimplified.com";
+                host = "http://test.agsimplified.com";
                 break;
             case "staging":
-                host = "app.agsimplified.com";
+                host = "http://www.agsimplified.com";
                 break;
             default:
                 throw new IllegalArgumentException("FLAVOR: " + BuildConfig.FLAVOR);
         }
 
-        return String.format("%s://%s", scheme, host);
+        return host;
     }
 
     public static String getApiUrl() {
