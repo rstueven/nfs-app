@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,26 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
 import com.agsimplified.android.models.fieldactivity.FieldActivity;
+import com.agsimplified.android.util.NetworkRequestQueue;
+import com.agsimplified.android.util.SharedPref;
 import com.agsimplified.android.views.distributionsale.DSActivity;
 import com.agsimplified.android.views.distributionsale.DSSearchFragment;
 import com.agsimplified.android.views.fieldactivity.FAActivity;
 import com.agsimplified.android.views.fieldactivity.FASearchFragment;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -166,5 +179,33 @@ public class MainActivity extends AgSimplifiedActivity
 
             return convertView;
         }
+    }
+
+    public void logout(View v) {
+        Log.d("nfs", "MainActivity.logout()");
+        RequestQueue queue = NetworkRequestQueue.getRequestQueue();
+        String url = AgSimplified.getApiUrl() + "/sessions?auth_token=" + SharedPref.read(SharedPref.Pref.AUTH_TOKEN, null);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("nfs", "RESPONSE");
+                        Log.i("nfs", response.toString());
+                        SharedPref.write(SharedPref.Pref.AUTH_TOKEN, null);
+
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        MainActivity.this.finish();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("nfs", "ERROR");
+                Log.e("nfs", error.toString());
+                Toast.makeText(MainActivity.this, "Logout failed", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        queue.add(request);
     }
 }

@@ -97,4 +97,5 @@
     <string name="tons_per_hour">Tons Per Hour</string>
     <string name="add_application">Add Application</string>
     <string name="depth">Depth</string>
+    <string name="logout">Logout</string>
 </resources>
