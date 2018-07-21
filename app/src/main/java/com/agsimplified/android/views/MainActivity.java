@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
+import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
 import com.agsimplified.android.models.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
@@ -65,6 +66,9 @@ public class MainActivity extends AgSimplifiedActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        Log.d("nfs", "getWritableDatabase()");
+        DbOpenHelper.getInstance().getWritableDatabase();
 
         searchResultsView = findViewById(R.id.searchResultsView);
         distributionSaleAdapter = new DistributionSaleAdapter(this, distributionSales);

@@ -21,14 +21,25 @@ public class SharedPref {
         return mSharedPref.getString(key.key(), defVal);
     }
 
+    public static boolean read(Pref key, boolean defVal) {
+        return mSharedPref.getBoolean(key.key(), defVal);
+    }
+
     public static void write(Pref key, String value) {
         SharedPreferences.Editor prefsEditor = mSharedPref.edit();
         prefsEditor.putString(key.key(), value);
         prefsEditor.apply();
     }
 
+    public static void write(Pref key, boolean value) {
+        SharedPreferences.Editor prefsEditor = mSharedPref.edit();
+        prefsEditor.putBoolean(key.key(), value);
+        prefsEditor.apply();
+    }
+
     public enum Pref {
         AUTH_TOKEN ("auth_token"),
+        DB_IS_UPDATING ("dbIsUpdating"),
         DB_LAST_UPDATE ("dbLastUpdate"),
         USER_ID ("user_id");
 

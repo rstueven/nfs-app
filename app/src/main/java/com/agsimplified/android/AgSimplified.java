@@ -1,13 +1,10 @@
 package com.agsimplified.android;
 
 import android.app.Application;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 
+import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.util.NetworkRequestQueue;
 import com.agsimplified.android.util.SharedPref;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 /**
  * Created by rstueven on 2/24/18.
@@ -18,6 +15,9 @@ public class AgSimplified extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // Database singleton
+        DbOpenHelper.init(getApplicationContext());
 
         // SharedPreferences singleton
         SharedPref.init(getApplicationContext());
