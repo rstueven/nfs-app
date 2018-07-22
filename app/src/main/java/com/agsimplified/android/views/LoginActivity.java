@@ -37,7 +37,7 @@ public class LoginActivity extends AgSimplifiedActivity {
     }
 
     public void login(View v) {
-        Log.d("nfs", "LOGIN");
+        Log.d("nfs", "LoginActivity.login");
         String email = emailField.getText().toString();
         EditText passwordField = findViewById(R.id.passwordField);
         String password = passwordField.getText().toString();
@@ -50,7 +50,7 @@ public class LoginActivity extends AgSimplifiedActivity {
         SharedPref.write(SharedPref.Pref.USER_ID, email);
 
         RequestQueue queue = NetworkRequestQueue.getRequestQueue();
-        String url = AgSimplified.getApiUrl() + "/sessions";
+        final String url = AgSimplified.getApiUrl() + "/sessions";
         try {
             JSONObject params = new JSONObject();
             JSONObject userParams = new JSONObject();
@@ -62,7 +62,7 @@ public class LoginActivity extends AgSimplifiedActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.i("nfs", "RESPONSE");
+                            Log.i("nfs", "LoginActivity.request.onResponse(" + url +")");
                             Log.i("nfs", response.toString());
                             JSONObject data;
                             try {

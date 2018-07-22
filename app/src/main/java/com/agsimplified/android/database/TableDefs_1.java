@@ -2,6 +2,7 @@ package com.agsimplified.android.database;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class TableDefs_1 extends TableDefs {
     private static final String[] CLIENT_COLS = {
@@ -11,6 +12,7 @@ public class TableDefs_1 extends TableDefs {
             "address2 TEXT",
             "city TEXT",
             "state TEXT",
+            "zip TEXT",
             "client_status TEXT",
             "office_phone TEXT",
             "office_fax TEXT",
@@ -24,7 +26,7 @@ public class TableDefs_1 extends TableDefs {
             "company_id INTEGER",
             "notes TEXT",
             "service_level_id INTEGER",
-            "PRIMARY KEY (id)"
+            "PRIMARY KEY (_id)"
     };
 
     private static final String[] JOB_PLAN_COLS = {
@@ -44,7 +46,7 @@ public class TableDefs_1 extends TableDefs {
             "accounting_manager_emailed INTEGER",
             "created_by_id INTEGER",
             "client_job_code INTEGER",
-            "PRIMARY KEY (id)"
+            "PRIMARY KEY (_id)"
     };
 
     private static final String[] DISTRIBUTION_SALE_COLS = {
@@ -74,7 +76,7 @@ public class TableDefs_1 extends TableDefs {
             "cropping_rotation TEXT",
             "tillage_practices TEXT",
             "planned_acres REAL",
-            "PRIMARY KEY (id)"
+            "PRIMARY KEY (_id)"
     };
 
     private static final String[] SITE_COLS = {
@@ -85,7 +87,7 @@ public class TableDefs_1 extends TableDefs {
             "address_2 TEXT",
             "city TEXT",
             "state TEXT",
-            "zip INTEGER",
+            "zip TEXT",
             "county TEXT",
             "legal_1 TEXT",
             "legal_2 TEXT",
@@ -104,7 +106,7 @@ public class TableDefs_1 extends TableDefs {
             "guid TEXT",
             "service_level_id INTEGER",
             "license_200a TEXT",
-            "PRIMARY KEY (id)"
+            "PRIMARY KEY (_id)"
     };
 
     private static final String[] PRODUCT_COLS = {
@@ -112,7 +114,7 @@ public class TableDefs_1 extends TableDefs {
             "name TEXT",
             "product_type TEXT",
             "product_form TEXT",
-            "PRIMARY KEY (id)"
+            "PRIMARY KEY (_id)"
     };
 
     TableDefs_1() {
@@ -121,6 +123,7 @@ public class TableDefs_1 extends TableDefs {
 
     @Override
     protected void initTableDefs() {
+        Log.d("nfs", "TableDefs_1.initTableDefs()");
         createStatements.put(TABLE_CLIENT,
                 "CREATE TABLE IF NOT EXISTS "
                         + TABLE_CLIENT + " ("
@@ -150,6 +153,7 @@ public class TableDefs_1 extends TableDefs {
 
     @Override
     public void loadData(SQLiteDatabase db) {
+        Log.d("nfs", "TableDefs_1.loadData()");
         new Client.LoadAsync(db).execute();
     }
 }

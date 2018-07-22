@@ -22,6 +22,9 @@ android {
     flavorDimensions "env"
 
     productFlavors {
+        emulator {
+            return void
+        }
         local {
             return void
         }

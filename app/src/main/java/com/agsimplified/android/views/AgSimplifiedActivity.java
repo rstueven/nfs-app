@@ -112,7 +112,7 @@ public abstract class AgSimplifiedActivity extends AppCompatActivity {
                 public void onLocationResult(LocationResult locationResult) {
                     if (locationResult != null) {
                         for (Location location : locationResult.getLocations()) {
-                            Log.d("nfs", "LOCATION_RESULT: " + location.toString());
+//                            Log.d("nfs", "LOCATION_RESULT: " + location.toString());
                             mCurrentLocation = location;
 
                             for (LocationListener listener : locationListeners) {

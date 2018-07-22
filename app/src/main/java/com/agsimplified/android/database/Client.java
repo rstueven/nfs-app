@@ -1,5 +1,7 @@
 package com.agsimplified.android.database;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -47,6 +49,28 @@ public class Client {
         }
     }
 
+    public Client(Cursor c) {
+        id = c.getInt(c.getColumnIndex("_id"));
+        name = c.getString(c.getColumnIndex("name"));
+        address1 = c.getString(c.getColumnIndex("address1"));
+        address2 = c.getString(c.getColumnIndex("address2"));
+        city = c.getString(c.getColumnIndex("city"));
+        state = c.getString(c.getColumnIndex("state"));
+        zip = c.getString(c.getColumnIndex("zip"));
+        clientStatus = c.getString(c.getColumnIndex("client_status"));
+        officePhone = c.getString(c.getColumnIndex("office_phone"));
+        officeFax = c.getString(c.getColumnIndex("office_fax"));
+        mobilePhone = c.getString(c.getColumnIndex("mobile_phone"));
+        email = c.getString(c.getColumnIndex("email"));
+        website = c.getString(c.getColumnIndex("website"));
+        farm = c.getInt(c.getColumnIndex("farm")) == 1;
+        feedlot = c.getInt(c.getColumnIndex("feedlot")) == 1;
+        serviceProvider = c.getInt(c.getColumnIndex("service_provider")) == 1;
+        contactId = c.getInt(c.getColumnIndex("contact_id"));
+        companyId = c.getInt(c.getColumnIndex("company_id"));
+        notes = c.getString(c.getColumnIndex("notes"));
+    }
+
     public static Client[] createClients(JSONArray clients) {
         List<Client> clientList = new ArrayList<>();
 
@@ -61,6 +85,30 @@ public class Client {
 
         Client[] clientArray = new Client[clientList.size()];
         return clientList.toArray(clientArray);
+    }
+
+    public ContentValues getContentValues() {
+        ContentValues cv = new ContentValues();
+        cv.put("_id", id);
+        cv.put("name", name);
+        cv.put("address1", address1);
+        cv.put("address2", address2);
+        cv.put("city", city);
+        cv.put("state", state);
+        cv.put("zip", zip);
+        cv.put("client_status", clientStatus);
+        cv.put("office_phone", officePhone);
+        cv.put("office_fax", officeFax);
+        cv.put("mobile_phone", mobilePhone);
+        cv.put("email", email);
+        cv.put("website", website);
+        cv.put("farm", farm);
+        cv.put("feedlot", feedlot);
+        cv.put("service_provider", serviceProvider);
+        cv.put("contact_id", contactId);
+        cv.put("company_id", companyId);
+        cv.put("notes", notes);
+        return cv;
     }
 
     private int id;
@@ -291,18 +339,19 @@ public class Client {
     protected static class LoadAsync extends LoadTableAsync {
         LoadAsync(SQLiteDatabase db) {
             super(db);
+            Log.d("nfs", "Client.LoadAsync()");
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             Log.d("nfs", "Client.LoadAsync.doInBackground()");
-            String url = setUrl("clients");
+            final String url = setUrl("clients");
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.d("nfs", "Client.LoadAsync.onResponse()");
+                            Log.d("nfs", "Client.LoadAsync.onResponse(" + url + ")");
                             try {
 //                                Log.d("nfs", response.toString(2));
                                 Client[] clients = Client.createClients(response.getJSONArray("clients"));
@@ -327,18 +376,35 @@ public class Client {
         }
 
         private static class PopulateAsync extends AsyncTask<Client, Void, Void> {
+            private SQLiteDatabase mDb;
+
             PopulateAsync(SQLiteDatabase db) {
+                super();
                 Log.d("nfs", "Client.PopulateAsync()");
+                this.mDb = db;
             }
 
             @Override
             protected Void doInBackground(Client... clients) {
+                Log.d("nfs", "Client.PopulateAsync.doInBackground()");
+                mDb.execSQL("DELETE FROM clients");
+
                 for (Client client : clients) {
-                    Log.d("nfs", client.toString());
-                    Log.d("nfs", "==================================================");
+//                    Log.d("nfs", client.toString());
+                    if (mDb.insertOrThrow("clients", null, client.getContentValues()) == -1) {
+                        Log.e("nfs", "FAILED TO INSERT <" + client.name + ">");
+                    }
+//                    Log.d("nfs", "==================================================");
                 }
 
-                Log.d("nfs", "Client.PopulateAsync() DONE");
+//                Log.d("nfs", "Client.PopulateAsync() DONE");
+//                Cursor c = mDb.rawQuery("SELECT * FROM clients", null);
+//                Log.d("nfs", "COUNT: " + c.getCount());
+//                while (c.moveToNext()) {
+//                    Log.d("nfs", new Client(c).toString());
+//                }
+//                c.close();
+//                Log.d("nfs", "Client.PopulateAsync() DONE DONE");
 
                 return null;
             }

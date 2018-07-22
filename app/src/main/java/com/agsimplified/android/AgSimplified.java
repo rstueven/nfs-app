@@ -31,8 +31,11 @@ public class AgSimplified extends Application {
         String host;
 
         switch(BuildConfig.FLAVOR) {
-            case "local":
+            case "emulator":
                 host = "http://10.0.2.2:3000";
+                break;
+            case "local":
+                host = "http://192.168.0.11:3000";
                 break;
             case "development":
                 host = "http://test.agsimplified.com";

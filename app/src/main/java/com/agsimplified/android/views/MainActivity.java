@@ -65,9 +65,10 @@ public class MainActivity extends AgSimplifiedActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("nfs", "MainActivity.onCreate()");
         setContentView(R.layout.main_activity);
 
-        Log.d("nfs", "getWritableDatabase()");
+        Log.d("nfs", "MainActivity.onCreate(): getWritableDatabase()");
         DbOpenHelper.getInstance().getWritableDatabase();
 
         searchResultsView = findViewById(R.id.searchResultsView);
@@ -188,12 +189,12 @@ public class MainActivity extends AgSimplifiedActivity
     public void logout(View v) {
         Log.d("nfs", "MainActivity.logout()");
         RequestQueue queue = NetworkRequestQueue.getRequestQueue();
-        String url = AgSimplified.getApiUrl() + "/sessions?auth_token=" + SharedPref.read(SharedPref.Pref.AUTH_TOKEN, null);
+        final String url = AgSimplified.getApiUrl() + "/sessions?auth_token=" + SharedPref.read(SharedPref.Pref.AUTH_TOKEN, null);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("nfs", "RESPONSE");
+                        Log.d("nfs", "MainActivity.logout(" + url + "): response");
                         Log.i("nfs", response.toString());
                         SharedPref.write(SharedPref.Pref.AUTH_TOKEN, null);
 
@@ -204,7 +205,7 @@ public class MainActivity extends AgSimplifiedActivity
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("nfs", "ERROR");
+                Log.d("nfs", "MainActivity.logout(" + url + "): ERROR");
                 Log.e("nfs", error.toString());
                 Toast.makeText(MainActivity.this, "Logout failed", Toast.LENGTH_LONG).show();
             }
