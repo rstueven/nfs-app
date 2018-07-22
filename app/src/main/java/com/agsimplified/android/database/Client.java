@@ -387,6 +387,7 @@ public class Client {
             @Override
             protected Void doInBackground(Client... clients) {
                 Log.d("nfs", "Client.PopulateAsync.doInBackground()");
+                Log.d("nfs", "LOADING " + clients.length + " CLIENTS");
                 mDb.execSQL("DELETE FROM clients");
 
                 for (Client client : clients) {
@@ -394,10 +395,9 @@ public class Client {
                     if (mDb.insertOrThrow("clients", null, client.getContentValues()) == -1) {
                         Log.e("nfs", "FAILED TO INSERT <" + client.name + ">");
                     }
-//                    Log.d("nfs", "==================================================");
                 }
 
-//                Log.d("nfs", "Client.PopulateAsync() DONE");
+                Log.d("nfs", "Client.PopulateAsync() DONE");
 //                Cursor c = mDb.rawQuery("SELECT * FROM clients", null);
 //                Log.d("nfs", "COUNT: " + c.getCount());
 //                while (c.moveToNext()) {

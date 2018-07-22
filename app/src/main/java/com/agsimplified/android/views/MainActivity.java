@@ -3,6 +3,8 @@ package com.agsimplified.android.views;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
+import com.agsimplified.android.database.Client;
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.models.distributionsale.DistributionSale;
 import com.agsimplified.android.models.fieldactivity.FieldActivity;
@@ -58,6 +61,7 @@ public class MainActivity extends AgSimplifiedActivity
         fieldActivities.add(new FieldActivity(2049, 17171, null, 2018, "Fertilizing", "Shawn Jespersen", "Shawn Jespersen", "Grant", "GrantSmithS78a", 78.14, null, null));
     }
 
+    private SQLiteDatabase mDb;
     private ListView searchResultsView;
     private DistributionSaleAdapter distributionSaleAdapter;
     private FieldActivityAdapter fieldActivitiesAdapter;
@@ -68,8 +72,10 @@ public class MainActivity extends AgSimplifiedActivity
         Log.d("nfs", "MainActivity.onCreate()");
         setContentView(R.layout.main_activity);
 
-        Log.d("nfs", "MainActivity.onCreate(): getWritableDatabase()");
-        DbOpenHelper.getInstance().getWritableDatabase();
+        mDb = DbOpenHelper.getInstance().getWritableDatabase();
+        // Force data load
+        mDb.rawQuery("SELECT 1", null).close();
+
 
         searchResultsView = findViewById(R.id.searchResultsView);
         distributionSaleAdapter = new DistributionSaleAdapter(this, distributionSales);
