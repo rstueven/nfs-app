@@ -97,7 +97,7 @@ public class TableDefs_1 extends TableDefs {
             "legal_state TEXT",
             "township TEXT",
             "site_type TEXT",
-            "npdex_permit TEXT",
+            "npdes_permit TEXT",
             "status TEXT",
             "nmp_due_date TEXT",
             "date_constructed TEXT",
@@ -157,5 +157,6 @@ public class TableDefs_1 extends TableDefs {
         new Client.LoadAsync(db).execute();
         new JobPlan.LoadAsync(db).execute();
         new DistributionSale.LoadAsync(db).execute();
+        new Site.LoadAsync(db).execute();
     }
 }
