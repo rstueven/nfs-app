@@ -155,5 +155,6 @@ public class TableDefs_1 extends TableDefs {
     public void loadData(SQLiteDatabase db) {
         Log.d("nfs", "TableDefs_1.loadData()");
         new Client.LoadAsync(db).execute();
+        new JobPlan.LoadAsync(db).execute();
     }
 }

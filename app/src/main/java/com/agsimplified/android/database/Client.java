@@ -22,6 +22,31 @@ import java.util.List;
 public class Client {
     public Client() {}
 
+    static String TABLE_NAME = "clients";
+
+    private int id;
+    private String name;
+    private String address1;
+    private String address2;
+    private String city;
+    private String state;
+    private String zip;
+    private String clientStatus;
+    private String officePhone;
+    private String officeFax;
+    private String mobilePhone;
+    private String email;
+    private String website;
+    private boolean farm;
+    private boolean feedlot;
+    // private Date createdAt;
+    // private Date updatedAt;
+    private boolean serviceProvider;
+    private int contactId;
+    private int companyId;
+    private String notes;
+    private int serviceLevelId;
+
     public Client(JSONObject obj) {
         try {
             id = obj.optInt("id");
@@ -110,29 +135,6 @@ public class Client {
         cv.put("notes", notes);
         return cv;
     }
-
-    private int id;
-    private String name;
-    private String address1;
-    private String address2;
-    private String city;
-    private String state;
-    private String zip;
-    private String clientStatus;
-    private String officePhone;
-    private String officeFax;
-    private String mobilePhone;
-    private String email;
-    private String website;
-    private boolean farm;
-    private boolean feedlot;
-//    private Date createdAt;
-//    private Date updatedAt;
-    private boolean serviceProvider;
-    private int contactId;
-    private int companyId;
-    private String notes;
-    private int serviceLevelId;
 
     public int getId() {
         return id;
@@ -345,7 +347,7 @@ public class Client {
         @Override
         protected Void doInBackground(Void... voids) {
             Log.d("nfs", "Client.LoadAsync.doInBackground()");
-            final String url = setUrl("clients");
+            final String url = setUrl(TABLE_NAME);
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
@@ -354,7 +356,7 @@ public class Client {
                             Log.d("nfs", "Client.LoadAsync.onResponse(" + url + ")");
                             try {
 //                                Log.d("nfs", response.toString(2));
-                                Client[] clients = Client.createClients(response.getJSONArray("clients"));
+                                Client[] clients = Client.createClients(response.getJSONArray(TABLE_NAME));
                                 new PopulateAsync(mDb).execute(clients);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -388,23 +390,16 @@ public class Client {
             protected Void doInBackground(Client... clients) {
                 Log.d("nfs", "Client.PopulateAsync.doInBackground()");
                 Log.d("nfs", "LOADING " + clients.length + " CLIENTS");
-                mDb.execSQL("DELETE FROM clients");
+                mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
                 for (Client client : clients) {
 //                    Log.d("nfs", client.toString());
-                    if (mDb.insertOrThrow("clients", null, client.getContentValues()) == -1) {
+                    if (mDb.insertOrThrow(TABLE_NAME, null, client.getContentValues()) == -1) {
                         Log.e("nfs", "FAILED TO INSERT <" + client.name + ">");
                     }
                 }
 
                 Log.d("nfs", "Client.PopulateAsync() DONE");
-//                Cursor c = mDb.rawQuery("SELECT * FROM clients", null);
-//                Log.d("nfs", "COUNT: " + c.getCount());
-//                while (c.moveToNext()) {
-//                    Log.d("nfs", new Client(c).toString());
-//                }
-//                c.close();
-//                Log.d("nfs", "Client.PopulateAsync() DONE DONE");
 
                 return null;
             }
