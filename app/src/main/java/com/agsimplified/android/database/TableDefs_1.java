@@ -158,5 +158,6 @@ public class TableDefs_1 extends TableDefs {
         new JobPlan.LoadAsync(db).execute();
         new DistributionSale.LoadAsync(db).execute();
         new Site.LoadAsync(db).execute();
+        new Product.LoadAsync(db).execute();
     }
 }
