@@ -24,6 +24,13 @@ public class Product {
     }
 
     static String TABLE_NAME = "products";
+    static final String[] COLUMNS = {
+            "_id INTEGER NOT NULL",
+            "name TEXT",
+            "product_type TEXT",
+            "product_form TEXT",
+            "PRIMARY KEY (_id)"
+    };
 
     private int id;
     private String name;

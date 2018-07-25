@@ -23,6 +23,35 @@ public class DistributionSale {
     public DistributionSale() {}
 
     static String TABLE_NAME = "distribution_sales";
+    static final String[] COLUMNS = {
+            "_id INTEGER NOT NULL",
+            "job_plan_id INTEGER",
+            "year INTEGER",
+            "from_id INTEGER",
+            "to_id INTEGER",
+            "mileage REAL",
+            "amount REAL",
+            "notes TEXT",
+            "from_type TEXT",
+            "from_field_id INTEGER",
+            "from_storage_inventory_id INTEGER",
+            "to_type TEXT",
+            "to_field_id INTEGER",
+            "to_storage_inventory_id INTEGER",
+            "product_id INTEGER",
+            "product_cost REAL",
+            "directions TEXT",
+            "sale_price REAL",
+            "spreading_cost REAL",
+            "trucking_cost REAL",
+            "loading_cost REAL",
+            "previous_crop_id INTEGER",
+            "planned_crop_id INTEGER",
+            "cropping_rotation TEXT",
+            "tillage_practices TEXT",
+            "planned_acres REAL",
+            "PRIMARY KEY (_id)"
+    };
     
     private int id;
     private int jobPlanId;

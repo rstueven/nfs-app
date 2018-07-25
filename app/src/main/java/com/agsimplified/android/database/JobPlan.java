@@ -23,6 +23,25 @@ public class JobPlan {
     public JobPlan() {}
 
     static String TABLE_NAME = "job_plans";
+    static final String[] COLUMNS = {
+            "_id INTEGER NOT NULL",
+            "client_id INTEGER",
+            "description TEXT",
+            "status TEXT",
+            "job_type TEXT",
+            "job_code TEXT",
+            "job_status TEXT",
+            "notes TEXT",
+            "manager_id INTEGER",
+            "wizard_complete TEXT",
+            "year INTEGER",
+            "manager_emailed INTEGER",
+            "accounting_manager_id INTEGER",
+            "accounting_manager_emailed INTEGER",
+            "created_by_id INTEGER",
+            "client_job_code INTEGER",
+            "PRIMARY KEY (_id)"
+    };
     
     private int id;
     private int clientId;

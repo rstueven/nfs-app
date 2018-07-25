@@ -23,6 +23,35 @@ public class Site {
     public Site() {}
 
     static String TABLE_NAME = "sites";
+    static final String[] COLUMNS = {
+            "_id INTEGER NOT NULL",
+            "name TEXT",
+            "state_id TEXT",
+            "address_1 TEXT",
+            "address_2 TEXT",
+            "city TEXT",
+            "state TEXT",
+            "zip TEXT",
+            "county TEXT",
+            "legal_1 TEXT",
+            "legal_2 TEXT",
+            "legal_sec TEXT",
+            "legal_tier TEXT",
+            "legal_range TEXT",
+            "legal_state TEXT",
+            "township TEXT",
+            "site_type TEXT",
+            "npdes_permit TEXT",
+            "status TEXT",
+            "nmp_due_date TEXT",
+            "date_constructed TEXT",
+            "other_id TEXT",
+            "weather_station_id INTEGER",
+            "guid TEXT",
+            "service_level_id INTEGER",
+            "license_200a TEXT",
+            "PRIMARY KEY (_id)"
+    };
     
     private int id;
     private String name;

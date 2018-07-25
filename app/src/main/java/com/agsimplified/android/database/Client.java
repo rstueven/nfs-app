@@ -23,6 +23,29 @@ public class Client {
     public Client() {}
 
     static String TABLE_NAME = "clients";
+    static final String[] COLUMNS = {
+            "_id INTEGER NOT NULL",
+            "name TEXT NOT NULL",
+            "address1 TEXT",
+            "address2 TEXT",
+            "city TEXT",
+            "state TEXT",
+            "zip TEXT",
+            "client_status TEXT",
+            "office_phone TEXT",
+            "office_fax TEXT",
+            "mobile_phone TEXT",
+            "email TEXT",
+            "website TEXT",
+            "farm INTEGER",
+            "feedlot INTEGER",
+            "service_provider INTEGER",
+            "contact_id INTEGER",
+            "company_id INTEGER",
+            "notes TEXT",
+            "service_level_id INTEGER",
+            "PRIMARY KEY (_id)"
+    };
 
     private int id;
     private String name;
