@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.agsimplified.android.views.distributionsale.DSLoadTotalsFragment">
+    tools:context="com.agsimplified.android.view.distributionsale.DSLoadTotalsFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

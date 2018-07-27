@@ -1,4 +1,4 @@
-package com.agsimplified.android.views;
+package com.agsimplified.android.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

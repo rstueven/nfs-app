@@ -1,4 +1,4 @@
-package com.agsimplified.android.views.fieldactivity;
+package com.agsimplified.android.view.fieldactivity;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.fieldactivity.FieldActivity;
-import com.agsimplified.android.views.AgSimplifiedActivity;
+import com.agsimplified.android.model.fieldactivity.FieldActivity;
+import com.agsimplified.android.view.AgSimplifiedActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

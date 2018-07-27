@@ -1,4 +1,4 @@
-package com.agsimplified.android.views.distributionsale;
+package com.agsimplified.android.view.distributionsale;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.distributionsale.DistributionSale;
+import com.agsimplified.android.model.distributionsale.DistributionSale;
 
 public class DSJobDetailsFragment extends Fragment {
     EditText timeView;

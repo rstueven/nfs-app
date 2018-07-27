@@ -1,4 +1,4 @@
-package com.agsimplified.android.views.distributionsale;
+package com.agsimplified.android.view.distributionsale;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.distributionsale.DistributionSale;
-import com.agsimplified.android.views.AgSimplifiedActivity;
+import com.agsimplified.android.model.distributionsale.DistributionSale;
+import com.agsimplified.android.view.AgSimplifiedActivity;
 
 /**
  * Created by rstueven on 3/20/18.

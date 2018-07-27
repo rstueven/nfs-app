@@ -1,4 +1,4 @@
-package com.agsimplified.android.models.fieldactivity;
+package com.agsimplified.android.model.fieldactivity;
 
 import java.io.Serializable;
 

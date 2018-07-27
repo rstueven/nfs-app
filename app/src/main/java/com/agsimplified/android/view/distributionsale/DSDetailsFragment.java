@@ -1,4 +1,4 @@
-package com.agsimplified.android.views.distributionsale;
+package com.agsimplified.android.view.distributionsale;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.distributionsale.DistributionSale;
+import com.agsimplified.android.model.distributionsale.DistributionSale;
 
 /**
  * Created by rstueven on 3/13/18.

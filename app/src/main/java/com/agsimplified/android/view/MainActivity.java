@@ -1,9 +1,8 @@
-package com.agsimplified.android.views;
+package com.agsimplified.android.view;
 
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,22 +19,20 @@ import android.widget.Toast;
 
 import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
-import com.agsimplified.android.database.Client;
 import com.agsimplified.android.database.DbOpenHelper;
-import com.agsimplified.android.models.distributionsale.DistributionSale;
-import com.agsimplified.android.models.fieldactivity.FieldActivity;
+import com.agsimplified.android.model.distributionsale.DistributionSale;
+import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
 import com.agsimplified.android.util.SharedPref;
-import com.agsimplified.android.views.distributionsale.DSActivity;
-import com.agsimplified.android.views.distributionsale.DSSearchFragment;
-import com.agsimplified.android.views.fieldactivity.FAActivity;
-import com.agsimplified.android.views.fieldactivity.FASearchFragment;
+import com.agsimplified.android.view.distributionsale.DSActivity;
+import com.agsimplified.android.view.distributionsale.DSSearchFragment;
+import com.agsimplified.android.view.fieldactivity.FAActivity;
+import com.agsimplified.android.view.fieldactivity.FASearchFragment;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 

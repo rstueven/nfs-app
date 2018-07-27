@@ -1,4 +1,4 @@
-package com.agsimplified.android.views.distributionsale;
+package com.agsimplified.android.view.fieldactivity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,36 +14,36 @@ import android.widget.Spinner;
 import com.agsimplified.android.R;
 
 /**
- * Created by rstueven on 2/27/18.
+ * Created by rstueven on 2/28/18.
  *
  * Set search parameters.
  */
 
-public class DSSearchFragment extends DialogFragment {
+public class FASearchFragment extends DialogFragment {
     private Spinner clientSelect;
     private Spinner yearSelect;
     private EditText jobCodeView;
     private EditText clientJobCodeView;
-    private Spinner fromSelect;
-    private Spinner toSelect;
-    private Spinner productSelect;
+    private Spinner typeSelect;
+    private Spinner operationSelect;
+    private Spinner farmSelect;
 
-    public interface LoadSheetSearcher {
-        void searchDistributionSales(String client, int year, Integer jobCode, Integer clientJobCode, String fromOperation, String toOperation, String product);
+    public interface FieldActivitySearcher {
+        void searchFieldActivities(String client, int year, Integer jobCode, Integer clientJobCode, String jobType, String operation, String farm);
     }
 
-    public DSSearchFragment() {
+    public FASearchFragment() {
         super();
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final LoadSheetSearcher searcher = (LoadSheetSearcher) getActivity();
+        final FieldActivitySearcher searcher = (FieldActivitySearcher) getActivity();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        View view = inflater.inflate(R.layout.ds_search_fragment, null);
+        View view = inflater.inflate(R.layout.fa_search_fragment, null);
 
         jobCodeView = view.findViewById(R.id.jobCode);
         clientJobCodeView = view.findViewById(R.id.clientJobCode);
@@ -60,24 +60,23 @@ public class DSSearchFragment extends DialogFragment {
                 R.layout.spinner_item, years);
         yearSelect.setAdapter(yearAdapter);
 
-        String[] fromClients = new String[] {"#5 Easy", "Aaron Vorthman", "ABC Testing", "Adam Soyer"};
-        fromSelect = view.findViewById(R.id.fromSelect);
-        ArrayAdapter<String> fromAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, fromClients);
-        fromSelect.setAdapter(fromAdapter);
+        String[] jobTypes = new String[] {"Tillage", "Plant", "Spray", "Fertilizing", "Irrigate", "Other"};
+        typeSelect = view.findViewById(R.id.typeSelect);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.spinner_item, jobTypes);
+        typeSelect.setAdapter(typeAdapter);
 
-        String[] toClients = new String[] {"Willson Trucking", "Wilson Island State Recreation Area", "Witt Farms", "Zack Kennedy"};
-        toSelect = view.findViewById(R.id.toSelect);
-        ArrayAdapter<String> toAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, toClients);
-        toSelect.setAdapter(toAdapter);
+        String[] operations = new String[] {"Tom Kelley", "Wendl Feedlot, Inc.", "Eagle Acres Inc.", "Barry Farms"};
+        operationSelect = view.findViewById(R.id.operationSelect);
+        ArrayAdapter<String> operationAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.spinner_item, operations);
+        operationSelect.setAdapter(operationAdapter);
 
-        String[] products = new String[] {"Swine-Liquid-Nursery, 25lb.", "Swine-Liquid-Grow-finish, 150 lb. (Wet/Dry)", "Swine-Liquid-Grow-finish, 150 lb. (Dry Feed)", "Swine-Liquid-Grow-finish, 150 lb. (Earthen)"};
-        productSelect = view.findViewById(R.id.productSelect);
-        ArrayAdapter<String> productAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, products);
-        productSelect.setAdapter(productAdapter);
-
+        String[] farms = new String[] {"Hubbard", "Linda"};
+        farmSelect = view.findViewById(R.id.farmSelect);
+        ArrayAdapter<String> farmAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.spinner_item, farms);
+        farmSelect.setAdapter(farmAdapter);
 
         builder.setView(view)
                 .setPositiveButton(R.string.search, new DialogInterface.OnClickListener() {
@@ -106,16 +105,16 @@ public class DSSearchFragment extends DialogFragment {
                             clientJobCode = null;
                         }
 
-                        String fromOperation = fromSelect.getSelectedItem().toString();
-                        String toOperation = toSelect.getSelectedItem().toString();
-                        String product = productSelect.getSelectedItem().toString();
+                        String jobType = typeSelect.getSelectedItem().toString();
+                        String operation = operationSelect.getSelectedItem().toString();
+                        String farm = farmSelect.getSelectedItem().toString();
 
-                        searcher.searchDistributionSales(client, year, jobCode, clientJobCode, fromOperation, toOperation, product);
+                        searcher.searchFieldActivities(client, year, jobCode, clientJobCode, jobType, operation, farm);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DSSearchFragment.this.getDialog().cancel();
+                        FASearchFragment.this.getDialog().cancel();
                     }
                 });
         return builder.create();

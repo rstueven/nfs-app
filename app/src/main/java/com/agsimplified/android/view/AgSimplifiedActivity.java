@@ -1,4 +1,4 @@
-package com.agsimplified.android.views;
+package com.agsimplified.android.view;
 
 import android.Manifest;
 import android.app.Activity;

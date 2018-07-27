@@ -1,4 +1,4 @@
-package com.agsimplified.android.views.fieldactivity;
+package com.agsimplified.android.view.fieldactivity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.models.fieldactivity.FieldActivity;
+import com.agsimplified.android.model.fieldactivity.FieldActivity;
 
 import java.util.Locale;
 
