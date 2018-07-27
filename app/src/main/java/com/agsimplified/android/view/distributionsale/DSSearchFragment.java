@@ -48,34 +48,30 @@ public class DSSearchFragment extends DialogFragment {
         jobCodeView = view.findViewById(R.id.jobCode);
         clientJobCodeView = view.findViewById(R.id.clientJobCode);
 
+        // THIS SHOULD RETURN A CLIENT_ID
         String[] clients = new String[] {"Barry Farms", "Bary Kienast", "Bedrock Gravel", "Ben Andersen"};
         clientSelect = view.findViewById(R.id.clientSelect);
-        ArrayAdapter<String> clientAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, clients);
+        ArrayAdapter<String> clientAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, clients);
         clientSelect.setAdapter(clientAdapter);
 
         String[] years = new String[] {"2018", "2017", "2016", "2015"};
         yearSelect = view.findViewById(R.id.yearSelect);
-        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, years);
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, years);
         yearSelect.setAdapter(yearAdapter);
 
         String[] fromClients = new String[] {"#5 Easy", "Aaron Vorthman", "ABC Testing", "Adam Soyer"};
         fromSelect = view.findViewById(R.id.fromSelect);
-        ArrayAdapter<String> fromAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, fromClients);
+        ArrayAdapter<String> fromAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, fromClients);
         fromSelect.setAdapter(fromAdapter);
 
         String[] toClients = new String[] {"Willson Trucking", "Wilson Island State Recreation Area", "Witt Farms", "Zack Kennedy"};
         toSelect = view.findViewById(R.id.toSelect);
-        ArrayAdapter<String> toAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, toClients);
+        ArrayAdapter<String> toAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, toClients);
         toSelect.setAdapter(toAdapter);
 
         String[] products = new String[] {"Swine-Liquid-Nursery, 25lb.", "Swine-Liquid-Grow-finish, 150 lb. (Wet/Dry)", "Swine-Liquid-Grow-finish, 150 lb. (Dry Feed)", "Swine-Liquid-Grow-finish, 150 lb. (Earthen)"};
         productSelect = view.findViewById(R.id.productSelect);
-        ArrayAdapter<String> productAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_item, products);
+        ArrayAdapter<String> productAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, products);
         productSelect.setAdapter(productAdapter);
 
 
