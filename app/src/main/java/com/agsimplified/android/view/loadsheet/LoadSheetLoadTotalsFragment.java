@@ -49,7 +49,7 @@ public class LoadSheetLoadTotalsFragment extends Fragment {
             }
 
             TextView plannedAmount = view.findViewById(R.id.plannedAmount);
-            plannedAmount.setText(String.format(Locale.getDefault(), "%.2f", loadSheet.getPlannedAmount()));
+            plannedAmount.setText(String.format(Locale.getDefault(), "%.2f", loadSheet.getAmount()));
 
             yourLoadsView = view.findViewById(R.id.yourLoads);
             yourAmountView = view.findViewById(R.id.yourAmount);

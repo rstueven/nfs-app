@@ -50,10 +50,7 @@ public class MainActivity extends AgSimplifiedActivity
         fieldActivities.add(new FieldActivity(2049, 17171, null, 2018, "Fertilizing", "Shawn Jespersen", "Shawn Jespersen", "Grant", "GrantSmithS78a", 78.14, null, null));
     }
 
-    private SQLiteDatabase mDb;
     private ListView searchResultsView;
-    private List<LoadSheet> loadSheets = new ArrayList<>();
-    private LoadSheetAdapter loadSheetAdapter;
     private FieldActivityAdapter fieldActivitiesAdapter;
 
     @Override
@@ -62,7 +59,7 @@ public class MainActivity extends AgSimplifiedActivity
         Log.d("nfs", "MainActivity.onCreate()");
         setContentView(R.layout.main_activity);
 
-        mDb = DbOpenHelper.getInstance().getWritableDatabase();
+        SQLiteDatabase mDb = DbOpenHelper.getInstance().getWritableDatabase();
         // Force data load
         mDb.rawQuery("SELECT 1", null).close();
 
@@ -78,18 +75,22 @@ public class MainActivity extends AgSimplifiedActivity
 
     public void searchLoadSheets(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId) {
         Log.d("nfs", "searchLoadSheets(" + client + ", " + year + ", " + jobCode + ", " + clientJobCode + ", " + fromId + ", " + toId + ", " + productId + ")");
-        loadSheets = LoadSheet.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
-        loadSheetAdapter = new LoadSheetAdapter(this, loadSheets);
-        searchResultsView.setAdapter(loadSheetAdapter);
-        searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                LoadSheet loadSheet = (LoadSheet) adapterView.getItemAtPosition(i);
-                Intent intent = new Intent(MainActivity.this, LoadSheetActivity.class);
-                intent.putExtra("loadSheet", loadSheet);
-                startActivity(intent);
-            }
-        });
+        List<LoadSheet> loadSheets = LoadSheet.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
+        if (loadSheets.size() > 0) {
+            LoadSheetAdapter loadSheetAdapter = new LoadSheetAdapter(this, loadSheets);
+            searchResultsView.setAdapter(loadSheetAdapter);
+            searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    LoadSheet loadSheet = (LoadSheet) adapterView.getItemAtPosition(i);
+                    Intent intent = new Intent(MainActivity.this, LoadSheetActivity.class);
+                    intent.putExtra("loadSheet", loadSheet);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            Toast.makeText(this, "No load sheets found.", Toast.LENGTH_LONG).show();
+        }
     }
 
     class LoadSheetAdapter extends ArrayAdapter<LoadSheet> {
@@ -210,5 +211,7 @@ public class MainActivity extends AgSimplifiedActivity
         });
 
         queue.add(request);
+
+        DbOpenHelper.getInstance().close();
     }
 }

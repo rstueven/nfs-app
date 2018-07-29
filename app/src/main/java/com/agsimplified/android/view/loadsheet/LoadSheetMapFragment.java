@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
+import com.agsimplified.android.database.DistributionSale;
 import com.agsimplified.android.model.LoadSheet;
-import com.agsimplified.android.model.distributionsale.DistributionSale;
 import com.agsimplified.android.view.AgSimplifiedActivity;
 import com.agsimplified.android.view.DirectionsFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;

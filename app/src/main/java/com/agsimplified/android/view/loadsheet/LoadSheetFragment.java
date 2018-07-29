@@ -69,16 +69,16 @@ public class LoadSheetFragment extends Fragment {
             toView.setText(loadSheet.getToSite());
 
             TextView plannedView = view.findViewById(R.id.plannedAmount);
-            Double plannedAmount = loadSheet.getPlannedAmount();
-            if (plannedAmount != null) {
-                plannedView.setText(String.format(Locale.getDefault(), "%.2f", loadSheet.getPlannedAmount()));
-            }
+            Double plannedAmount = loadSheet.getAmount();
+//            if (plannedAmount != null) {
+                plannedView.setText(String.format(Locale.getDefault(), "%.2f", loadSheet.getAmount()));
+//            }
 
-            TextView hauledView = view.findViewById(R.id.hauledAmount);
-            Double hauledAmount = loadSheet.getHauledAmount();
-            if (hauledAmount != null) {
-                hauledView.setText(String.format(Locale.getDefault(), "%.2f", hauledAmount));
-            }
+//            TextView hauledView = view.findViewById(R.id.hauledAmount);
+//            Double hauledAmount = loadSheet.getHauledAmount();
+//            if (hauledAmount != null) {
+//                hauledView.setText(String.format(Locale.getDefault(), "%.2f", hauledAmount));
+//            }
 
             Button closeButton = view.findViewById(R.id.closeButton);
             closeButton.setOnClickListener(new View.OnClickListener() {
