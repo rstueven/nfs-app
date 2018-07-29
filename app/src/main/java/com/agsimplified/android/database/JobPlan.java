@@ -85,7 +85,7 @@ public class JobPlan {
     }
 
     public JobPlan(Cursor c) {
-        id = c.getInt(c.getColumnIndex("id"));
+        id = c.getInt(c.getColumnIndex("_id"));
         clientId = c.getInt(c.getColumnIndex("client_id"));
         description = c.getString(c.getColumnIndex("description"));
         status = c.getString(c.getColumnIndex("status"));

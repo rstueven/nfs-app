@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.DbOpenHelper;
+import com.agsimplified.android.model.LoadSheet;
 import com.agsimplified.android.model.distributionsale.DistributionSale;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
@@ -40,15 +41,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AgSimplifiedActivity
         implements DSSearchFragment.LoadSheetSearcher, FASearchFragment.FieldActivitySearcher {
-    private static final ArrayList<DistributionSale> distributionSales = new ArrayList<>();
-
-    static {
-        distributionSales.add(new DistributionSale(1, 17263, null, 2018, "Beef-Solid- Open Lot-Pen Scrape", "Natural Fertilizer Products, Inc.:Crossroads Stockpile - E Pen - Solid Manure", "Tom Barry:Moms NE100a", 700.0, 660.06));
-        distributionSales.add(new DistributionSale(2, 18014, null, 2018, "Beef-Solid- Open Lot-Pen Scrape", "Natural Fertilizer Products, Inc.:Koke Compost Site - Solid Manure", "Kevin Koke:Tower 144a", 0.0, 0.0));
-        distributionSales.add(new DistributionSale(3, 17379, null, 2018, "Dairy-Solid-Veal calves, 250 lb.", "Natural Fertilizer Products, Inc.:Compost Yard at Kirkman Farms Dairy - Solid Manure", "Gabe Hansen:GabeEF_E30a", 0.0, 179.59));
-        distributionSales.add(new DistributionSale(4, 17332, null, 2018, "Dairy-Solid-Veal calves, 250 lb.", "Natural Fertilizer Products, Inc.:Compost Yard at Kirkman Farms Dairy - Solid Manure", "Stoberl Farms Ltd:Bin Site E 169ac", 480.0, 616.21));
-    }
-
     private static final ArrayList<FieldActivity> fieldActivities = new ArrayList<>();
 
     static {
@@ -60,6 +52,7 @@ public class MainActivity extends AgSimplifiedActivity
 
     private SQLiteDatabase mDb;
     private ListView searchResultsView;
+    private ArrayList<LoadSheet> distributionSales = new ArrayList<>();
     private DistributionSaleAdapter distributionSaleAdapter;
     private FieldActivityAdapter fieldActivitiesAdapter;
 
@@ -84,7 +77,7 @@ public class MainActivity extends AgSimplifiedActivity
         newFragment.show(getFragmentManager(), "loadSheetSearch");
     }
 
-    public void searchDistributionSales(String client, int year, Integer jobCode, Integer clientJobCode, String fromOperation, String toOperation, String product) {
+    public void searchDistributionSales(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId) {
         searchResultsView.setAdapter(distributionSaleAdapter);
         searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,15 +90,15 @@ public class MainActivity extends AgSimplifiedActivity
         });
     }
 
-    class DistributionSaleAdapter extends ArrayAdapter<DistributionSale> {
-        DistributionSaleAdapter(Context context, ArrayList<DistributionSale> list) {
+    class DistributionSaleAdapter extends ArrayAdapter<LoadSheet> {
+        DistributionSaleAdapter(Context context, ArrayList<LoadSheet> list) {
             super(context, 0, list);
         }
 
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            DistributionSale distributionSale = getItem(position);
+            LoadSheet distributionSale = getItem(position);
             if (distributionSale == null) {
                 throw new IllegalStateException("null distributionSale");
             }
@@ -124,9 +117,9 @@ public class MainActivity extends AgSimplifiedActivity
             jobCodeView.setText(distributionSale.getJobCodeString());
             clientJobCodeView.setText(distributionSale.getClientJobCodeString());
             yearView.setText(distributionSale.getYearString());
-            productView.setText(distributionSale.getProduct());
-            fromView.setText(distributionSale.getFromOperation());
-            toView.setText(distributionSale.getToOperation());
+            productView.setText(distributionSale.getProductName());
+            fromView.setText(distributionSale.getFromSite());
+            toView.setText(distributionSale.getToSite());
 
             convertView.setBackgroundColor(Color.parseColor(position % 2 == 0 ? "#ffffff" : "#e0e0e0"));
 

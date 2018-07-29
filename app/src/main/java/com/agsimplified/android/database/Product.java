@@ -82,6 +82,23 @@ public class Product {
         return cv;
     }
 
+    public static List<Product> all() {
+        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Product> list = new ArrayList<>();
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                list.add(new Product(cursor));
+            }
+
+            cursor.close();
+        }
+
+        return list;
+    }
+
     public int getId() {
         return id;
     }

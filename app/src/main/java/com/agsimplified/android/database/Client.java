@@ -135,6 +135,23 @@ public class Client {
         return clientList.toArray(clientArray);
     }
 
+    public static List<Client> all() {
+        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Client> list = new ArrayList<>();
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                list.add(new Client(cursor));
+            }
+
+            cursor.close();
+        }
+
+        return list;
+    }
+
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);

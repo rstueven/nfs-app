@@ -5,7 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import com.agsimplified.android.database.Client;
 import com.agsimplified.android.database.DbOpenHelper;
+import com.agsimplified.android.database.DistributionSale;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,23 @@ public class LoadSheet {
         productName = cursor.getString(cursor.getColumnIndex("product_name"));
         fromSite = cursor.getString(cursor.getColumnIndex("from_site"));
         toSite = cursor.getString(cursor.getColumnIndex("to_site"));
+    }
+
+    public static List<String> allYears() {
+        String sql = "SELECT DISTINCT year FROM " + DistributionSale.TABLE_NAME + " ORDER BY year DESC";
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        List<String> list = new ArrayList<>();
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                list.add(Integer.toString(cursor.getInt(cursor.getColumnIndex("year"))));
+            }
+
+            cursor.close();
+        }
+
+        return list;
     }
 
     @SuppressLint("DefaultLocale")
@@ -116,6 +135,10 @@ public class LoadSheet {
         return jobCode;
     }
 
+    public String getJobCodeString() {
+        return Integer.toString(jobCode);
+    }
+
     public void setJobCode(int jobCode) {
         this.jobCode = jobCode;
     }
@@ -124,12 +147,20 @@ public class LoadSheet {
         return clientJobCode;
     }
 
+    public String getClientJobCodeString() {
+        return Integer.toString(clientJobCode);
+    }
+
     public void setClientJobCode(int clientJobCode) {
         this.clientJobCode = clientJobCode;
     }
 
     public int getYear() {
         return year;
+    }
+
+    public String getYearString() {
+        return Integer.toString(year);
     }
 
     public void setYear(int year) {

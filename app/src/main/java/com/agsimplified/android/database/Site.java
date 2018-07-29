@@ -115,7 +115,7 @@ public class Site {
     }
 
     public Site(Cursor c) {
-        id = c.getInt(c.getColumnIndex("id"));
+        id = c.getInt(c.getColumnIndex("_id"));
         name = c.getString(c.getColumnIndex("name"));
         stateId = c.getString(c.getColumnIndex("state_id"));
         address1 = c.getString(c.getColumnIndex("address_1"));
@@ -157,6 +157,23 @@ public class Site {
 
         Site[] siteArray = new Site[siteList.size()];
         return siteList.toArray(siteArray);
+    }
+
+    public static List<Site> all() {
+        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Site> list = new ArrayList<>();
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                list.add(new Site(cursor));
+            }
+
+            cursor.close();
+        }
+
+        return list;
     }
 
     public ContentValues getContentValues() {

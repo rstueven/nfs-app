@@ -12,6 +12,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.agsimplified.android.R;
+import com.agsimplified.android.database.Client;
+import com.agsimplified.android.database.Product;
+import com.agsimplified.android.database.Site;
+import com.agsimplified.android.model.LoadSheet;
+
+import java.util.List;
 
 /**
  * Created by rstueven on 2/27/18.
@@ -29,7 +35,7 @@ public class DSSearchFragment extends DialogFragment {
     private Spinner productSelect;
 
     public interface LoadSheetSearcher {
-        void searchDistributionSales(String client, int year, Integer jobCode, Integer clientJobCode, String fromOperation, String toOperation, String product);
+        void searchDistributionSales(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId);
     }
 
     public DSSearchFragment() {
@@ -48,30 +54,29 @@ public class DSSearchFragment extends DialogFragment {
         jobCodeView = view.findViewById(R.id.jobCode);
         clientJobCodeView = view.findViewById(R.id.clientJobCode);
 
-        // THIS SHOULD RETURN A CLIENT_ID
-        String[] clients = new String[] {"Barry Farms", "Bary Kienast", "Bedrock Gravel", "Ben Andersen"};
+        List<Client> clients = Client.all();
         clientSelect = view.findViewById(R.id.clientSelect);
-        ArrayAdapter<String> clientAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, clients);
+        ArrayAdapter<Client> clientAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, clients);
         clientSelect.setAdapter(clientAdapter);
 
-        String[] years = new String[] {"2018", "2017", "2016", "2015"};
+        List<String> years = LoadSheet.allYears();
         yearSelect = view.findViewById(R.id.yearSelect);
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, years);
         yearSelect.setAdapter(yearAdapter);
 
-        String[] fromClients = new String[] {"#5 Easy", "Aaron Vorthman", "ABC Testing", "Adam Soyer"};
+        List<Site> fromSites = Site.all();
         fromSelect = view.findViewById(R.id.fromSelect);
-        ArrayAdapter<String> fromAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, fromClients);
+        ArrayAdapter<Site> fromAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, fromSites);
         fromSelect.setAdapter(fromAdapter);
 
-        String[] toClients = new String[] {"Willson Trucking", "Wilson Island State Recreation Area", "Witt Farms", "Zack Kennedy"};
+        List<Site> toSites = Site.all();
         toSelect = view.findViewById(R.id.toSelect);
-        ArrayAdapter<String> toAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, toClients);
+        ArrayAdapter<Site> toAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, toSites);
         toSelect.setAdapter(toAdapter);
 
-        String[] products = new String[] {"Swine-Liquid-Nursery, 25lb.", "Swine-Liquid-Grow-finish, 150 lb. (Wet/Dry)", "Swine-Liquid-Grow-finish, 150 lb. (Dry Feed)", "Swine-Liquid-Grow-finish, 150 lb. (Earthen)"};
+        List<Product> products = Product.all();
         productSelect = view.findViewById(R.id.productSelect);
-        ArrayAdapter<String> productAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, products);
+        ArrayAdapter<Product> productAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, products);
         productSelect.setAdapter(productAdapter);
 
 
@@ -79,13 +84,13 @@ public class DSSearchFragment extends DialogFragment {
                 .setPositiveButton(R.string.search, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        String client = clientSelect.getSelectedItem().toString();
+                        int clientId = ((Client)clientSelect.getSelectedItem()).getId();
 
-                        int year;
+                        Integer year;
                         try {
                             year = Integer.parseInt(yearSelect.getSelectedItem().toString());
                         } catch (NumberFormatException e) {
-                            year = -1; // This probably isn't right.
+                            year = null;
                         }
 
                         Integer jobCode;
@@ -102,11 +107,28 @@ public class DSSearchFragment extends DialogFragment {
                             clientJobCode = null;
                         }
 
-                        String fromOperation = fromSelect.getSelectedItem().toString();
-                        String toOperation = toSelect.getSelectedItem().toString();
-                        String product = productSelect.getSelectedItem().toString();
+                        Integer fromId;
+                        try {
+                            fromId = Integer.parseInt(fromSelect.getSelectedItem().toString());
+                        } catch (NumberFormatException e) {
+                            fromId = null;
+                        }
 
-                        searcher.searchDistributionSales(client, year, jobCode, clientJobCode, fromOperation, toOperation, product);
+                        Integer toId;
+                        try {
+                            toId = Integer.parseInt(toSelect.getSelectedItem().toString());
+                        } catch (NumberFormatException e) {
+                            toId = null;
+                        }
+
+                        Integer productId;
+                        try {
+                            productId = Integer.parseInt(productSelect.getSelectedItem().toString());
+                        } catch (NumberFormatException e) {
+                            productId = null;
+                        }
+
+                        searcher.searchDistributionSales(clientId, year, jobCode, clientJobCode, fromId, toId, productId);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

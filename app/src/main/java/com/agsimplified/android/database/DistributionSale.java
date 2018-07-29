@@ -22,7 +22,7 @@ import java.util.List;
 public class DistributionSale {
     public DistributionSale() {}
 
-    static String TABLE_NAME = "distribution_sales";
+    public static String TABLE_NAME = "distribution_sales";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "job_plan_id INTEGER",
