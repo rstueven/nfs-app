@@ -1,4 +1,4 @@
-package com.agsimplified.android.view.distributionsale;
+package com.agsimplified.android.view.loadsheet;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -54,7 +54,7 @@ public class LoadSheetSearchFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        View view = inflater.inflate(R.layout.ds_search_fragment, null);
+        View view = inflater.inflate(R.layout.load_sheet_search_fragment, null);
 
         jobCodeView = view.findViewById(R.id.jobCode);
         clientJobCodeView = view.findViewById(R.id.clientJobCode);

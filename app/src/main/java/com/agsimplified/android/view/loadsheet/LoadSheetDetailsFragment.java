@@ -1,4 +1,4 @@
-package com.agsimplified.android.view.distributionsale;
+package com.agsimplified.android.view.loadsheet;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,35 +10,35 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.distributionsale.DistributionSale;
+import com.agsimplified.android.model.LoadSheet;
 
 /**
  * Created by rstueven on 3/13/18.
  * <p>distributionSale Job details and job sheets</p>
  */
 
-public class DSDetailsFragment extends Fragment {
-    DSJobSetupFragment jobSetupFragment;
-    DSLoadTotalsFragment loadTotalsFragment;
-    DSJobDetailsFragment jobDetailsFragment;
+public class LoadSheetDetailsFragment extends Fragment {
+    LoadSheetJobSetupFragment jobSetupFragment;
+    LoadSheetLoadTotalsFragment loadTotalsFragment;
+    LoadSheetJobDetailsFragment jobDetailsFragment;
 
-    public static DSDetailsFragment newInstance(DistributionSale distributionSale) {
-        Log.d("nfs", "DSDetailsFragment.newInstance()");
-        if (distributionSale == null) {
-            throw new IllegalArgumentException("null distributionSale");
+    public static LoadSheetDetailsFragment newInstance(LoadSheet loadSheet) {
+        Log.d("nfs", "LoadSheetDetailsFragment.newInstance()");
+        if (loadSheet == null) {
+            throw new IllegalArgumentException("null loadSheet");
         }
 
-        DSDetailsFragment frag = new DSDetailsFragment();
+        LoadSheetDetailsFragment frag = new LoadSheetDetailsFragment();
         Bundle args = new Bundle();
-        args.putSerializable("distributionSale", distributionSale);
+        args.putSerializable("loadSheet", loadSheet);
         frag.setArguments(args);
         return frag;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("nfs", "DSDetailsFragment.onCreateView()");
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.ds_details_fragment, container, false);
+        Log.d("nfs", "LoadSheetDetailsFragment.onCreateView()");
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.load_sheet_details_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
@@ -46,18 +46,18 @@ public class DSDetailsFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-            DistributionSale distributionSale = (DistributionSale) args.getSerializable("distributionSale");
-            if (distributionSale == null) {
-                throw new IllegalStateException("null distributionSale");
+            LoadSheet loadSheet = (LoadSheet) args.getSerializable("loadSheet");
+            if (loadSheet == null) {
+                throw new IllegalStateException("null loadSheet");
             }
 
             FragmentManager fm = getChildFragmentManager();
 
-            jobSetupFragment = DSJobSetupFragment.newInstance(distributionSale);
+            jobSetupFragment = LoadSheetJobSetupFragment.newInstance(loadSheet);
 
-            loadTotalsFragment = DSLoadTotalsFragment.newInstance(distributionSale);
+            loadTotalsFragment = LoadSheetLoadTotalsFragment.newInstance(loadSheet);
 
-            jobDetailsFragment = DSJobDetailsFragment.newInstance(distributionSale);
+            jobDetailsFragment = LoadSheetJobDetailsFragment.newInstance(loadSheet);
 
             fm.beginTransaction()
                     .add(R.id.jobSetupFrame, jobSetupFragment, "jobSetup")

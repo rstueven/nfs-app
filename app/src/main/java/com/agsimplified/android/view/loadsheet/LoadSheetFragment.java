@@ -1,4 +1,4 @@
-package com.agsimplified.android.view.distributionsale;
+package com.agsimplified.android.view.loadsheet;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,71 +11,71 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.distributionsale.DistributionSale;
+import com.agsimplified.android.model.LoadSheet;
 
 import java.util.Locale;
 
-public class DSLoadSheetFragment extends Fragment {
-    public static DSLoadSheetFragment newInstance(DistributionSale distributionSale) {
-        if (distributionSale == null) {
-            throw new IllegalArgumentException("null distributionSale");
+public class LoadSheetFragment extends Fragment {
+    public static LoadSheetFragment newInstance(LoadSheet loadSheet) {
+        if (loadSheet == null) {
+            throw new IllegalArgumentException("null loadSheet");
         }
 
-        DSLoadSheetFragment frag = new DSLoadSheetFragment();
+        LoadSheetFragment frag = new LoadSheetFragment();
         Bundle args = new Bundle();
-        args.putSerializable("distributionSale", distributionSale);
+        args.putSerializable("loadSheet", loadSheet);
         frag.setArguments(args);
         return frag;
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(
-                R.layout.ds_load_sheet_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.load_sheet_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
             if (args == null) {
                 throw new IllegalStateException("null args");
             }
-            DistributionSale distributionSale = (DistributionSale) args.getSerializable("distributionSale");
-            if (distributionSale == null) {
-                throw new IllegalStateException("null distributionSale");
+
+
+            LoadSheet loadSheet = (LoadSheet) args.getSerializable("loadSheet");
+            if (loadSheet == null) {
+                throw new IllegalStateException("null loadSheet");
             }
 
             TextView jobCodeView = view.findViewById(R.id.jobCode);
-            Integer jobCode = distributionSale.getJobCode();
-            if (jobCode != null) {
+            Integer jobCode = loadSheet.getJobCode();
+//            if (jobCode != null) {
                 jobCodeView.setText(String.format(Locale.getDefault(), "%d", jobCode));
-            }
+//            }
 
             TextView clientJobCodeView = view.findViewById(R.id.clientJobCode);
-            Integer clientJobCode = distributionSale.getClientJobCode();
-            if (clientJobCode != null) {
-                clientJobCodeView.setText(String.format(Locale.getDefault(), "%d", distributionSale.getClientJobCode()));
-            }
+            Integer clientJobCode = loadSheet.getClientJobCode();
+//            if (clientJobCode != null) {
+                clientJobCodeView.setText(String.format(Locale.getDefault(), "%d", loadSheet.getClientJobCode()));
+//            }
 
             TextView yearView = view.findViewById(R.id.year);
-            yearView.setText(distributionSale.getYearString());
+            yearView.setText(loadSheet.getYearString());
 
             TextView productView = view.findViewById(R.id.product);
-            productView.setText(distributionSale.getProduct());
+            productView.setText(loadSheet.getProductName());
 
             TextView fromView = view.findViewById(R.id.fromOperation);
-            fromView.setText(distributionSale.getFromOperation());
+            fromView.setText(loadSheet.getFromSite());
 
             TextView toView = view.findViewById(R.id.toOperation);
-            toView.setText(distributionSale.getToOperation());
+            toView.setText(loadSheet.getToSite());
 
             TextView plannedView = view.findViewById(R.id.plannedAmount);
-            Double plannedAmount = distributionSale.getPlannedAmount();
+            Double plannedAmount = loadSheet.getPlannedAmount();
             if (plannedAmount != null) {
-                plannedView.setText(String.format(Locale.getDefault(), "%.2f", distributionSale.getPlannedAmount()));
+                plannedView.setText(String.format(Locale.getDefault(), "%.2f", loadSheet.getPlannedAmount()));
             }
 
             TextView hauledView = view.findViewById(R.id.hauledAmount);
-            Double hauledAmount = distributionSale.getHauledAmount();
+            Double hauledAmount = loadSheet.getHauledAmount();
             if (hauledAmount != null) {
                 hauledView.setText(String.format(Locale.getDefault(), "%.2f", hauledAmount));
             }

@@ -1,4 +1,4 @@
-package com.agsimplified.android.view.distributionsale;
+package com.agsimplified.android.view.loadsheet;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,24 +10,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.distributionsale.DistributionSale;
+import com.agsimplified.android.model.LoadSheet;
 
 import java.util.Locale;
 
-public class DSLoadTotalsFragment extends Fragment {
+public class LoadSheetLoadTotalsFragment extends Fragment {
     TextView yourLoadsView;
     TextView yourAmountView;
     TextView totalLoadsView;
     TextView totalAmountView;
 
-    public static DSLoadTotalsFragment newInstance(DistributionSale distributionSale) {
-        if (distributionSale == null) {
-            throw new IllegalArgumentException("null distributionSale");
+    public static LoadSheetLoadTotalsFragment newInstance(LoadSheet loadSheet) {
+        if (loadSheet == null) {
+            throw new IllegalArgumentException("null loadSheet");
         }
 
-        DSLoadTotalsFragment fragment = new DSLoadTotalsFragment();
+        LoadSheetLoadTotalsFragment fragment = new LoadSheetLoadTotalsFragment();
         Bundle args = new Bundle();
-        args.putSerializable("distributionSale", distributionSale);
+        args.putSerializable("loadSheet", loadSheet);
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,7 +35,7 @@ public class DSLoadTotalsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.ds_load_totals_fragment, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.load_sheet_load_totals_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
@@ -43,13 +43,13 @@ public class DSLoadTotalsFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-            DistributionSale distributionSale = (DistributionSale) args.getSerializable("distributionSale");
-            if (distributionSale == null) {
-                throw new IllegalStateException("null distributionSale");
+            LoadSheet loadSheet = (LoadSheet) args.getSerializable("loadSheet");
+            if (loadSheet == null) {
+                throw new IllegalStateException("null loadSheet");
             }
 
             TextView plannedAmount = view.findViewById(R.id.plannedAmount);
-            plannedAmount.setText(String.format(Locale.getDefault(), "%.2f", distributionSale.getPlannedAmount()));
+            plannedAmount.setText(String.format(Locale.getDefault(), "%.2f", loadSheet.getPlannedAmount()));
 
             yourLoadsView = view.findViewById(R.id.yourLoads);
             yourAmountView = view.findViewById(R.id.yourAmount);
@@ -61,7 +61,7 @@ public class DSLoadTotalsFragment extends Fragment {
     }
 
     public void addLoad(float amount) {
-        Log.d("nfs", "DSDetailsFragment(" + amount + ")");
+        Log.d("nfs", "LoadSheetDetailsFragment(" + amount + ")");
         int yourLoads = Integer.parseInt(yourLoadsView.getText().toString());
         yourLoads += 1;
         yourLoadsView.setText(String.format(Locale.getDefault(), "%d", yourLoads));

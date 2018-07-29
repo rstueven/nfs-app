@@ -24,8 +24,8 @@ import com.agsimplified.android.model.LoadSheet;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
 import com.agsimplified.android.util.SharedPref;
-import com.agsimplified.android.view.distributionsale.DSActivity;
-import com.agsimplified.android.view.distributionsale.LoadSheetSearchFragment;
+import com.agsimplified.android.view.loadsheet.LoadSheetActivity;
+import com.agsimplified.android.view.loadsheet.LoadSheetSearchFragment;
 import com.agsimplified.android.view.fieldactivity.FAActivity;
 import com.agsimplified.android.view.fieldactivity.FASearchFragment;
 import com.android.volley.Request;
@@ -85,7 +85,7 @@ public class MainActivity extends AgSimplifiedActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 LoadSheet loadSheet = (LoadSheet) adapterView.getItemAtPosition(i);
-                Intent intent = new Intent(MainActivity.this, DSActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoadSheetActivity.class);
                 intent.putExtra("loadSheet", loadSheet);
                 startActivity(intent);
             }
@@ -106,7 +106,7 @@ public class MainActivity extends AgSimplifiedActivity
             }
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.ds_item, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.load_sheet_item, parent, false);
             }
 
             TextView jobCodeView = convertView.findViewById(R.id.jobCode);

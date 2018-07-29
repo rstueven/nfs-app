@@ -1,4 +1,4 @@
-package com.agsimplified.android.view.distributionsale;
+package com.agsimplified.android.view.loadsheet;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,23 +10,23 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.distributionsale.DistributionSale;
+import com.agsimplified.android.model.LoadSheet;
 
-public class DSJobDetailsFragment extends Fragment {
+public class LoadSheetJobDetailsFragment extends Fragment {
     EditText timeView;
     EditText amountView;
     EditText grossView;
     EditText tareView;
     EditText scaleTicketView;
 
-    public static DSJobDetailsFragment newInstance(DistributionSale distributionSale) {
-        if (distributionSale == null) {
-            throw new IllegalArgumentException("null distributionSale");
+    public static LoadSheetJobDetailsFragment newInstance(LoadSheet loadSheet) {
+        if (loadSheet == null) {
+            throw new IllegalArgumentException("null loadSheet");
         }
 
-        DSJobDetailsFragment fragment = new DSJobDetailsFragment();
+        LoadSheetJobDetailsFragment fragment = new LoadSheetJobDetailsFragment();
         Bundle args = new Bundle();
-        args.putSerializable("distributionSale", distributionSale);
+        args.putSerializable("loadSheet", loadSheet);
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,7 +34,7 @@ public class DSJobDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.ds_job_details_fragment, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.load_sheet_job_details_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
@@ -42,9 +42,9 @@ public class DSJobDetailsFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-            DistributionSale distributionSale = (DistributionSale) args.getSerializable("distributionSale");
-            if (distributionSale == null) {
-                throw new IllegalStateException("null distributionSale");
+            LoadSheet loadSheet = (LoadSheet) args.getSerializable("loadSheet");
+            if (loadSheet == null) {
+                throw new IllegalStateException("null loadSheet");
             }
 
         }
@@ -64,7 +64,7 @@ public class DSJobDetailsFragment extends Fragment {
     private View.OnClickListener addLoadListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            DSDetailsFragment detailsFragment = (DSDetailsFragment)getParentFragment();
+            LoadSheetDetailsFragment detailsFragment = (LoadSheetDetailsFragment)getParentFragment();
             float amount = Float.parseFloat(amountView.getText().toString());
             detailsFragment.addLoad(amount);
         }

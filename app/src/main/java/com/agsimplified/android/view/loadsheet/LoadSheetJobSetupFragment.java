@@ -1,4 +1,4 @@
-package com.agsimplified.android.view.distributionsale;
+package com.agsimplified.android.view.loadsheet;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,24 +10,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.distributionsale.DistributionSale;
+import com.agsimplified.android.model.LoadSheet;
 
-public class DSJobSetupFragment extends Fragment {
-    public static DSJobSetupFragment newInstance(DistributionSale distributionSale) {
-        if (distributionSale == null) {
-            throw new IllegalArgumentException("null distributionSale");
+public class LoadSheetJobSetupFragment extends Fragment {
+    public static LoadSheetJobSetupFragment newInstance(LoadSheet loadSheet) {
+        if (loadSheet == null) {
+            throw new IllegalArgumentException("null loadSheet");
         }
 
-        DSJobSetupFragment fragment = new DSJobSetupFragment();
+        LoadSheetJobSetupFragment fragment = new LoadSheetJobSetupFragment();
         Bundle args = new Bundle();
-        args.putSerializable("distributionSale", distributionSale);
+        args.putSerializable("loadSheet", loadSheet);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.ds_job_setup_fragment, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.load_sheet_job_setup_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
@@ -35,9 +35,9 @@ public class DSJobSetupFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-            DistributionSale distributionSale = (DistributionSale) args.getSerializable("distributionSale");
-            if (distributionSale == null) {
-                throw new IllegalStateException("null distributionSale");
+            LoadSheet loadSheet = (LoadSheet) args.getSerializable("loadSheet");
+            if (loadSheet == null) {
+                throw new IllegalStateException("null loadSheet");
             }
 
             String[] loaderOperators = new String[] {"Natural Fertilizer Products Inc.", "Performance Grading"};

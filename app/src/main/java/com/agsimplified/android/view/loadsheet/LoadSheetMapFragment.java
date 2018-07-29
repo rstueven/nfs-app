@@ -1,4 +1,4 @@
-package com.agsimplified.android.view.distributionsale;
+package com.agsimplified.android.view.loadsheet;
 
 import android.annotation.SuppressLint;
 import android.location.Location;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
+import com.agsimplified.android.model.LoadSheet;
 import com.agsimplified.android.model.distributionsale.DistributionSale;
 import com.agsimplified.android.view.AgSimplifiedActivity;
 import com.agsimplified.android.view.DirectionsFragment;
@@ -28,27 +29,27 @@ import com.google.android.gms.maps.model.LatLng;
  * <p>distributionSale Map and Directions</p>
  */
 
-public class DSMapFragment extends Fragment
+public class LoadSheetMapFragment extends Fragment
         implements OnMapReadyCallback, AgSimplifiedActivity.LocationListener {
     private GoogleMap mMap;
 
-    public static DSMapFragment newInstance(DistributionSale distributionSale) {
-        Log.d("nfs", "DSMapFragment.newInstance()");
-        if (distributionSale == null) {
-            throw new IllegalArgumentException("null distributionSale");
+    public static LoadSheetMapFragment newInstance(LoadSheet loadSheet) {
+        Log.d("nfs", "LoadSheetMapFragment.newInstance()");
+        if (loadSheet == null) {
+            throw new IllegalArgumentException("null loadSheet");
         }
 
-        DSMapFragment frag = new DSMapFragment();
+        LoadSheetMapFragment frag = new LoadSheetMapFragment();
         Bundle args = new Bundle();
-        args.putSerializable("distributionSale", distributionSale);
+        args.putSerializable("loadSheet", loadSheet);
         frag.setArguments(args);
         return frag;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("nfs", "DSMapFragment.onCreateView()");
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.ds_map_fragment, container, false);
+        Log.d("nfs", "LoadSheetMapFragment.onCreateView()");
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.load_sheet_map_fragment, container, false);
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
@@ -81,7 +82,7 @@ public class DSMapFragment extends Fragment
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap map) {
-        Log.d("nfs", "DSMapFragment.onMapReady()");
+        Log.d("nfs", "LoadSheetMapFragment.onMapReady()");
 
         mMap = map;
 
@@ -109,8 +110,8 @@ public class DSMapFragment extends Fragment
 
     @Override
     public void onLocationUpdated(Location location) {
-        Log.d("nfs", "DSMapFragment.onLocationUpdated()");
-        Log.d("nfs", "distributionSale MAP FRAG LOCATION");
+        Log.d("nfs", "LoadSheetMapFragment.onLocationUpdated()");
+        Log.d("nfs", "LOAD SHEET MAP FRAG LOCATION");
         if (location != null) {
             Log.d("nfs", location.toString());
             mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
