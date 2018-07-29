@@ -5,17 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.agsimplified.android.database.Client;
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.database.DistributionSale;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadSheet {
-    private static final String SQL = "SELECT clients.name AS client_name, job_plans.job_code, job_plans.client_job_code, distribution_sales.year, distribution_sales.amount, distribution_sales.planned_acres, products.name AS product_name, from_site.name AS from_site, to_site.name AS to_site FROM clients JOIN job_plans ON job_plans.client_id = clients._id JOIN distribution_sales ON distribution_sales.job_plan_id = job_plans._id JOIN products ON products._id = distribution_sales.product_id JOIN sites from_site ON from_site._id = distribution_sales.from_id JOIN sites to_site ON to_site._id = distribution_sales.from_id";
-
-    private int clientName;
+public class LoadSheet implements Serializable {
     private int jobCode;
     private int clientJobCode;
     private int year;
@@ -29,8 +26,20 @@ public class LoadSheet {
         populateFromCursor(cursor);
     }
 
+    private static final String SQL_ALL = "SELECT " +
+            "clients.name AS client_name, " +
+            "job_plans.job_code, job_plans.client_job_code, " +
+            "distribution_sales.year, distribution_sales.amount, distribution_sales.planned_acres, " +
+            "products.name AS product_name, " +
+            "from_site.name AS from_site, to_site.name AS to_site " +
+            "FROM clients JOIN job_plans ON job_plans.client_id = clients._id " +
+            "JOIN distribution_sales ON distribution_sales.job_plan_id = job_plans._id " +
+            "JOIN products ON products._id = distribution_sales.product_id " +
+            "JOIN sites from_site ON from_site._id = distribution_sales.from_id " +
+            "JOIN sites to_site ON to_site._id = distribution_sales.from_id ";
+
     public LoadSheet(int dsId) {
-        String sql = SQL + " WHERE distribution_sales._id = ?";
+        String sql = SQL_ALL + " WHERE distribution_sales._id = ?";
         @SuppressLint("DefaultLocale") String[] selectionArgs = {String.format("%d", dsId)};
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, selectionArgs);
@@ -75,7 +84,7 @@ public class LoadSheet {
         List<LoadSheet> result = new ArrayList<>();
         List<String> searchTerms = new ArrayList<>();
         List<String> selectionArgs = new ArrayList<>();
-        String sql = SQL;
+        String sql = SQL_ALL;
 
         if (searchClientId != null) {
             searchTerms.add("clients._id = ?");

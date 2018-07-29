@@ -27,7 +27,7 @@
         android:width="384dp"
         android:height="96dp"
         android:background="@color/colorPrimary"
-        android:onClick="showDistributionSaleSearch"
+        android:onClick="showLoadSheetSearch"
         android:text="@string/load_sheets"
         android:textColor="@android:color/white"
         android:textSize="30sp"

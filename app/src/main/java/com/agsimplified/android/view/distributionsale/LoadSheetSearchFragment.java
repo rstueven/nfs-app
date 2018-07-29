@@ -30,7 +30,7 @@ import java.util.List;
  * Set search parameters.
  */
 
-public class DSSearchFragment extends DialogFragment {
+public class LoadSheetSearchFragment extends DialogFragment {
     private Spinner clientSelect;
     private Spinner yearSelect;
     private EditText jobCodeView;
@@ -40,10 +40,10 @@ public class DSSearchFragment extends DialogFragment {
     private Spinner productSelect;
 
     public interface LoadSheetSearcher {
-        void searchDistributionSales(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId);
+        void searchLoadSheets(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId);
     }
 
-    public DSSearchFragment() {
+    public LoadSheetSearchFragment() {
         super();
     }
 
@@ -127,12 +127,12 @@ public class DSSearchFragment extends DialogFragment {
                         Product product = ((Product)productSelect.getSelectedItem());
                         Integer productId = (product == null) ? null : product.getId();
 
-                        searcher.searchDistributionSales(clientId, year, jobCode, clientJobCode, fromId, toId, productId);
+                        searcher.searchLoadSheets(clientId, year, jobCode, clientJobCode, fromId, toId, productId);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DSSearchFragment.this.getDialog().cancel();
+                        LoadSheetSearchFragment.this.getDialog().cancel();
                     }
                 });
         return builder.create();

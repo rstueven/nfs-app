@@ -21,12 +21,11 @@ import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.model.LoadSheet;
-import com.agsimplified.android.model.distributionsale.DistributionSale;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
 import com.agsimplified.android.util.SharedPref;
 import com.agsimplified.android.view.distributionsale.DSActivity;
-import com.agsimplified.android.view.distributionsale.DSSearchFragment;
+import com.agsimplified.android.view.distributionsale.LoadSheetSearchFragment;
 import com.agsimplified.android.view.fieldactivity.FAActivity;
 import com.agsimplified.android.view.fieldactivity.FASearchFragment;
 import com.android.volley.Request;
@@ -41,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AgSimplifiedActivity
-        implements DSSearchFragment.LoadSheetSearcher, FASearchFragment.FieldActivitySearcher {
+        implements LoadSheetSearchFragment.LoadSheetSearcher, FASearchFragment.FieldActivitySearcher {
     private static final ArrayList<FieldActivity> fieldActivities = new ArrayList<>();
 
     static {
@@ -53,8 +52,8 @@ public class MainActivity extends AgSimplifiedActivity
 
     private SQLiteDatabase mDb;
     private ListView searchResultsView;
-    private List<LoadSheet> distributionSales = new ArrayList<>();
-    private DistributionSaleAdapter distributionSaleAdapter;
+    private List<LoadSheet> loadSheets = new ArrayList<>();
+    private LoadSheetAdapter loadSheetAdapter;
     private FieldActivityAdapter fieldActivitiesAdapter;
 
     @Override
@@ -72,38 +71,38 @@ public class MainActivity extends AgSimplifiedActivity
         fieldActivitiesAdapter = new FieldActivityAdapter(this, fieldActivities);
     }
 
-    public void showDistributionSaleSearch(View v) {
-        DialogFragment newFragment = new DSSearchFragment();
+    public void showLoadSheetSearch(View v) {
+        DialogFragment newFragment = new LoadSheetSearchFragment();
         newFragment.show(getFragmentManager(), "loadSheetSearch");
     }
 
-    public void searchDistributionSales(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId) {
-        Log.d("nfs", "searchDistributionSales(" + client + ", " + year + ", " + jobCode + ", " + clientJobCode + ", " + fromId + ", " + toId + ", " + productId + ")");
-        distributionSales = LoadSheet.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
-        distributionSaleAdapter = new DistributionSaleAdapter(this, distributionSales);
-        searchResultsView.setAdapter(distributionSaleAdapter);
+    public void searchLoadSheets(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId) {
+        Log.d("nfs", "searchLoadSheets(" + client + ", " + year + ", " + jobCode + ", " + clientJobCode + ", " + fromId + ", " + toId + ", " + productId + ")");
+        loadSheets = LoadSheet.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
+        loadSheetAdapter = new LoadSheetAdapter(this, loadSheets);
+        searchResultsView.setAdapter(loadSheetAdapter);
         searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DistributionSale distributionSale = (DistributionSale) adapterView.getItemAtPosition(i);
+                LoadSheet loadSheet = (LoadSheet) adapterView.getItemAtPosition(i);
                 Intent intent = new Intent(MainActivity.this, DSActivity.class);
-                intent.putExtra("distributionSale", distributionSale);
+                intent.putExtra("loadSheet", loadSheet);
                 startActivity(intent);
             }
         });
     }
 
-    class DistributionSaleAdapter extends ArrayAdapter<LoadSheet> {
-        DistributionSaleAdapter(Context context, List<LoadSheet> list) {
+    class LoadSheetAdapter extends ArrayAdapter<LoadSheet> {
+        LoadSheetAdapter(Context context, List<LoadSheet> list) {
             super(context, 0, list);
         }
 
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            LoadSheet distributionSale = getItem(position);
-            if (distributionSale == null) {
-                throw new IllegalStateException("null distributionSale");
+            LoadSheet loadSheet = getItem(position);
+            if (loadSheet == null) {
+                throw new IllegalStateException("null loadSheet");
             }
 
             if (convertView == null) {
@@ -117,12 +116,12 @@ public class MainActivity extends AgSimplifiedActivity
             TextView fromView = convertView.findViewById(R.id.fromOperation);
             TextView toView = convertView.findViewById(R.id.toOperation);
 
-            jobCodeView.setText(distributionSale.getJobCodeString());
-            clientJobCodeView.setText(distributionSale.getClientJobCodeString());
-            yearView.setText(distributionSale.getYearString());
-            productView.setText(distributionSale.getProductName());
-            fromView.setText(distributionSale.getFromSite());
-            toView.setText(distributionSale.getToSite());
+            jobCodeView.setText(loadSheet.getJobCodeString());
+            clientJobCodeView.setText(loadSheet.getClientJobCodeString());
+            yearView.setText(loadSheet.getYearString());
+            productView.setText(loadSheet.getProductName());
+            fromView.setText(loadSheet.getFromSite());
+            toView.setText(loadSheet.getToSite());
 
             convertView.setBackgroundColor(Color.parseColor(position % 2 == 0 ? "#ffffff" : "#e0e0e0"));
 
