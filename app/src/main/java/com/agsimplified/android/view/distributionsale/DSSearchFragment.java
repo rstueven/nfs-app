@@ -3,13 +3,18 @@ package com.agsimplified.android.view.distributionsale;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.Client;
@@ -55,28 +60,33 @@ public class DSSearchFragment extends DialogFragment {
         clientJobCodeView = view.findViewById(R.id.clientJobCode);
 
         List<Client> clients = Client.all();
+        clients.add(0, null);
         clientSelect = view.findViewById(R.id.clientSelect);
-        ArrayAdapter<Client> clientAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, clients);
+        ArrayAdapter<Client> clientAdapter = new ClientSpinnerAdapter(getActivity(), R.layout.spinner_item, clients);
         clientSelect.setAdapter(clientAdapter);
 
         List<String> years = LoadSheet.allYears();
+//        years.add(0, null);
         yearSelect = view.findViewById(R.id.yearSelect);
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, years);
         yearSelect.setAdapter(yearAdapter);
 
         List<Site> fromSites = Site.all();
+        fromSites.add(0, null);
         fromSelect = view.findViewById(R.id.fromSelect);
-        ArrayAdapter<Site> fromAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, fromSites);
+        ArrayAdapter<Site> fromAdapter = new SiteSpinnerAdapter(getActivity(), R.layout.spinner_item, fromSites);
         fromSelect.setAdapter(fromAdapter);
 
         List<Site> toSites = Site.all();
+        toSites.add(0, null);
         toSelect = view.findViewById(R.id.toSelect);
-        ArrayAdapter<Site> toAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, toSites);
+        ArrayAdapter<Site> toAdapter = new SiteSpinnerAdapter(getActivity(), R.layout.spinner_item, toSites);
         toSelect.setAdapter(toAdapter);
 
         List<Product> products = Product.all();
+        products.add(0, null);
         productSelect = view.findViewById(R.id.productSelect);
-        ArrayAdapter<Product> productAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, products);
+        ArrayAdapter<Product> productAdapter = new ProductSpinnerAdapter(getActivity(), R.layout.spinner_item, products);
         productSelect.setAdapter(productAdapter);
 
 
@@ -84,7 +94,8 @@ public class DSSearchFragment extends DialogFragment {
                 .setPositiveButton(R.string.search, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        int clientId = ((Client)clientSelect.getSelectedItem()).getId();
+                        Client client = ((Client)clientSelect.getSelectedItem());
+                        Integer clientId = (client == null) ? null : client.getId();
 
                         Integer year;
                         try {
@@ -107,26 +118,14 @@ public class DSSearchFragment extends DialogFragment {
                             clientJobCode = null;
                         }
 
-                        Integer fromId;
-                        try {
-                            fromId = Integer.parseInt(fromSelect.getSelectedItem().toString());
-                        } catch (NumberFormatException e) {
-                            fromId = null;
-                        }
+                        Site fromSite = ((Site)fromSelect.getSelectedItem());
+                        Integer fromId = (fromSite == null) ? null : fromSite.getId();
 
-                        Integer toId;
-                        try {
-                            toId = Integer.parseInt(toSelect.getSelectedItem().toString());
-                        } catch (NumberFormatException e) {
-                            toId = null;
-                        }
+                        Site toSite = ((Site)toSelect.getSelectedItem());
+                        Integer toId = (toSite == null) ? null : toSite.getId();
 
-                        Integer productId;
-                        try {
-                            productId = Integer.parseInt(productSelect.getSelectedItem().toString());
-                        } catch (NumberFormatException e) {
-                            productId = null;
-                        }
+                        Product product = ((Product)productSelect.getSelectedItem());
+                        Integer productId = (product == null) ? null : product.getId();
 
                         searcher.searchDistributionSales(clientId, year, jobCode, clientJobCode, fromId, toId, productId);
                     }
@@ -137,5 +136,158 @@ public class DSSearchFragment extends DialogFragment {
                     }
                 });
         return builder.create();
+    }
+
+    class ClientSpinnerAdapter extends ArrayAdapter<Client> {
+        private Context context;
+        private List<Client> items;
+
+        ClientSpinnerAdapter(@NonNull Context context, int textViewResourceId, List<Client> items) {
+            super(context, textViewResourceId, items);
+            this.context = context;
+            this.items = items;
+        }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        @Override
+        public Client getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            if (getItem(position) == null) {
+                return new TextView(context);
+            } else {
+                TextView label = (TextView) super.getView(position, convertView, parent);
+                label.setTextColor(Color.BLACK);
+                label.setText(items.get(position).getName());
+                return label;
+            }
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+            if (getItem(position) == null) {
+                return new TextView(context);
+            } else {
+                TextView label = (TextView) super.getView(position, convertView, parent);
+                label.setTextColor(Color.BLACK);
+                label.setText(items.get(position).getName());
+                return label;
+            }
+        }
+    }
+
+    class SiteSpinnerAdapter extends ArrayAdapter<Site> {
+        private Context context;
+        private List<Site> items;
+
+        SiteSpinnerAdapter(@NonNull Context context, int textViewResourceId, List<Site> items) {
+            super(context, textViewResourceId, items);
+            this.context = context;
+            this.items = items;
+        }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        @Override
+        public Site getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            if (getItem(position) == null) {
+                return new TextView(context);
+            } else {
+                TextView label = (TextView) super.getView(position, convertView, parent);
+                label.setTextColor(Color.BLACK);
+                label.setText(items.get(position).getName());
+                return label;
+            }
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+            if (getItem(position) == null) {
+                return new TextView(context);
+            } else {
+                TextView label = (TextView) super.getView(position, convertView, parent);
+                label.setTextColor(Color.BLACK);
+                label.setText(items.get(position).getName());
+                return label;
+            }
+        }
+    }
+
+    class ProductSpinnerAdapter extends ArrayAdapter<Product> {
+        private Context context;
+        private List<Product> items;
+
+        ProductSpinnerAdapter(@NonNull Context context, int textViewResourceId, List<Product> items) {
+            super(context, textViewResourceId, items);
+            this.context = context;
+            this.items = items;
+        }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        @Override
+        public Product getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            if (getItem(position) == null) {
+                return new TextView(context);
+            } else {
+                TextView label = (TextView) super.getView(position, convertView, parent);
+                label.setTextColor(Color.BLACK);
+                label.setText(items.get(position).getName());
+                return label;
+            }
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+            if (getItem(position) == null) {
+                return new TextView(context);
+            } else {
+                TextView label = (TextView) super.getView(position, convertView, parent);
+                label.setTextColor(Color.BLACK);
+                label.setText(items.get(position).getName());
+                return label;
+            }
+        }
     }
 }

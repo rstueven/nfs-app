@@ -38,6 +38,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AgSimplifiedActivity
         implements DSSearchFragment.LoadSheetSearcher, FASearchFragment.FieldActivitySearcher {
@@ -52,7 +53,7 @@ public class MainActivity extends AgSimplifiedActivity
 
     private SQLiteDatabase mDb;
     private ListView searchResultsView;
-    private ArrayList<LoadSheet> distributionSales = new ArrayList<>();
+    private List<LoadSheet> distributionSales = new ArrayList<>();
     private DistributionSaleAdapter distributionSaleAdapter;
     private FieldActivityAdapter fieldActivitiesAdapter;
 
@@ -78,6 +79,9 @@ public class MainActivity extends AgSimplifiedActivity
     }
 
     public void searchDistributionSales(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId) {
+        Log.d("nfs", "searchDistributionSales(" + client + ", " + year + ", " + jobCode + ", " + clientJobCode + ", " + fromId + ", " + toId + ", " + productId + ")");
+        distributionSales = LoadSheet.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
+        distributionSaleAdapter.notifyDataSetChanged();
         searchResultsView.setAdapter(distributionSaleAdapter);
         searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -91,7 +95,7 @@ public class MainActivity extends AgSimplifiedActivity
     }
 
     class DistributionSaleAdapter extends ArrayAdapter<LoadSheet> {
-        DistributionSaleAdapter(Context context, ArrayList<LoadSheet> list) {
+        DistributionSaleAdapter(Context context, List<LoadSheet> list) {
             super(context, 0, list);
         }
 
