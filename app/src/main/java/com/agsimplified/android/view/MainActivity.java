@@ -69,7 +69,6 @@ public class MainActivity extends AgSimplifiedActivity
 
 
         searchResultsView = findViewById(R.id.searchResultsView);
-        distributionSaleAdapter = new DistributionSaleAdapter(this, distributionSales);
         fieldActivitiesAdapter = new FieldActivityAdapter(this, fieldActivities);
     }
 
@@ -81,7 +80,7 @@ public class MainActivity extends AgSimplifiedActivity
     public void searchDistributionSales(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId) {
         Log.d("nfs", "searchDistributionSales(" + client + ", " + year + ", " + jobCode + ", " + clientJobCode + ", " + fromId + ", " + toId + ", " + productId + ")");
         distributionSales = LoadSheet.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
-        distributionSaleAdapter.notifyDataSetChanged();
+        distributionSaleAdapter = new DistributionSaleAdapter(this, distributionSales);
         searchResultsView.setAdapter(distributionSaleAdapter);
         searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
