@@ -16,10 +16,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobPlan {
+public class JobPlan implements Serializable {
     public JobPlan() {}
 
     public static String TABLE_NAME = "job_plans";
