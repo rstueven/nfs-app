@@ -23,7 +23,7 @@ public class Product {
     public Product() {
     }
 
-    static String TABLE_NAME = "products";
+    public static String TABLE_NAME = "products";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "name TEXT",

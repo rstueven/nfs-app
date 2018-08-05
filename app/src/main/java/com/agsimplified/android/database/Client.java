@@ -22,7 +22,7 @@ import java.util.List;
 public class Client {
     public Client() {}
 
-    static String TABLE_NAME = "clients";
+    public static String TABLE_NAME = "clients";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "name TEXT NOT NULL",

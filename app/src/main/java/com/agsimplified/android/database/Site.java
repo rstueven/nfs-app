@@ -22,7 +22,7 @@ import java.util.List;
 public class Site {
     public Site() {}
 
-    static String TABLE_NAME = "sites";
+    public static String TABLE_NAME = "sites";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "name TEXT",

@@ -5,61 +5,79 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import com.agsimplified.android.database.Client;
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.database.DistributionSale;
+import com.agsimplified.android.database.JobPlan;
+import com.agsimplified.android.database.Product;
+import com.agsimplified.android.database.Site;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoadSheet implements Serializable {
-    private int jobCode;
-    private int clientJobCode;
-    private int year;
-    private double amount;
-    private double plannedAcres;
-    private String productName;
-    private String fromSite;
-    private String toSite;
-
-    public LoadSheet(Cursor cursor) {
-        populateFromCursor(cursor);
-    }
-
-    private static final String SQL_ALL = "SELECT " +
-            "clients.name AS client_name, " +
-            "job_plans.job_code, job_plans.client_job_code, " +
-            "distribution_sales.year, distribution_sales.amount, distribution_sales.planned_acres, " +
-            "products.name AS product_name, " +
-            "from_site.name AS from_site, to_site.name AS to_site " +
-            "FROM clients JOIN job_plans ON job_plans.client_id = clients._id " +
-            "JOIN distribution_sales ON distribution_sales.job_plan_id = job_plans._id " +
-            "JOIN products ON products._id = distribution_sales.product_id " +
-            "JOIN sites from_site ON from_site._id = distribution_sales.from_id " +
-            "JOIN sites to_site ON to_site._id = distribution_sales.from_id ";
+    private Client client;
+    private JobPlan jobPlan;
+    private DistributionSale distributionSale;
+    private Product product;
+    private Site fromSite;
+    private Site toSite;
 
     public LoadSheet(int dsId) {
-        String sql = SQL_ALL + " WHERE distribution_sales._id = ?";
-        @SuppressLint("DefaultLocale") String[] selectionArgs = {String.format("%d", dsId)};
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, selectionArgs);
 
-        if (cursor != null) {
+        Cursor cursor = db.query(DistributionSale.TABLE_NAME, null, "_id = " + dsId,
+                null, null, null, null, "1");
+        if (cursor != null && cursor.getCount() == 1) {
             cursor.moveToFirst();
-            populateFromCursor(cursor);
+            distributionSale = new DistributionSale(cursor);
             cursor.close();
         }
-    }
 
-    private void populateFromCursor(Cursor cursor) {
-        jobCode = cursor.getInt(cursor.getColumnIndex("job_code"));
-        clientJobCode = cursor.getInt(cursor.getColumnIndex("client_job_code"));
-        year = cursor.getInt(cursor.getColumnIndex("year"));
-        amount = cursor.getDouble(cursor.getColumnIndex("amount"));
-        plannedAcres = cursor.getDouble(cursor.getColumnIndex("planned_acres"));
-        productName = cursor.getString(cursor.getColumnIndex("product_name"));
-        fromSite = cursor.getString(cursor.getColumnIndex("from_site"));
-        toSite = cursor.getString(cursor.getColumnIndex("to_site"));
+        if (distributionSale != null) {
+            cursor = db.query(JobPlan.TABLE_NAME, null, "_id = " + distributionSale.getJobPlanId(),
+                    null, null, null, null, "1");
+            if (cursor != null && cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                jobPlan = new JobPlan(cursor);
+                cursor.close();
+            }
+
+            if (jobPlan != null) {
+                cursor = db.query(Client.TABLE_NAME, null, "_id = " + jobPlan.getClientId(),
+                        null, null, null, null, "1");
+                if (cursor != null && cursor.getCount() == 1) {
+                    cursor.moveToFirst();
+                    client = new Client(cursor);
+                    cursor.close();
+                }
+            }
+
+            cursor = db.query(Product.TABLE_NAME, null, "_id = " + distributionSale.getProductId(),
+                    null, null, null, null, "1");
+            if (cursor != null && cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                product = new Product(cursor);
+                cursor.close();
+            }
+
+            cursor = db.query(Site.TABLE_NAME, null, "_id = " + distributionSale.getFromId(),
+                    null, null, null, null, "1");
+            if (cursor != null && cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                fromSite = new Site(cursor);
+                cursor.close();
+            }
+
+            cursor = db.query(Site.TABLE_NAME, null, "_id = " + distributionSale.getToId(),
+                    null, null, null, null, "1");
+            if (cursor != null && cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                toSite = new Site(cursor);
+                cursor.close();
+            }
+        }
     }
 
     public static List<String> allYears() {
@@ -67,6 +85,7 @@ public class LoadSheet implements Serializable {
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         List<String> list = new ArrayList<>();
+        list.add("");
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -79,154 +98,108 @@ public class LoadSheet implements Serializable {
         return list;
     }
 
+    public int getJobCode() {
+        return (jobPlan != null) ? jobPlan.getJobCode() : -1;
+    }
+
+    public String getJobCodeString() {
+        int jobCode = getJobCode();
+        return (jobCode > 0) ? Integer.toString(jobCode) : null;
+    }
+
+    public int getClientJobCode() {
+        return (jobPlan != null) ? jobPlan.getClientJobCode() : -1;
+    }
+
+    public String getClientJobCodeString() {
+        int jobCode = getClientJobCode();
+        return (jobCode > 0) ? Integer.toString(jobCode) : null;
+    }
+
+    public int getYear() {
+        return (distributionSale != null) ? distributionSale.getYear() : -1;
+    }
+
+    public String getYearString() {
+        int year = getYear();
+        return (year > 0) ? Integer.toString(year) : null;
+    }
+
+    public String getProductName() {
+        return (product != null) ? product.getName() : null;
+    }
+
+    public String getFromSite() {
+        return (fromSite != null) ? fromSite.getName() : null;
+    }
+
+    public String getToSite() {
+        return (toSite != null) ? toSite.getName() : null;
+    }
+
+    public double getAmount() {
+        return (distributionSale != null) ? distributionSale.getAmount() : -1;
+    }
+
+
     @SuppressLint("DefaultLocale")
     public static List<LoadSheet> search(Integer searchClientId, Integer searchYear, Integer searchJobCode, Integer searchClientJobCode, Integer searchFromId, Integer searchToId, Integer searchProductId) {
         List<LoadSheet> result = new ArrayList<>();
-        List<String> searchTerms = new ArrayList<>();
+        List<String> selection = new ArrayList<>();
         List<String> selectionArgs = new ArrayList<>();
-        String sql = SQL_ALL;
+        String searchSql = "SELECT distribution_sales._id FROM distribution_sales LEFT JOIN job_plans ON distribution_sales.job_plan_id = job_plans._id";
 
         if (searchClientId != null) {
-            searchTerms.add("clients._id = ?");
+            selection.add("job_plans.client_id = ?");
             selectionArgs.add(String.format("%d", searchClientId));
         }
 
         if (searchYear != null) {
-            searchTerms.add("distribution_sales.year = ?");
+            selection.add("distribution_sales.year = ?");
             selectionArgs.add(String.format("%d", searchYear));
         }
 
         if (searchJobCode != null) {
-            searchTerms.add("job_plans.job_code = ?");
+            selection.add("job_plans.job_code = ?");
             selectionArgs.add(String.format("%d", searchJobCode));
         }
 
         if (searchClientJobCode != null) {
-            searchTerms.add("job_plans.client_job_code = ?");
+            selection.add("job_plans.client_job_code = ?");
             selectionArgs.add(String.format("%d", searchClientJobCode));
         }
 
         if (searchFromId != null) {
-            searchTerms.add("distribution_sales.from_id = ?");
+            selection.add("distribution_sales.from_id = ?");
             selectionArgs.add(String.format("%d", searchFromId));
         }
 
         if (searchToId != null) {
-            searchTerms.add("distribution_sales.to_id = ?");
+            selection.add("distribution_sales.to_id = ?");
             selectionArgs.add(String.format("%d", searchToId));
         }
 
         if (searchProductId != null) {
-            searchTerms.add("products._id = ?");
+            selection.add("distribution_sales.product_id = ?");
             selectionArgs.add(String.format("%d", searchProductId));
         }
 
-        if (searchTerms.size() > 0) {
-            sql += " WHERE ";
-            sql += TextUtils.join(" AND ", searchTerms);
+        if (selection.size() > 0) {
+            searchSql += " WHERE ";
+            searchSql += TextUtils.join(" AND ", selection);
         }
 
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, selectionArgs.toArray(new String[selectionArgs.size()]));
+        Cursor cursor = db.rawQuery(searchSql, selectionArgs.toArray(new String[selectionArgs.size()]));
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                result.add(new LoadSheet(cursor));
+                result.add(new LoadSheet(cursor.getInt(0)));
             }
 
             cursor.close();
         }
 
         return result;
-    }
-
-    public int getJobCode() {
-        return jobCode;
-    }
-
-    public String getJobCodeString() {
-        return Integer.toString(jobCode);
-    }
-
-    public void setJobCode(int jobCode) {
-        this.jobCode = jobCode;
-    }
-
-    public int getClientJobCode() {
-        return clientJobCode;
-    }
-
-    public String getClientJobCodeString() {
-        return Integer.toString(clientJobCode);
-    }
-
-    public void setClientJobCode(int clientJobCode) {
-        this.clientJobCode = clientJobCode;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public String getYearString() {
-        return Integer.toString(year);
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public double getPlannedAcres() {
-        return plannedAcres;
-    }
-
-    public void setPlannedAcres(double plannedAcres) {
-        this.plannedAcres = plannedAcres;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getFromSite() {
-        return fromSite;
-    }
-
-    public void setFromSite(String fromSite) {
-        this.fromSite = fromSite;
-    }
-
-    public String getToSite() {
-        return toSite;
-    }
-
-    public void setToSite(String toSite) {
-        this.toSite = toSite;
-    }
-
-    @Override
-    public String toString() {
-        return "LoadSheet{" +
-                "jobCode=" + jobCode +
-                ", clientJobCode=" + clientJobCode +
-                ", year=" + year +
-                ", amount=" + amount +
-                ", plannedAcres=" + plannedAcres +
-                ", productName='" + productName + '\'' +
-                ", fromSite='" + fromSite + '\'' +
-                ", toSite='" + toSite + '\'' +
-                '}';
     }
 }

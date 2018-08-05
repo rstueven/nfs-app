@@ -22,14 +22,14 @@ import java.util.List;
 public class JobPlan {
     public JobPlan() {}
 
-    static String TABLE_NAME = "job_plans";
+    public static String TABLE_NAME = "job_plans";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "client_id INTEGER",
             "description TEXT",
             "status TEXT",
             "job_type TEXT",
-            "job_code TEXT",
+            "job_code INTEGER",
             "job_status TEXT",
             "notes TEXT",
             "manager_id INTEGER",
@@ -48,7 +48,7 @@ public class JobPlan {
     private String description;
     private String status;
     private String jobType;
-    private String jobCode;
+    private int jobCode;
     private String jobStatus;
     private String notes;
     private int managerId;
@@ -67,7 +67,7 @@ public class JobPlan {
             description = obj.getString("description");
             status = obj.getString("status");
             jobType = obj.getString("job_type");
-            jobCode = obj.getString("job_code");
+            jobCode = obj.optInt("job_code");
             jobStatus = obj.getString("job_status");
             notes = obj.getString("notes");
             managerId = obj.optInt("manager_id");
@@ -90,7 +90,7 @@ public class JobPlan {
         description = c.getString(c.getColumnIndex("description"));
         status = c.getString(c.getColumnIndex("status"));
         jobType = c.getString(c.getColumnIndex("job_type"));
-        jobCode = c.getString(c.getColumnIndex("job_code"));
+        jobCode = c.getInt(c.getColumnIndex("job_code"));
         jobStatus = c.getString(c.getColumnIndex("job_status"));
         notes = c.getString(c.getColumnIndex("notes"));
         managerId = c.getInt(c.getColumnIndex("manager_id"));
@@ -180,11 +180,11 @@ public class JobPlan {
         this.jobType = jobType;
     }
 
-    public String getJobCode() {
+    public int getJobCode() {
         return jobCode;
     }
 
-    public void setJobCode(String jobCode) {
+    public void setJobCode(int jobCode) {
         this.jobCode = jobCode;
     }
 
