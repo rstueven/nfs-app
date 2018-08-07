@@ -142,46 +142,46 @@ public class Product implements Serializable {
                 '}';
     }
 
-    protected static class LoadAsync extends LoadTableAsync {
-        LoadAsync(SQLiteDatabase db) {
-            super(db);
-            Log.d("nfs", "Product.LoadAsync()");
-        }
+//    protected static class LoadAsync extends LoadTableAsync {
+//        LoadAsync(SQLiteDatabase db) {
+//            super(db);
+//            Log.d("nfs", "Product.LoadAsync()");
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            Log.d("nfs", "Product.LoadAsync.doInBackground()");
+//            final String url = setUrl(TABLE_NAME);
+//
+//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+//                    new Response.Listener<JSONObject>() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            Log.d("nfs", "Product.LoadAsync.onResponse(" + url + ")");
+//                            try {
+////                                Log.d("nfs", response.toString(2));
+//                                Product[] products = Product.createProducts(response.getJSONArray(TABLE_NAME));
+//                                new Product.LoadAsync.PopulateAsync(mDb).execute(products);
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
+//                            Log.e("nfs", error.toString());
+//                        }
+//                    }
+//            );
+//
+//            NetworkRequestQueue.addToRequestQueue(request);
+//
+//            return null;
+//        }
 
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Log.d("nfs", "Product.LoadAsync.doInBackground()");
-            final String url = setUrl(TABLE_NAME);
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d("nfs", "Product.LoadAsync.onResponse(" + url + ")");
-                            try {
-//                                Log.d("nfs", response.toString(2));
-                                Product[] products = Product.createProducts(response.getJSONArray(TABLE_NAME));
-                                new Product.LoadAsync.PopulateAsync(mDb).execute(products);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
-                            Log.e("nfs", error.toString());
-                        }
-                    }
-            );
-
-            NetworkRequestQueue.addToRequestQueue(request);
-
-            return null;
-        }
-
-        private static class PopulateAsync extends AsyncTask<Product, Void, Void> {
+        protected static class PopulateAsync extends AsyncTask<Product, Void, Void> {
             private SQLiteDatabase mDb;
 
             PopulateAsync(SQLiteDatabase db) {
@@ -208,5 +208,5 @@ public class Product implements Serializable {
                 return null;
             }
         }
-    }
+//    }
 }

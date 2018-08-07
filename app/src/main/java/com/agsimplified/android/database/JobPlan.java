@@ -291,46 +291,46 @@ public class JobPlan implements Serializable {
                 '}';
     }
 
-    protected static class LoadAsync extends LoadTableAsync {
-        LoadAsync(SQLiteDatabase db) {
-            super(db);
-            Log.d("nfs", "JobPlan.LoadAsync()");
-        }
+//    protected static class LoadAsync extends LoadTableAsync {
+//        LoadAsync(SQLiteDatabase db) {
+//            super(db);
+//            Log.d("nfs", "JobPlan.LoadAsync()");
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            Log.d("nfs", "JobPlan.LoadAsync.doInBackground()");
+//            final String url = setUrl(TABLE_NAME);
+//
+//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+//                    new Response.Listener<JSONObject>() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            Log.d("nfs", "JobPlan.LoadAsync.onResponse(" + url + ")");
+//                            try {
+////                                Log.d("nfs", response.toString(2));
+//                                JobPlan[] jobPlans = JobPlan.createJobPlans(response.getJSONArray(TABLE_NAME));
+//                                new JobPlan.LoadAsync.PopulateAsync(mDb).execute(jobPlans);
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
+//                            Log.e("nfs", error.toString());
+//                        }
+//                    }
+//            );
+//
+//            NetworkRequestQueue.addToRequestQueue(request);
+//
+//            return null;
+//        }
 
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Log.d("nfs", "JobPlan.LoadAsync.doInBackground()");
-            final String url = setUrl(TABLE_NAME);
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d("nfs", "JobPlan.LoadAsync.onResponse(" + url + ")");
-                            try {
-//                                Log.d("nfs", response.toString(2));
-                                JobPlan[] jobPlans = JobPlan.createJobPlans(response.getJSONArray(TABLE_NAME));
-                                new JobPlan.LoadAsync.PopulateAsync(mDb).execute(jobPlans);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
-                            Log.e("nfs", error.toString());
-                        }
-                    }
-            );
-
-            NetworkRequestQueue.addToRequestQueue(request);
-
-            return null;
-        }
-
-        private static class PopulateAsync extends AsyncTask<JobPlan, Void, Void> {
+        protected static class PopulateAsync extends AsyncTask<JobPlan, Void, Void> {
             private SQLiteDatabase mDb;
 
             PopulateAsync(SQLiteDatabase db) {
@@ -357,5 +357,5 @@ public class JobPlan implements Serializable {
                 return null;
             }
         }
-    }
+//    }
 }

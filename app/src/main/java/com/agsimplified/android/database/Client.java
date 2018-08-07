@@ -379,46 +379,46 @@ public class Client implements Serializable {
                 '}';
     }
 
-    protected static class LoadAsync extends LoadTableAsync {
-        LoadAsync(SQLiteDatabase db) {
-            super(db);
-            Log.d("nfs", "Client.LoadAsync()");
-        }
+//    protected static class LoadAsync extends LoadTableAsync {
+//        LoadAsync(SQLiteDatabase db) {
+//            super(db);
+//            Log.d("nfs", "Client.LoadAsync()");
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            Log.d("nfs", "Client.LoadAsync.doInBackground()");
+//            final String url = setUrl(TABLE_NAME);
+//
+//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+//                    new Response.Listener<JSONObject>() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            Log.d("nfs", "Client.LoadAsync.onResponse(" + url + ")");
+//                            try {
+////                                Log.d("nfs", response.toString(2));
+//                                Client[] clients = Client.createClients(response.getJSONArray(TABLE_NAME));
+//                                new PopulateAsync(mDb).execute(clients);
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
+//                            Log.e("nfs", error.toString());
+//                        }
+//                    }
+//            );
+//
+//            NetworkRequestQueue.addToRequestQueue(request);
+//
+//            return null;
+//        }
 
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Log.d("nfs", "Client.LoadAsync.doInBackground()");
-            final String url = setUrl(TABLE_NAME);
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d("nfs", "Client.LoadAsync.onResponse(" + url + ")");
-                            try {
-//                                Log.d("nfs", response.toString(2));
-                                Client[] clients = Client.createClients(response.getJSONArray(TABLE_NAME));
-                                new PopulateAsync(mDb).execute(clients);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
-                            Log.e("nfs", error.toString());
-                        }
-                    }
-            );
-
-            NetworkRequestQueue.addToRequestQueue(request);
-
-            return null;
-        }
-
-        private static class PopulateAsync extends AsyncTask<Client, Void, Void> {
+        protected static class PopulateAsync extends AsyncTask<Client, Void, Void> {
             private SQLiteDatabase mDb;
 
             PopulateAsync(SQLiteDatabase db) {
@@ -445,5 +445,5 @@ public class Client implements Serializable {
                 return null;
             }
         }
-    }
+//    }
 }

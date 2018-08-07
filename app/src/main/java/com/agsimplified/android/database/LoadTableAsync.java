@@ -20,7 +20,7 @@ abstract class LoadTableAsync extends AsyncTask<Void, Void, Void> {
         String authToken = SharedPref.read(SharedPref.Pref.AUTH_TOKEN, null);
         String url = AgSimplified.getApiUrl() + "/database/load?auth_token=" + authToken;
 
-        url += "&table=" + table;
+//        url += "&table=" + table;
 
         return url;
     }
