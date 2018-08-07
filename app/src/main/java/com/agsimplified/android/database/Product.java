@@ -142,71 +142,31 @@ public class Product implements Serializable {
                 '}';
     }
 
-//    protected static class LoadAsync extends LoadTableAsync {
-//        LoadAsync(SQLiteDatabase db) {
-//            super(db);
-//            Log.d("nfs", "Product.LoadAsync()");
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            Log.d("nfs", "Product.LoadAsync.doInBackground()");
-//            final String url = setUrl(TABLE_NAME);
-//
-//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-//                    new Response.Listener<JSONObject>() {
-//                        @Override
-//                        public void onResponse(JSONObject response) {
-//                            Log.d("nfs", "Product.LoadAsync.onResponse(" + url + ")");
-//                            try {
-////                                Log.d("nfs", response.toString(2));
-//                                Product[] products = Product.createProducts(response.getJSONArray(TABLE_NAME));
-//                                new Product.LoadAsync.PopulateAsync(mDb).execute(products);
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    },
-//                    new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
-//                            Log.e("nfs", error.toString());
-//                        }
-//                    }
-//            );
-//
-//            NetworkRequestQueue.addToRequestQueue(request);
-//
-//            return null;
-//        }
+    protected static class PopulateAsync extends AsyncTask<Product, Void, Void> {
+        private SQLiteDatabase mDb;
 
-        protected static class PopulateAsync extends AsyncTask<Product, Void, Void> {
-            private SQLiteDatabase mDb;
-
-            PopulateAsync(SQLiteDatabase db) {
-                super();
-                Log.d("nfs", "Product.PopulateAsync()");
-                this.mDb = db;
-            }
-
-            @Override
-            protected Void doInBackground(Product... products) {
-                Log.d("nfs", "Product.PopulateAsync.doInBackground()");
-                Log.d("nfs", "LOADING " + products.length + " PRODUCTS");
-                mDb.execSQL("DELETE FROM " + TABLE_NAME);
-
-                for (Product product : products) {
-//                    Log.d("nfs", product.toString());
-                    if (mDb.insertOrThrow(TABLE_NAME, null, product.getContentValues()) == -1) {
-                        Log.e("nfs", "FAILED TO INSERT <" + product.name + ">");
-                    }
-                }
-
-                Log.d("nfs", "Product.PopulateAsync() DONE");
-
-                return null;
-            }
+        PopulateAsync(SQLiteDatabase db) {
+            super();
+            Log.d("nfs", "Product.PopulateAsync()");
+            this.mDb = db;
         }
-//    }
+
+        @Override
+        protected Void doInBackground(Product... products) {
+            Log.d("nfs", "Product.PopulateAsync.doInBackground()");
+            Log.d("nfs", "LOADING " + products.length + " PRODUCTS");
+            mDb.execSQL("DELETE FROM " + TABLE_NAME);
+
+            for (Product product : products) {
+//                    Log.d("nfs", product.toString());
+                if (mDb.insertOrThrow(TABLE_NAME, null, product.getContentValues()) == -1) {
+                    Log.e("nfs", "FAILED TO INSERT <" + product.name + ">");
+                }
+            }
+
+            Log.d("nfs", "Product.PopulateAsync() DONE");
+
+            return null;
+        }
+    }
 }

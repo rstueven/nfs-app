@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Client implements Serializable {
-    public Client() {}
+    public Client() {
+    }
 
     public static String TABLE_NAME = "clients";
     static final String[] COLUMNS = {
@@ -379,71 +380,31 @@ public class Client implements Serializable {
                 '}';
     }
 
-//    protected static class LoadAsync extends LoadTableAsync {
-//        LoadAsync(SQLiteDatabase db) {
-//            super(db);
-//            Log.d("nfs", "Client.LoadAsync()");
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            Log.d("nfs", "Client.LoadAsync.doInBackground()");
-//            final String url = setUrl(TABLE_NAME);
-//
-//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-//                    new Response.Listener<JSONObject>() {
-//                        @Override
-//                        public void onResponse(JSONObject response) {
-//                            Log.d("nfs", "Client.LoadAsync.onResponse(" + url + ")");
-//                            try {
-////                                Log.d("nfs", response.toString(2));
-//                                Client[] clients = Client.createClients(response.getJSONArray(TABLE_NAME));
-//                                new PopulateAsync(mDb).execute(clients);
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    },
-//                    new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
-//                            Log.e("nfs", error.toString());
-//                        }
-//                    }
-//            );
-//
-//            NetworkRequestQueue.addToRequestQueue(request);
-//
-//            return null;
-//        }
+    protected static class PopulateAsync extends AsyncTask<Client, Void, Void> {
+        private SQLiteDatabase mDb;
 
-        protected static class PopulateAsync extends AsyncTask<Client, Void, Void> {
-            private SQLiteDatabase mDb;
-
-            PopulateAsync(SQLiteDatabase db) {
-                super();
-                Log.d("nfs", "Client.PopulateAsync()");
-                this.mDb = db;
-            }
-
-            @Override
-            protected Void doInBackground(Client... clients) {
-                Log.d("nfs", "Client.PopulateAsync.doInBackground()");
-                Log.d("nfs", "LOADING " + clients.length + " CLIENTS");
-                mDb.execSQL("DELETE FROM " + TABLE_NAME);
-
-                for (Client client : clients) {
-//                    Log.d("nfs", client.toString());
-                    if (mDb.insertOrThrow(TABLE_NAME, null, client.getContentValues()) == -1) {
-                        Log.e("nfs", "FAILED TO INSERT <" + client.name + ">");
-                    }
-                }
-
-                Log.d("nfs", "Client.PopulateAsync() DONE");
-
-                return null;
-            }
+        PopulateAsync(SQLiteDatabase db) {
+            super();
+            Log.d("nfs", "Client.PopulateAsync()");
+            this.mDb = db;
         }
-//    }
+
+        @Override
+        protected Void doInBackground(Client... clients) {
+            Log.d("nfs", "Client.PopulateAsync.doInBackground()");
+            Log.d("nfs", "LOADING " + clients.length + " CLIENTS");
+            mDb.execSQL("DELETE FROM " + TABLE_NAME);
+
+            for (Client client : clients) {
+//                    Log.d("nfs", client.toString());
+                if (mDb.insertOrThrow(TABLE_NAME, null, client.getContentValues()) == -1) {
+                    Log.e("nfs", "FAILED TO INSERT <" + client.name + ">");
+                }
+            }
+
+            Log.d("nfs", "Client.PopulateAsync() DONE");
+
+            return null;
+        }
+    }
 }

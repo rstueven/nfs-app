@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JobPlan implements Serializable {
-    public JobPlan() {}
+    public JobPlan() {
+    }
 
     public static String TABLE_NAME = "job_plans";
     static final String[] COLUMNS = {
@@ -43,7 +44,7 @@ public class JobPlan implements Serializable {
             "client_job_code INTEGER",
             "PRIMARY KEY (_id)"
     };
-    
+
     private int id;
     private int clientId;
     private String description;
@@ -60,7 +61,7 @@ public class JobPlan implements Serializable {
     private boolean accountingManagerEmailed;
     private int createdById;
     private int clientJobCode;
-    
+
     public JobPlan(JSONObject obj) {
         try {
             id = obj.optInt("id");
@@ -291,71 +292,31 @@ public class JobPlan implements Serializable {
                 '}';
     }
 
-//    protected static class LoadAsync extends LoadTableAsync {
-//        LoadAsync(SQLiteDatabase db) {
-//            super(db);
-//            Log.d("nfs", "JobPlan.LoadAsync()");
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            Log.d("nfs", "JobPlan.LoadAsync.doInBackground()");
-//            final String url = setUrl(TABLE_NAME);
-//
-//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-//                    new Response.Listener<JSONObject>() {
-//                        @Override
-//                        public void onResponse(JSONObject response) {
-//                            Log.d("nfs", "JobPlan.LoadAsync.onResponse(" + url + ")");
-//                            try {
-////                                Log.d("nfs", response.toString(2));
-//                                JobPlan[] jobPlans = JobPlan.createJobPlans(response.getJSONArray(TABLE_NAME));
-//                                new JobPlan.LoadAsync.PopulateAsync(mDb).execute(jobPlans);
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    },
-//                    new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
-//                            Log.e("nfs", error.toString());
-//                        }
-//                    }
-//            );
-//
-//            NetworkRequestQueue.addToRequestQueue(request);
-//
-//            return null;
-//        }
+    protected static class PopulateAsync extends AsyncTask<JobPlan, Void, Void> {
+        private SQLiteDatabase mDb;
 
-        protected static class PopulateAsync extends AsyncTask<JobPlan, Void, Void> {
-            private SQLiteDatabase mDb;
-
-            PopulateAsync(SQLiteDatabase db) {
-                super();
-                Log.d("nfs", "JobPlan.PopulateAsync()");
-                this.mDb = db;
-            }
-
-            @Override
-            protected Void doInBackground(JobPlan... jobPlans) {
-                Log.d("nfs", "JobPlan.PopulateAsync.doInBackground()");
-                Log.d("nfs", "LOADING " + jobPlans.length + " JOB_PLANS");
-                mDb.execSQL("DELETE FROM " + TABLE_NAME);
-
-                for (JobPlan jobPlan : jobPlans) {
-//                    Log.d("nfs", jobPlan.toString());
-                    if (mDb.insertOrThrow(TABLE_NAME, null, jobPlan.getContentValues()) == -1) {
-                        Log.e("nfs", "FAILED TO INSERT <" + jobPlan.id + ">");
-                    }
-                }
-
-                Log.d("nfs", "JobPlan.PopulateAsync() DONE");
-
-                return null;
-            }
+        PopulateAsync(SQLiteDatabase db) {
+            super();
+            Log.d("nfs", "JobPlan.PopulateAsync()");
+            this.mDb = db;
         }
-//    }
+
+        @Override
+        protected Void doInBackground(JobPlan... jobPlans) {
+            Log.d("nfs", "JobPlan.PopulateAsync.doInBackground()");
+            Log.d("nfs", "LOADING " + jobPlans.length + " JOB_PLANS");
+            mDb.execSQL("DELETE FROM " + TABLE_NAME);
+
+            for (JobPlan jobPlan : jobPlans) {
+//                    Log.d("nfs", jobPlan.toString());
+                if (mDb.insertOrThrow(TABLE_NAME, null, jobPlan.getContentValues()) == -1) {
+                    Log.e("nfs", "FAILED TO INSERT <" + jobPlan.id + ">");
+                }
+            }
+
+            Log.d("nfs", "JobPlan.PopulateAsync() DONE");
+
+            return null;
+        }
+    }
 }

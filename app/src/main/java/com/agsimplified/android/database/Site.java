@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Site implements Serializable {
-    public Site() {}
+    public Site() {
+    }
 
     public static String TABLE_NAME = "sites";
     static final String[] COLUMNS = {
@@ -53,7 +54,7 @@ public class Site implements Serializable {
             "license_200a TEXT",
             "PRIMARY KEY (_id)"
     };
-    
+
     private int id;
     private String name;
     private String stateId;
@@ -448,71 +449,31 @@ public class Site implements Serializable {
                 '}';
     }
 
-//    protected static class LoadAsync extends LoadTableAsync {
-//        LoadAsync(SQLiteDatabase db) {
-//            super(db);
-//            Log.d("nfs", "Site.LoadAsync()");
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            Log.d("nfs", "Site.LoadAsync.doInBackground()");
-//            final String url = setUrl(TABLE_NAME);
-//
-//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-//                    new Response.Listener<JSONObject>() {
-//                        @Override
-//                        public void onResponse(JSONObject response) {
-//                            Log.d("nfs", "Site.LoadAsync.onResponse(" + url + ")");
-//                            try {
-////                                Log.d("nfs", response.toString(2));
-//                                Site[] sites = Site.createSites(response.getJSONArray(TABLE_NAME));
-//                                new Site.LoadAsync.PopulateAsync(mDb).execute(sites);
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    },
-//                    new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            Log.d("nfs", "PopulateDbAsync.onErrorResponse()");
-//                            Log.e("nfs", error.toString());
-//                        }
-//                    }
-//            );
-//
-//            NetworkRequestQueue.addToRequestQueue(request);
-//
-//            return null;
-//        }
+    protected static class PopulateAsync extends AsyncTask<Site, Void, Void> {
+        private SQLiteDatabase mDb;
 
-        protected static class PopulateAsync extends AsyncTask<Site, Void, Void> {
-            private SQLiteDatabase mDb;
-
-            PopulateAsync(SQLiteDatabase db) {
-                super();
-                Log.d("nfs", "Site.PopulateAsync()");
-                this.mDb = db;
-            }
-
-            @Override
-            protected Void doInBackground(Site... sites) {
-                Log.d("nfs", "Site.PopulateAsync.doInBackground()");
-                Log.d("nfs", "LOADING " + sites.length + " SITES");
-                mDb.execSQL("DELETE FROM " + TABLE_NAME);
-
-                for (Site site : sites) {
-//                    Log.d("nfs", site.toString());
-                    if (mDb.insertOrThrow(TABLE_NAME, null, site.getContentValues()) == -1) {
-                        Log.e("nfs", "FAILED TO INSERT <" + site.name + ">");
-                    }
-                }
-
-                Log.d("nfs", "Site.PopulateAsync() DONE");
-
-                return null;
-            }
+        PopulateAsync(SQLiteDatabase db) {
+            super();
+            Log.d("nfs", "Site.PopulateAsync()");
+            this.mDb = db;
         }
-//    }
+
+        @Override
+        protected Void doInBackground(Site... sites) {
+            Log.d("nfs", "Site.PopulateAsync.doInBackground()");
+            Log.d("nfs", "LOADING " + sites.length + " SITES");
+            mDb.execSQL("DELETE FROM " + TABLE_NAME);
+
+            for (Site site : sites) {
+//                    Log.d("nfs", site.toString());
+                if (mDb.insertOrThrow(TABLE_NAME, null, site.getContentValues()) == -1) {
+                    Log.e("nfs", "FAILED TO INSERT <" + site.name + ">");
+                }
+            }
+
+            Log.d("nfs", "Site.PopulateAsync() DONE");
+
+            return null;
+        }
+    }
 }
