@@ -24,6 +24,7 @@ public class TableDefs_1 extends TableDefs {
     @Override
     protected void initTableDefs() {
         Log.d("nfs", "TableDefs_1.initTableDefs()");
+
         createStatements.put(Client.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
                         + Client.TABLE_NAME + " ("
@@ -53,6 +54,16 @@ public class TableDefs_1 extends TableDefs {
                 "CREATE TABLE IF NOT EXISTS "
                         + Farm.TABLE_NAME + " ("
                         + TextUtils.join(",", Farm.COLUMNS)
+                        + ")");
+        createStatements.put(Field.TABLE_NAME,
+                "CREATE TABLE IF NOT EXISTS "
+                        + Field.TABLE_NAME + " ("
+                        + TextUtils.join(",", Field.COLUMNS)
+                        + ")");
+        createStatements.put(LoadSheet.TABLE_NAME,
+                "CREATE TABLE IF NOT EXISTS "
+                        + LoadSheet.TABLE_NAME + " ("
+                        + TextUtils.join(",", LoadSheet.COLUMNS)
                         + ")");
     }
 
@@ -88,8 +99,10 @@ public class TableDefs_1 extends TableDefs {
                                 new Site.PopulateAsync(mDb).execute(response.getJSONArray(Site.TABLE_NAME));
                                 new Product.PopulateAsync(mDb).execute(response.getJSONArray(Product.TABLE_NAME));
                                 new Farm.PopulateAsync(mDb).execute(response.getJSONArray(Farm.TABLE_NAME));
+                                new Field.PopulateAsync(mDb).execute(response.getJSONArray(Field.TABLE_NAME));
+                                new LoadSheet.PopulateAsync(mDb).execute(response.getJSONArray(LoadSheet.TABLE_NAME));
 
-                                // TODO: Farm, Field, LoadSheet, Load, StorageInventory
+                                // TODO: LoadSheet, Load, StorageInventory
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
