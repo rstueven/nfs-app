@@ -446,7 +446,7 @@ public class DistributionSale implements Serializable {
             Log.d("nfs", "DistributionSale.PopulateAsync.doInBackground()");
 
             DistributionSale[] array = jsonToArray(json[0]);
-            Log.d("nfs", "LOADING " + array.length + " DistributionSaleS");
+            Log.d("nfs", "LOADING " + array.length + "DISTRIBUTION SALES");
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
             for (DistributionSale item : array) {

@@ -306,7 +306,7 @@ public class JobPlan implements Serializable {
             Log.d("nfs", "JobPlan.PopulateAsync.doInBackground()");
 
             JobPlan[] array = jsonToArray(json[0]);
-            Log.d("nfs", "LOADING " + array.length + " JobPlanS");
+            Log.d("nfs", "LOADING " + array.length + " JOB PLANS");
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
             for (JobPlan item : array) {

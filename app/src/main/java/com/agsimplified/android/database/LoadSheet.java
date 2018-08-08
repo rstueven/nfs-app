@@ -147,7 +147,7 @@ public class LoadSheet implements Serializable {
             Log.d("nfs", "LoadSheet.PopulateAsync.doInBackground()");
 
             LoadSheet[] array = jsonToArray(json[0]);
-            Log.d("nfs", "LOADING " + array.length + " LoadSheetS");
+            Log.d("nfs", "LOADING " + array.length + " LOAD SHEETS");
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
             for (LoadSheet item : array) {
