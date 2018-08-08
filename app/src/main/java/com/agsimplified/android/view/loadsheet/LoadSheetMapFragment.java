@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.LoadSheet;
+import com.agsimplified.android.model.LoadSheetDETAIL;
 import com.agsimplified.android.view.AgSimplifiedActivity;
 import com.agsimplified.android.view.DirectionsFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,7 +32,7 @@ public class LoadSheetMapFragment extends Fragment
         implements OnMapReadyCallback, AgSimplifiedActivity.LocationListener {
     private GoogleMap mMap;
 
-    public static LoadSheetMapFragment newInstance(LoadSheet loadSheet) {
+    public static LoadSheetMapFragment newInstance(LoadSheetDETAIL loadSheet) {
         Log.d("nfs", "LoadSheetMapFragment.newInstance()");
         if (loadSheet == null) {
             throw new IllegalArgumentException("null loadSheet");
@@ -56,7 +56,7 @@ public class LoadSheetMapFragment extends Fragment
                 throw new IllegalStateException("null args");
             }
 
-            LoadSheet loadSheet = (LoadSheet) args.getSerializable("loadSheet");
+            LoadSheetDETAIL loadSheet = (LoadSheetDETAIL) args.getSerializable("loadSheet");
             if (loadSheet == null) {
                 throw new IllegalStateException("null loadSheet");
             }

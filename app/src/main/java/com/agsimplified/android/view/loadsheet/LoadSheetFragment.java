@@ -11,12 +11,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.LoadSheet;
+import com.agsimplified.android.model.LoadSheetDETAIL;
 
 import java.util.Locale;
 
 public class LoadSheetFragment extends Fragment {
-    public static LoadSheetFragment newInstance(LoadSheet loadSheet) {
+    public static LoadSheetFragment newInstance(LoadSheetDETAIL loadSheet) {
         if (loadSheet == null) {
             throw new IllegalArgumentException("null loadSheet");
         }
@@ -39,7 +39,7 @@ public class LoadSheetFragment extends Fragment {
             }
 
 
-            LoadSheet loadSheet = (LoadSheet) args.getSerializable("loadSheet");
+            LoadSheetDETAIL loadSheet = (LoadSheetDETAIL) args.getSerializable("loadSheet");
             if (loadSheet == null) {
                 throw new IllegalStateException("null loadSheet");
             }

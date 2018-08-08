@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.DbOpenHelper;
-import com.agsimplified.android.model.LoadSheet;
+import com.agsimplified.android.model.LoadSheetDETAIL;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
 import com.agsimplified.android.util.SharedPref;
@@ -75,14 +75,14 @@ public class MainActivity extends AgSimplifiedActivity
 
     public void searchLoadSheets(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId) {
         Log.d("nfs", "searchLoadSheets(" + client + ", " + year + ", " + jobCode + ", " + clientJobCode + ", " + fromId + ", " + toId + ", " + productId + ")");
-        List<LoadSheet> loadSheets = LoadSheet.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
+        List<LoadSheetDETAIL> loadSheets = LoadSheetDETAIL.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
         if (loadSheets.size() > 0) {
             LoadSheetAdapter loadSheetAdapter = new LoadSheetAdapter(this, loadSheets);
             searchResultsView.setAdapter(loadSheetAdapter);
             searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    LoadSheet loadSheet = (LoadSheet) adapterView.getItemAtPosition(i);
+                    LoadSheetDETAIL loadSheet = (LoadSheetDETAIL) adapterView.getItemAtPosition(i);
                     Intent intent = new Intent(MainActivity.this, LoadSheetActivity.class);
                     intent.putExtra("loadSheet", loadSheet);
                     startActivity(intent);
@@ -93,15 +93,15 @@ public class MainActivity extends AgSimplifiedActivity
         }
     }
 
-    class LoadSheetAdapter extends ArrayAdapter<LoadSheet> {
-        LoadSheetAdapter(Context context, List<LoadSheet> list) {
+    class LoadSheetAdapter extends ArrayAdapter<LoadSheetDETAIL> {
+        LoadSheetAdapter(Context context, List<LoadSheetDETAIL> list) {
             super(context, 0, list);
         }
 
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            LoadSheet loadSheet = getItem(position);
+            LoadSheetDETAIL loadSheet = getItem(position);
             if (loadSheet == null) {
                 throw new IllegalStateException("null loadSheet");
             }

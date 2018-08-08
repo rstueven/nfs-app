@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.LoadSheet;
+import com.agsimplified.android.model.LoadSheetDETAIL;
 import com.agsimplified.android.view.AgSimplifiedActivity;
 
 /**
@@ -29,7 +29,7 @@ public class LoadSheetActivity extends AgSimplifiedActivity {
         setContentView(R.layout.load_sheet_activity);
 
         Intent intent = getIntent();
-        LoadSheet loadSheet = (LoadSheet) intent.getSerializableExtra("loadSheet");
+        LoadSheetDETAIL loadSheet = (LoadSheetDETAIL) intent.getSerializableExtra("loadSheet");
         if (loadSheet == null) {
             throw new IllegalStateException("null loadSheet");
         }
@@ -56,9 +56,9 @@ public class LoadSheetActivity extends AgSimplifiedActivity {
 
     private class LoadSheetPagerAdapter extends FragmentPagerAdapter {
         private final String tabTitles[] = new String[]{"MAP AND DIRECTIONS", "JOB DETAILS"};
-        private LoadSheet loadSheet;
+        private LoadSheetDETAIL loadSheet;
 
-        LoadSheetPagerAdapter(FragmentManager fm, LoadSheet loadSheet) {
+        LoadSheetPagerAdapter(FragmentManager fm, LoadSheetDETAIL loadSheet) {
             super(fm);
 
             if (loadSheet == null) {

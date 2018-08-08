@@ -10,10 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.LoadSheet;
+import com.agsimplified.android.model.LoadSheetDETAIL;
 
 public class LoadSheetJobSetupFragment extends Fragment {
-    public static LoadSheetJobSetupFragment newInstance(LoadSheet loadSheet) {
+    public static LoadSheetJobSetupFragment newInstance(LoadSheetDETAIL loadSheet) {
         if (loadSheet == null) {
             throw new IllegalArgumentException("null loadSheet");
         }
@@ -35,7 +35,7 @@ public class LoadSheetJobSetupFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-            LoadSheet loadSheet = (LoadSheet) args.getSerializable("loadSheet");
+            LoadSheetDETAIL loadSheet = (LoadSheetDETAIL) args.getSerializable("loadSheet");
             if (loadSheet == null) {
                 throw new IllegalStateException("null loadSheet");
             }

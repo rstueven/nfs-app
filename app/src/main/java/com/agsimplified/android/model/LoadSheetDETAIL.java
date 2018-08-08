@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadSheet implements Serializable {
+public class LoadSheetDETAIL implements Serializable {
     private Client client;
     private JobPlan jobPlan;
     private DistributionSale distributionSale;
@@ -24,7 +24,7 @@ public class LoadSheet implements Serializable {
     private Site fromSite;
     private Site toSite;
 
-    public LoadSheet(int dsId) {
+    public LoadSheetDETAIL(int dsId) {
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
 
         Cursor cursor = db.query(DistributionSale.TABLE_NAME, null, "_id = " + dsId,
@@ -143,8 +143,8 @@ public class LoadSheet implements Serializable {
 
 
     @SuppressLint("DefaultLocale")
-    public static List<LoadSheet> search(Integer searchClientId, Integer searchYear, Integer searchJobCode, Integer searchClientJobCode, Integer searchFromId, Integer searchToId, Integer searchProductId) {
-        List<LoadSheet> result = new ArrayList<>();
+    public static List<LoadSheetDETAIL> search(Integer searchClientId, Integer searchYear, Integer searchJobCode, Integer searchClientJobCode, Integer searchFromId, Integer searchToId, Integer searchProductId) {
+        List<LoadSheetDETAIL> result = new ArrayList<>();
         List<String> selection = new ArrayList<>();
         List<String> selectionArgs = new ArrayList<>();
         String searchSql = "SELECT distribution_sales._id FROM distribution_sales LEFT JOIN job_plans ON distribution_sales.job_plan_id = job_plans._id";
@@ -194,7 +194,7 @@ public class LoadSheet implements Serializable {
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                result.add(new LoadSheet(cursor.getInt(0)));
+                result.add(new LoadSheetDETAIL(cursor.getInt(0)));
             }
 
             cursor.close();

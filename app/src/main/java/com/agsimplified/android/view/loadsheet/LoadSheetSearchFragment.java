@@ -20,7 +20,7 @@ import com.agsimplified.android.R;
 import com.agsimplified.android.database.Client;
 import com.agsimplified.android.database.Product;
 import com.agsimplified.android.database.Site;
-import com.agsimplified.android.model.LoadSheet;
+import com.agsimplified.android.model.LoadSheetDETAIL;
 
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class LoadSheetSearchFragment extends DialogFragment {
         ArrayAdapter<Client> clientAdapter = new ClientSpinnerAdapter(getActivity(), R.layout.spinner_item, clients);
         clientSelect.setAdapter(clientAdapter);
 
-        List<String> years = LoadSheet.allYears();
+        List<String> years = LoadSheetDETAIL.allYears();
 //        years.add(0, null);
         yearSelect = view.findViewById(R.id.yearSelect);
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, years);

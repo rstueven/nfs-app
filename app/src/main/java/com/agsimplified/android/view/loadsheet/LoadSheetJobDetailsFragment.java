@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.LoadSheet;
+import com.agsimplified.android.model.LoadSheetDETAIL;
 
 public class LoadSheetJobDetailsFragment extends Fragment {
     EditText timeView;
@@ -19,7 +19,7 @@ public class LoadSheetJobDetailsFragment extends Fragment {
     EditText tareView;
     EditText scaleTicketView;
 
-    public static LoadSheetJobDetailsFragment newInstance(LoadSheet loadSheet) {
+    public static LoadSheetJobDetailsFragment newInstance(LoadSheetDETAIL loadSheet) {
         if (loadSheet == null) {
             throw new IllegalArgumentException("null loadSheet");
         }
@@ -42,7 +42,7 @@ public class LoadSheetJobDetailsFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-            LoadSheet loadSheet = (LoadSheet) args.getSerializable("loadSheet");
+            LoadSheetDETAIL loadSheet = (LoadSheetDETAIL) args.getSerializable("loadSheet");
             if (loadSheet == null) {
                 throw new IllegalStateException("null loadSheet");
             }
