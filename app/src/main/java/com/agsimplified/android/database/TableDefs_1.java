@@ -49,17 +49,17 @@ public class TableDefs_1 extends TableDefs {
                         + Product.TABLE_NAME + " ("
                         + TextUtils.join(",", Product.COLUMNS)
                         + ")");
+        createStatements.put(Farm.TABLE_NAME,
+                "CREATE TABLE IF NOT EXISTS "
+                        + Farm.TABLE_NAME + " ("
+                        + TextUtils.join(",", Farm.COLUMNS)
+                        + ")");
     }
 
     @Override
     public void loadData(SQLiteDatabase db) {
         Log.d("nfs", "TableDefs_1.loadData()");
         new LoadAsync(db).execute();
-//        new Client.LoadAsync(db).execute();
-//        new JobPlan.LoadAsync(db).execute();
-//        new DistributionSale.LoadAsync(db).execute();
-//        new Site.LoadAsync(db).execute();
-//        new Product.LoadAsync(db).execute();
     }
 
     private static class LoadAsync extends AsyncTask<Void, Void, Void> {
@@ -82,16 +82,14 @@ public class TableDefs_1 extends TableDefs {
                             Log.d("nfs", "TableDefs_1.LoadAsync.onResponse(" + url + ")");
                             try {
 //                                Log.d("nfs", response.toString(2));
-                                Client[] clients = Client.createClients(response.getJSONArray(Client.TABLE_NAME));
-                                new Client.PopulateAsync(mDb).execute(clients);
-                                JobPlan[] jobPlans = JobPlan.createJobPlans(response.getJSONArray(JobPlan.TABLE_NAME));
-                                new JobPlan.PopulateAsync(mDb).execute(jobPlans);
-                                DistributionSale[] distributionSales = DistributionSale.createDistributionSales(response.getJSONArray(DistributionSale.TABLE_NAME));
-                                new DistributionSale.PopulateAsync(mDb).execute(distributionSales);
-                                Site[] sites = Site.createSites(response.getJSONArray(Site.TABLE_NAME));
-                                new Site.PopulateAsync(mDb).execute(sites);
-                                Product[] products = Product.createProducts(response.getJSONArray(Product.TABLE_NAME));
-                                new Product.PopulateAsync(mDb).execute(products);
+                                new Client.PopulateAsync(mDb).execute(response.getJSONArray(Client.TABLE_NAME));
+                                new JobPlan.PopulateAsync(mDb).execute(response.getJSONArray(JobPlan.TABLE_NAME));
+                                new DistributionSale.PopulateAsync(mDb).execute(response.getJSONArray(DistributionSale.TABLE_NAME));
+                                new Site.PopulateAsync(mDb).execute(response.getJSONArray(Site.TABLE_NAME));
+                                new Product.PopulateAsync(mDb).execute(response.getJSONArray(Product.TABLE_NAME));
+                                new Farm.PopulateAsync(mDb).execute(response.getJSONArray(Farm.TABLE_NAME));
+
+                                // TODO: Farm, Field, LoadSheet, Load, StorageInventory
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

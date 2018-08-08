@@ -145,22 +145,6 @@ public class Site implements Serializable {
         license200a = c.getString(c.getColumnIndex("license_200a"));
     }
 
-    public static Site[] createSites(JSONArray sites) {
-        List<Site> siteList = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < sites.length(); i++) {
-                siteList.add(new Site(sites.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "Site.createSites(): " + e.getLocalizedMessage());
-            Log.e("nfs", sites.toString());
-        }
-
-        Site[] siteArray = new Site[siteList.size()];
-        return siteList.toArray(siteArray);
-    }
-
     public static List<Site> all() {
         String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
@@ -449,7 +433,23 @@ public class Site implements Serializable {
                 '}';
     }
 
-    protected static class PopulateAsync extends AsyncTask<Site, Void, Void> {
+    public static Site[] jsonToArray(JSONArray jsonArray) {
+        List<Site> list = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                list.add(new Site(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            Log.e("nfs", "Site.jsonToArray(): " + e.getLocalizedMessage());
+            Log.e("nfs", jsonArray.toString());
+        }
+
+        Site[] array = new Site[list.size()];
+        return list.toArray(array);
+    }
+
+    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
         private SQLiteDatabase mDb;
 
         PopulateAsync(SQLiteDatabase db) {
@@ -459,15 +459,17 @@ public class Site implements Serializable {
         }
 
         @Override
-        protected Void doInBackground(Site... sites) {
+        protected Void doInBackground(JSONArray... json) {
             Log.d("nfs", "Site.PopulateAsync.doInBackground()");
-            Log.d("nfs", "LOADING " + sites.length + " SITES");
+
+            Site[] array = jsonToArray(json[0]);
+            Log.d("nfs", "LOADING " + array.length + " SITES");
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
-            for (Site site : sites) {
-//                    Log.d("nfs", site.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, site.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + site.name + ">");
+            for (Site item : array) {
+//                    Log.d("nfs", item.toString());
+                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
+                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
                 }
             }
 

@@ -6,12 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.agsimplified.android.util.NetworkRequestQueue;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Client implements Serializable {
-    public Client() {
-    }
+    public Client() {}
 
     public static String TABLE_NAME = "clients";
     static final String[] COLUMNS = {
@@ -119,22 +112,6 @@ public class Client implements Serializable {
         contactId = c.getInt(c.getColumnIndex("contact_id"));
         companyId = c.getInt(c.getColumnIndex("company_id"));
         notes = c.getString(c.getColumnIndex("notes"));
-    }
-
-    public static Client[] createClients(JSONArray clients) {
-        List<Client> clientList = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < clients.length(); i++) {
-                clientList.add(new Client(clients.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "Client.createClients(): " + e.getLocalizedMessage());
-            Log.e("nfs", clients.toString());
-        }
-
-        Client[] clientArray = new Client[clientList.size()];
-        return clientList.toArray(clientArray);
     }
 
     public static List<Client> all() {
@@ -380,7 +357,23 @@ public class Client implements Serializable {
                 '}';
     }
 
-    protected static class PopulateAsync extends AsyncTask<Client, Void, Void> {
+    public static Client[] jsonToArray(JSONArray jsonArray) {
+        List<Client> list = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                list.add(new Client(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            Log.e("nfs", "Client.jsonToArray(): " + e.getLocalizedMessage());
+            Log.e("nfs", jsonArray.toString());
+        }
+
+        Client[] array = new Client[list.size()];
+        return list.toArray(array);
+    }
+
+    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
         private SQLiteDatabase mDb;
 
         PopulateAsync(SQLiteDatabase db) {
@@ -390,15 +383,17 @@ public class Client implements Serializable {
         }
 
         @Override
-        protected Void doInBackground(Client... clients) {
+        protected Void doInBackground(JSONArray... json) {
             Log.d("nfs", "Client.PopulateAsync.doInBackground()");
-            Log.d("nfs", "LOADING " + clients.length + " CLIENTS");
+
+            Client[] array = jsonToArray(json[0]);
+            Log.d("nfs", "LOADING " + array.length + " CLIENTS");
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
-            for (Client client : clients) {
-//                    Log.d("nfs", client.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, client.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + client.name + ">");
+            for (Client item : array) {
+//                    Log.d("nfs", item.toString());
+                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
+                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
                 }
             }
 

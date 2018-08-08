@@ -58,22 +58,6 @@ public class Product implements Serializable {
         productForm = c.getString(c.getColumnIndex("product_form"));
     }
 
-    public static Product[] createProducts(JSONArray products) {
-        List<Product> productList = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < products.length(); i++) {
-                productList.add(new Product(products.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "Product.createProducts(): " + e.getLocalizedMessage());
-            Log.e("nfs", products.toString());
-        }
-
-        Product[] productArray = new Product[productList.size()];
-        return productList.toArray(productArray);
-    }
-
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);
@@ -142,7 +126,24 @@ public class Product implements Serializable {
                 '}';
     }
 
-    protected static class PopulateAsync extends AsyncTask<Product, Void, Void> {
+
+    public static Product[] jsonToArray(JSONArray jsonArray) {
+        List<Product> list = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                list.add(new Product(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            Log.e("nfs", "Product.jsonToArray(): " + e.getLocalizedMessage());
+            Log.e("nfs", jsonArray.toString());
+        }
+
+        Product[] array = new Product[list.size()];
+        return list.toArray(array);
+    }
+
+    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
         private SQLiteDatabase mDb;
 
         PopulateAsync(SQLiteDatabase db) {
@@ -152,15 +153,17 @@ public class Product implements Serializable {
         }
 
         @Override
-        protected Void doInBackground(Product... products) {
+        protected Void doInBackground(JSONArray... json) {
             Log.d("nfs", "Product.PopulateAsync.doInBackground()");
-            Log.d("nfs", "LOADING " + products.length + " PRODUCTS");
+
+            Product[] array = jsonToArray(json[0]);
+            Log.d("nfs", "LOADING " + array.length + " PRODUCTS");
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
-            for (Product product : products) {
-//                    Log.d("nfs", product.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, product.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + product.name + ">");
+            for (Product item : array) {
+//                    Log.d("nfs", item.toString());
+                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
+                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
                 }
             }
 

@@ -145,22 +145,6 @@ public class DistributionSale implements Serializable {
         plannedAcres = c.getDouble(c.getColumnIndex("planned_acres"));
     }
 
-    public static DistributionSale[] createDistributionSales(JSONArray distributionSales) {
-        List<DistributionSale> distributionSaleList = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < distributionSales.length(); i++) {
-                distributionSaleList.add(new DistributionSale(distributionSales.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "DistributionSale.createDistributionSales(): " + e.getLocalizedMessage());
-            Log.e("nfs", distributionSales.toString());
-        }
-
-        DistributionSale[] distributionSaleArray = new DistributionSale[distributionSaleList.size()];
-        return distributionSaleList.toArray(distributionSaleArray);
-    }
-
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);
@@ -432,7 +416,23 @@ public class DistributionSale implements Serializable {
                 '}';
     }
 
-    protected static class PopulateAsync extends AsyncTask<DistributionSale, Void, Void> {
+    public static DistributionSale[] jsonToArray(JSONArray jsonArray) {
+        List<DistributionSale> list = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                list.add(new DistributionSale(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            Log.e("nfs", "DistributionSale.jsonToArray(): " + e.getLocalizedMessage());
+            Log.e("nfs", jsonArray.toString());
+        }
+
+        DistributionSale[] array = new DistributionSale[list.size()];
+        return list.toArray(array);
+    }
+
+    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
         private SQLiteDatabase mDb;
 
         PopulateAsync(SQLiteDatabase db) {
@@ -442,15 +442,17 @@ public class DistributionSale implements Serializable {
         }
 
         @Override
-        protected Void doInBackground(DistributionSale... distributionSales) {
+        protected Void doInBackground(JSONArray... json) {
             Log.d("nfs", "DistributionSale.PopulateAsync.doInBackground()");
-            Log.d("nfs", "LOADING " + distributionSales.length + " DISTRIBUTIONSALES");
+
+            DistributionSale[] array = jsonToArray(json[0]);
+            Log.d("nfs", "LOADING " + array.length + " DistributionSaleS");
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
-            for (DistributionSale distributionSale : distributionSales) {
-//                    Log.d("nfs", distributionSale.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, distributionSale.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + distributionSale.id + ">");
+            for (DistributionSale item : array) {
+//                    Log.d("nfs", item.toString());
+                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
+                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
                 }
             }
 
@@ -459,4 +461,5 @@ public class DistributionSale implements Serializable {
             return null;
         }
     }
+
 }

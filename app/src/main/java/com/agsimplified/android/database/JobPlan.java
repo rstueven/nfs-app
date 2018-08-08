@@ -105,22 +105,6 @@ public class JobPlan implements Serializable {
         clientJobCode = c.getInt(c.getColumnIndex("client_job_code"));
     }
 
-    public static JobPlan[] createJobPlans(JSONArray jobPlans) {
-        List<JobPlan> jobPlanList = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < jobPlans.length(); i++) {
-                jobPlanList.add(new JobPlan(jobPlans.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "JobPlan.createJobPlans(): " + e.getLocalizedMessage());
-            Log.e("nfs", jobPlans.toString());
-        }
-
-        JobPlan[] jobPlanArray = new JobPlan[jobPlanList.size()];
-        return jobPlanList.toArray(jobPlanArray);
-    }
-
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);
@@ -292,7 +276,23 @@ public class JobPlan implements Serializable {
                 '}';
     }
 
-    protected static class PopulateAsync extends AsyncTask<JobPlan, Void, Void> {
+    public static JobPlan[] jsonToArray(JSONArray jsonArray) {
+        List<JobPlan> list = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                list.add(new JobPlan(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            Log.e("nfs", "JobPlan.jsonToArray(): " + e.getLocalizedMessage());
+            Log.e("nfs", jsonArray.toString());
+        }
+
+        JobPlan[] array = new JobPlan[list.size()];
+        return list.toArray(array);
+    }
+
+    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
         private SQLiteDatabase mDb;
 
         PopulateAsync(SQLiteDatabase db) {
@@ -302,15 +302,17 @@ public class JobPlan implements Serializable {
         }
 
         @Override
-        protected Void doInBackground(JobPlan... jobPlans) {
+        protected Void doInBackground(JSONArray... json) {
             Log.d("nfs", "JobPlan.PopulateAsync.doInBackground()");
-            Log.d("nfs", "LOADING " + jobPlans.length + " JOB_PLANS");
+
+            JobPlan[] array = jsonToArray(json[0]);
+            Log.d("nfs", "LOADING " + array.length + " JobPlanS");
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
-            for (JobPlan jobPlan : jobPlans) {
-//                    Log.d("nfs", jobPlan.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, jobPlan.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + jobPlan.id + ">");
+            for (JobPlan item : array) {
+//                    Log.d("nfs", item.toString());
+                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
+                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
                 }
             }
 
