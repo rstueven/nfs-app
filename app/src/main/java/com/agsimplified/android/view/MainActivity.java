@@ -59,11 +59,6 @@ public class MainActivity extends AgSimplifiedActivity
         Log.d("nfs", "MainActivity.onCreate()");
         setContentView(R.layout.main_activity);
 
-        SQLiteDatabase mDb = DbOpenHelper.getInstance().getWritableDatabase();
-        // Force data load
-        mDb.rawQuery("SELECT 1", null).close();
-
-
         searchResultsView = findViewById(R.id.searchResultsView);
         fieldActivitiesAdapter = new FieldActivityAdapter(this, fieldActivities);
     }
@@ -195,11 +190,7 @@ public class MainActivity extends AgSimplifiedActivity
                     public void onResponse(JSONObject response) {
                         Log.d("nfs", "MainActivity.logout(" + url + "): response");
                         Log.i("nfs", response.toString());
-                        SharedPref.write(SharedPref.Pref.AUTH_TOKEN, null);
-
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        MainActivity.this.finish();
+                        doLogout();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -207,11 +198,22 @@ public class MainActivity extends AgSimplifiedActivity
                 Log.d("nfs", "MainActivity.logout(" + url + "): ERROR");
                 Log.e("nfs", error.toString());
                 Toast.makeText(MainActivity.this, "Logout failed", Toast.LENGTH_LONG).show();
+
+                // Logout anyway
+                doLogout();
             }
         });
 
         queue.add(request);
+    }
+
+    private void doLogout() {
+        SharedPref.write(SharedPref.Pref.AUTH_TOKEN, null);
 
         DbOpenHelper.getInstance().close();
+
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        MainActivity.this.finish();
     }
 }

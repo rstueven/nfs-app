@@ -1,6 +1,7 @@
 package com.agsimplified.android.view;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
+import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.util.NetworkRequestQueue;
 import com.agsimplified.android.util.SharedPref;
 import com.android.volley.Request;
@@ -25,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // http://lucatironi.net/tutorial/2012/10/16/ruby_rails_android_app_authentication_devise_tutorial_part_two/
-public class LoginActivity extends AgSimplifiedActivity {
+public class LoginActivity extends AgSimplifiedActivity implements DbOpenHelper.LoadListener{
     private EditText emailField;
 
     @Override
@@ -73,8 +75,11 @@ public class LoginActivity extends AgSimplifiedActivity {
                                 e.printStackTrace();
                                 Toast.makeText(LoginActivity.this, "There was a problem saving your credentials.", Toast.LENGTH_LONG).show();
                             }
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
+
+                            DbOpenHelper.registerLoadListener(LoginActivity.this);
+                            SQLiteDatabase mDb = DbOpenHelper.getInstance().getWritableDatabase();
+                            // Force data load
+                            mDb.rawQuery("SELECT 1", null).close();
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -96,5 +101,13 @@ public class LoginActivity extends AgSimplifiedActivity {
             e.printStackTrace();
             Toast.makeText(LoginActivity.this, "There was a problem logging you in.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onDatabaseLoaded() {
+        Log.d("nfs", "LoginActivity.onDatabaseLoaded()");
+        DbOpenHelper.unregisterLoadListener(this);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }
