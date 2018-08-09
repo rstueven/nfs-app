@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.LoadSheetDETAIL;
+import com.agsimplified.android.model.LoadSheetDetail;
 
 /**
  * Created by rstueven on 3/13/18.
@@ -22,7 +22,7 @@ public class LoadSheetDetailsFragment extends Fragment {
     LoadSheetLoadTotalsFragment loadTotalsFragment;
     LoadSheetJobDetailsFragment jobDetailsFragment;
 
-    public static LoadSheetDetailsFragment newInstance(LoadSheetDETAIL loadSheet) {
+    public static LoadSheetDetailsFragment newInstance(LoadSheetDetail loadSheet) {
         Log.d("nfs", "LoadSheetDetailsFragment.newInstance()");
         if (loadSheet == null) {
             throw new IllegalArgumentException("null loadSheet");
@@ -46,7 +46,7 @@ public class LoadSheetDetailsFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-            LoadSheetDETAIL loadSheet = (LoadSheetDETAIL) args.getSerializable("loadSheet");
+            LoadSheetDetail loadSheet = (LoadSheetDetail) args.getSerializable("loadSheet");
             if (loadSheet == null) {
                 throw new IllegalStateException("null loadSheet");
             }

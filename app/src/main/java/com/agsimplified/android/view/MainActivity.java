@@ -3,7 +3,6 @@ package com.agsimplified.android.view;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +19,7 @@ import android.widget.Toast;
 import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.DbOpenHelper;
-import com.agsimplified.android.model.LoadSheetDETAIL;
+import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
 import com.agsimplified.android.util.SharedPref;
@@ -70,14 +69,14 @@ public class MainActivity extends AgSimplifiedActivity
 
     public void searchLoadSheets(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId) {
         Log.d("nfs", "searchLoadSheets(" + client + ", " + year + ", " + jobCode + ", " + clientJobCode + ", " + fromId + ", " + toId + ", " + productId + ")");
-        List<LoadSheetDETAIL> loadSheets = LoadSheetDETAIL.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
+        List<LoadSheetDetail> loadSheets = LoadSheetDetail.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
         if (loadSheets.size() > 0) {
             LoadSheetAdapter loadSheetAdapter = new LoadSheetAdapter(this, loadSheets);
             searchResultsView.setAdapter(loadSheetAdapter);
             searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    LoadSheetDETAIL loadSheet = (LoadSheetDETAIL) adapterView.getItemAtPosition(i);
+                    LoadSheetDetail loadSheet = (LoadSheetDetail) adapterView.getItemAtPosition(i);
                     Intent intent = new Intent(MainActivity.this, LoadSheetActivity.class);
                     intent.putExtra("loadSheet", loadSheet);
                     startActivity(intent);
@@ -88,15 +87,15 @@ public class MainActivity extends AgSimplifiedActivity
         }
     }
 
-    class LoadSheetAdapter extends ArrayAdapter<LoadSheetDETAIL> {
-        LoadSheetAdapter(Context context, List<LoadSheetDETAIL> list) {
+    class LoadSheetAdapter extends ArrayAdapter<LoadSheetDetail> {
+        LoadSheetAdapter(Context context, List<LoadSheetDetail> list) {
             super(context, 0, list);
         }
 
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            LoadSheetDETAIL loadSheet = getItem(position);
+            LoadSheetDetail loadSheet = getItem(position);
             if (loadSheet == null) {
                 throw new IllegalStateException("null loadSheet");
             }

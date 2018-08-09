@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.LoadSheetDETAIL;
+import com.agsimplified.android.model.LoadSheetDetail;
 
 import java.util.Locale;
 
@@ -20,7 +20,7 @@ public class LoadSheetLoadTotalsFragment extends Fragment {
     TextView totalLoadsView;
     TextView totalAmountView;
 
-    public static LoadSheetLoadTotalsFragment newInstance(LoadSheetDETAIL loadSheet) {
+    public static LoadSheetLoadTotalsFragment newInstance(LoadSheetDetail loadSheet) {
         if (loadSheet == null) {
             throw new IllegalArgumentException("null loadSheet");
         }
@@ -43,7 +43,7 @@ public class LoadSheetLoadTotalsFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-            LoadSheetDETAIL loadSheet = (LoadSheetDETAIL) args.getSerializable("loadSheet");
+            LoadSheetDetail loadSheet = (LoadSheetDetail) args.getSerializable("loadSheet");
             if (loadSheet == null) {
                 throw new IllegalStateException("null loadSheet");
             }
