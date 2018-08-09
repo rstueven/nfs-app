@@ -5,24 +5,30 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.agsimplified.android.database.Client;
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.database.DistributionSale;
+import com.agsimplified.android.database.Field;
 import com.agsimplified.android.database.JobPlan;
+import com.agsimplified.android.database.LoadSheet;
 import com.agsimplified.android.database.Product;
 import com.agsimplified.android.database.Site;
+import com.agsimplified.android.database.StorageInventory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoadSheetDetail implements Serializable {
-    private Client client;
-    private JobPlan jobPlan;
     private DistributionSale distributionSale;
+    private JobPlan jobPlan;
     private Product product;
     private Site fromSite;
     private Site toSite;
+    private StorageInventory fromStorageInventory;
+    private StorageInventory toStorageInventory;
+    private Field fromField;
+    private Field toField;
+    private List<LoadSheet> loadSheets = new ArrayList<>();
 
     public LoadSheetDetail(int dsId) {
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
@@ -42,16 +48,6 @@ public class LoadSheetDetail implements Serializable {
                 cursor.moveToFirst();
                 jobPlan = new JobPlan(cursor);
                 cursor.close();
-            }
-
-            if (jobPlan != null) {
-                cursor = db.query(Client.TABLE_NAME, null, "_id = " + jobPlan.getClientId(),
-                        null, null, null, null, "1");
-                if (cursor != null && cursor.getCount() == 1) {
-                    cursor.moveToFirst();
-                    client = new Client(cursor);
-                    cursor.close();
-                }
             }
 
             cursor = db.query(Product.TABLE_NAME, null, "_id = " + distributionSale.getProductId(),
@@ -75,6 +71,47 @@ public class LoadSheetDetail implements Serializable {
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
                 toSite = new Site(cursor);
+                cursor.close();
+            }
+
+            cursor = db.query(StorageInventory.TABLE_NAME, null, "_id = " + distributionSale.getFromStorageInventoryId(),
+                    null, null, null, null, "1");
+            if (cursor != null && cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                fromStorageInventory = new StorageInventory(cursor);
+                cursor.close();
+            }
+
+            cursor = db.query(StorageInventory.TABLE_NAME, null, "_id = " + distributionSale.getToStorageInventoryId(),
+                    null, null, null, null, "1");
+            if (cursor != null && cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                toStorageInventory = new StorageInventory(cursor);
+                cursor.close();
+            }
+
+            cursor = db.query(Field.TABLE_NAME, null, "_id = " + distributionSale.getFromFieldId(),
+                    null, null, null, null, "1");
+            if (cursor != null && cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                fromField = new Field(cursor);
+                cursor.close();
+            }
+
+            cursor = db.query(Field.TABLE_NAME, null, "_id = " + distributionSale.getToFieldId(),
+                    null, null, null, null, "1");
+            if (cursor != null && cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                toField = new Field(cursor);
+                cursor.close();
+            }
+
+            cursor = db.query(LoadSheet.TABLE_NAME, null, "distribution_sale_id = " + distributionSale.getId(),
+                    null, null, null, null);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    loadSheets.add(new LoadSheet(cursor));
+                }
                 cursor.close();
             }
         }
