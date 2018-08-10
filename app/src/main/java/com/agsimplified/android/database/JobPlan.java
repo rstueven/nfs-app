@@ -105,6 +105,21 @@ public class JobPlan implements Serializable {
         clientJobCode = c.getInt(c.getColumnIndex("client_job_code"));
     }
 
+    public static JobPlan find(int id) {
+        JobPlan item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new JobPlan(cursor);
+            cursor.close();
+        }
+
+        return item;
+    }
+
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);

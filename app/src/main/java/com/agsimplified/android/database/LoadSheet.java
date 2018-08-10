@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -47,6 +48,21 @@ public class LoadSheet implements Serializable {
         contactId = c.getInt(c.getColumnIndex("contact_id"));
         distributionSaleId = c.getInt(c.getColumnIndex("distribution_sale_id"));
         date = c.getString(c.getColumnIndex("date"));
+    }
+
+    public static LoadSheet find(int id) {
+        LoadSheet item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new LoadSheet(cursor);
+            cursor.close();
+        }
+
+        return item;
     }
 
     public static List<LoadSheet> all() {

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
+import com.agsimplified.android.database.Field;
 import com.agsimplified.android.model.LoadSheetDetail;
 
 import java.util.Locale;
@@ -63,10 +64,16 @@ public class LoadSheetFragment extends Fragment {
             productView.setText(loadSheet.getProductName());
 
             TextView fromView = view.findViewById(R.id.fromOperation);
-            fromView.setText(loadSheet.getFromSite());
+            Field fromField = loadSheet.getFromField();
+            if (fromField != null) {
+                fromView.setText(fromField.siteFarmField());
+            }
 
             TextView toView = view.findViewById(R.id.toOperation);
-            toView.setText(loadSheet.getToSite());
+            Field toField = loadSheet.getToField();
+            if (toField != null) {
+                toView.setText(toField.siteFarmField());
+            }
 
             TextView plannedView = view.findViewById(R.id.plannedAmount);
             Double plannedAmount = loadSheet.getAmount();

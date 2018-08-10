@@ -114,6 +114,21 @@ public class Client implements Serializable {
         notes = c.getString(c.getColumnIndex("notes"));
     }
 
+    public static Client find(int id) {
+        Client item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new Client(cursor);
+            cursor.close();
+        }
+
+        return item;
+    }
+
     public static List<Client> all() {
         String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();

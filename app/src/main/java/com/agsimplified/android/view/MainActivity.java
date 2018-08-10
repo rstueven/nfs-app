@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.DbOpenHelper;
+import com.agsimplified.android.database.Field;
+import com.agsimplified.android.database.LoadSheet;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
@@ -115,8 +117,14 @@ public class MainActivity extends AgSimplifiedActivity
             clientJobCodeView.setText(loadSheet.getClientJobCodeString());
             yearView.setText(loadSheet.getYearString());
             productView.setText(loadSheet.getProductName());
-            fromView.setText(loadSheet.getFromSite());
-            toView.setText(loadSheet.getToSite());
+            Field fromField = loadSheet.getFromField();
+            if (fromField != null) {
+                fromView.setText(fromField.siteFarmField());
+            }
+            Field toField = loadSheet.getToField();
+            if (toField != null) {
+                toView.setText(toField.siteFarmField());
+            }
 
             convertView.setBackgroundColor(Color.parseColor(position % 2 == 0 ? "#ffffff" : "#e0e0e0"));
 

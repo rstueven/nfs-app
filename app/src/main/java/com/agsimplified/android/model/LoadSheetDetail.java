@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.database.DistributionSale;
+import com.agsimplified.android.database.Farm;
 import com.agsimplified.android.database.Field;
 import com.agsimplified.android.database.JobPlan;
 import com.agsimplified.android.database.LoadSheet;
@@ -166,18 +167,107 @@ public class LoadSheetDetail implements Serializable {
         return (product != null) ? product.getName() : null;
     }
 
-    public String getFromSite() {
-        return (fromSite != null) ? fromSite.getName() : null;
+    public Site getFromSite() {
+//        return (fromSite != null) ? fromSite.getName() : null;
+
+        return fromSite;
     }
 
-    public String getToSite() {
-        return (toSite != null) ? toSite.getName() : null;
+    public Site getToSite() {
+        return toSite;
     }
 
     public double getAmount() {
         return (distributionSale != null) ? distributionSale.getAmount() : -1;
     }
 
+    public DistributionSale getDistributionSale() {
+        return distributionSale;
+    }
+
+    public void setDistributionSale(DistributionSale distributionSale) {
+        this.distributionSale = distributionSale;
+    }
+
+    public JobPlan getJobPlan() {
+        return jobPlan;
+    }
+
+    public void setJobPlan(JobPlan jobPlan) {
+        this.jobPlan = jobPlan;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setFromSite(Site fromSite) {
+        this.fromSite = fromSite;
+    }
+
+    public void setToSite(Site toSite) {
+        this.toSite = toSite;
+    }
+
+    public StorageInventory getFromStorageInventory() {
+        return fromStorageInventory;
+    }
+
+    public void setFromStorageInventory(StorageInventory fromStorageInventory) {
+        this.fromStorageInventory = fromStorageInventory;
+    }
+
+    public StorageInventory getToStorageInventory() {
+        return toStorageInventory;
+    }
+
+    public void setToStorageInventory(StorageInventory toStorageInventory) {
+        this.toStorageInventory = toStorageInventory;
+    }
+
+    public Field getFromField() {
+        return fromField;
+    }
+
+    public void setFromField(Field fromField) {
+        this.fromField = fromField;
+    }
+
+    public Field getToField() {
+        return toField;
+    }
+
+    public void setToField(Field toField) {
+        this.toField = toField;
+    }
+
+    public List<LoadSheet> getLoadSheets() {
+        return loadSheets;
+    }
+
+    public void setLoadSheets(List<LoadSheet> loadSheets) {
+        this.loadSheets = loadSheets;
+    }
+
+    @Override
+    public String toString() {
+        return "LoadSheetDetail{" +
+                "distributionSale=" + distributionSale +
+                ", jobPlan=" + jobPlan +
+                ", product=" + product +
+                ", fromSite=" + fromSite +
+                ", toSite=" + toSite +
+                ", fromStorageInventory=" + fromStorageInventory +
+                ", toStorageInventory=" + toStorageInventory +
+                ", fromField=" + fromField +
+                ", toField=" + toField +
+                ", loadSheets=" + loadSheets +
+                '}';
+    }
 
     @SuppressLint("DefaultLocale")
     public static List<LoadSheetDetail> search(Integer searchClientId, Integer searchYear, Integer searchJobCode, Integer searchClientJobCode, Integer searchFromId, Integer searchToId, Integer searchProductId) {

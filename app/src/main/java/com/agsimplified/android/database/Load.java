@@ -93,6 +93,21 @@ public class Load implements Serializable {
         loadingOperatorId = c.getInt(c.getColumnIndex("loading_operator_id"));
     }
 
+    public static Load find(int id) {
+        Load item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new Load(cursor);
+            cursor.close();
+        }
+
+        return item;
+    }
+
     public static List<Load> all() {
         String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();

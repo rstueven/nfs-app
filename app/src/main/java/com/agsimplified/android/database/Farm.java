@@ -69,6 +69,21 @@ public class Farm implements Serializable {
         guid = c.getString(c.getColumnIndex("guid"));
     }
 
+    public static Farm find(int id) {
+        Farm item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new Farm(cursor);
+            cursor.close();
+        }
+
+        return item;
+    }
+
     public static List<Farm> all() {
         String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();

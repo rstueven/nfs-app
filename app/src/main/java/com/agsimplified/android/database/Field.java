@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -129,6 +130,21 @@ public class Field implements Serializable {
         status = c.getString(c.getColumnIndex("status"));
     }
 
+    public static Field find(int id) {
+        Field item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new Field(cursor);
+            cursor.close();
+        }
+
+        return item;
+    }
+
     public static List<Field> all() {
         String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
@@ -172,6 +188,22 @@ public class Field implements Serializable {
         cv.put("guid", guid);
         cv.put("status", status);
         return cv;
+    }
+
+    public String siteFarmField() {
+        String s = getName();
+
+        Farm farm = Farm.find(getFarmId());
+        if (farm != null) {
+            s = farm.getName() + ":" + s;
+            Site site = Site.find(farm.getSiteId());
+            if (site != null) {
+                s = site.getName() + ":" + s;
+            }
+        }
+
+
+        return s;
     }
 
     public int getId() {
@@ -364,6 +396,10 @@ public class Field implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Farm getFarm() {
+        return Farm.find(farmId);
     }
 
     @Override

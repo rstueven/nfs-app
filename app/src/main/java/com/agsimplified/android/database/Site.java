@@ -145,6 +145,21 @@ public class Site implements Serializable {
         license200a = c.getString(c.getColumnIndex("license_200a"));
     }
 
+    public static Site find(int id) {
+        Site item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new Site(cursor);
+            cursor.close();
+        }
+
+        return item;
+    }
+
     public static List<Site> all() {
         String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();

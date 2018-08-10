@@ -58,6 +58,21 @@ public class Product implements Serializable {
         productForm = c.getString(c.getColumnIndex("product_form"));
     }
 
+    public static Product find(int id) {
+        Product item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new Product(cursor);
+            cursor.close();
+        }
+
+        return item;
+    }
+
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);

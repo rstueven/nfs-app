@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.agsimplified.android.util.NetworkRequestQueue;
@@ -143,6 +144,21 @@ public class DistributionSale implements Serializable {
         croppingRotation = c.getString(c.getColumnIndex("cropping_rotation"));
         tillagePractices = c.getString(c.getColumnIndex("tillage_practices"));
         plannedAcres = c.getDouble(c.getColumnIndex("planned_acres"));
+    }
+
+    public static DistributionSale find(int id) {
+        DistributionSale item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new DistributionSale(cursor);
+            cursor.close();
+        }
+
+        return item;
     }
 
     public ContentValues getContentValues() {

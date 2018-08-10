@@ -69,6 +69,21 @@ public class StorageInventory implements Serializable {
         initialProductId = c.getInt(c.getColumnIndex("initial_product_id"));
     }
 
+    public static StorageInventory find(int id) {
+        StorageInventory item = null;
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            item = new StorageInventory(cursor);
+            cursor.close();
+        }
+
+        return item;
+    }
+
     public static List<StorageInventory> all() {
         String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
