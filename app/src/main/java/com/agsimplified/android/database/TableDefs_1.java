@@ -75,6 +75,11 @@ public class TableDefs_1 extends TableDefs {
                         + StorageInventory.TABLE_NAME + " ("
                         + TextUtils.join(",", StorageInventory.COLUMNS)
                         + ")");
+        createStatements.put(Storage.TABLE_NAME,
+                "CREATE TABLE IF NOT EXISTS "
+                        + Storage.TABLE_NAME + " ("
+                        + TextUtils.join(",", Storage.COLUMNS)
+                        + ")");
     }
 
     @Override
@@ -113,6 +118,7 @@ public class TableDefs_1 extends TableDefs {
                                 new LoadSheet.PopulateAsync(mDb).execute(response.getJSONArray(LoadSheet.TABLE_NAME));
                                 new Load.PopulateAsync(mDb).execute(response.getJSONArray(Load.TABLE_NAME));
                                 new StorageInventory.PopulateAsync(mDb).execute(response.getJSONArray(StorageInventory.TABLE_NAME));
+                                new Storage.PopulateAsync(mDb).execute(response.getJSONArray(Storage.TABLE_NAME));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

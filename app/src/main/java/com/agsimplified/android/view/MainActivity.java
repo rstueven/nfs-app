@@ -21,6 +21,7 @@ import com.agsimplified.android.R;
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.database.Field;
 import com.agsimplified.android.database.LoadSheet;
+import com.agsimplified.android.database.StorageInventory;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
@@ -118,12 +119,22 @@ public class MainActivity extends AgSimplifiedActivity
             yearView.setText(loadSheet.getYearString());
             productView.setText(loadSheet.getProductName());
             Field fromField = loadSheet.getFromField();
+            StorageInventory fromStorageInventory = loadSheet.getFromStorageInventory();
             if (fromField != null) {
                 fromView.setText(fromField.siteFarmField());
+            } else if (fromStorageInventory != null) {
+                fromView.setText(fromStorageInventory.siteStorageName());
+            } else {
+                fromView.setText("");
             }
             Field toField = loadSheet.getToField();
+            StorageInventory toStorageInventory = loadSheet.getToStorageInventory();
             if (toField != null) {
                 toView.setText(toField.siteFarmField());
+            } else if (toStorageInventory != null) {
+                toView.setText(toStorageInventory.siteStorageName());
+            } else {
+                toView.setText("");
             }
 
             convertView.setBackgroundColor(Color.parseColor(position % 2 == 0 ? "#ffffff" : "#e0e0e0"));

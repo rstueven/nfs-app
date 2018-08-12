@@ -8,11 +8,6 @@ import android.util.Log;
 import java.util.HashMap;
 
 public abstract class TableDefs {
-    static final String TABLE_CLIENT = "clients";
-    static final String TABLE_JOB_PLAN = "job_plans";
-    static final String TABLE_DISTRIBUTION_SALE = "distribution_sales";
-    static final String TABLE_SITE = "sites";
-    static final String TABLE_PRODUCT = "products";
     final static HashMap<String, String> createStatements = new HashMap<>();
     private final static HashMap<String, String[]> indexStatements = new HashMap<>();
 

@@ -115,6 +115,21 @@ public class StorageInventory implements Serializable {
         return cv;
     }
 
+    public String siteStorageName() {
+        String s ="";
+
+        Storage storage = Storage.find(getStorageableId());
+        if (storage != null) {
+            s = storage.getName() + ":" + s;
+            Site site = Site.find(storage.getSiteId());
+            if (site != null) {
+                s = site.getName() + ":" + s;
+            }
+        }
+
+        return s;
+    }
+
     public int getId() {
         return id;
     }

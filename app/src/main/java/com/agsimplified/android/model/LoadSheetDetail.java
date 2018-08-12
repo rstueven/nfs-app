@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.database.DistributionSale;
-import com.agsimplified.android.database.Farm;
 import com.agsimplified.android.database.Field;
 import com.agsimplified.android.database.JobPlan;
 import com.agsimplified.android.database.LoadSheet;

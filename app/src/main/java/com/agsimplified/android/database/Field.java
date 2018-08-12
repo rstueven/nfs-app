@@ -202,7 +202,6 @@ public class Field implements Serializable {
             }
         }
 
-
         return s;
     }
 

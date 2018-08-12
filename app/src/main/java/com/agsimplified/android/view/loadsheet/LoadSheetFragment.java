@@ -17,14 +17,14 @@ import com.agsimplified.android.model.LoadSheetDetail;
 import java.util.Locale;
 
 public class LoadSheetFragment extends Fragment {
-    public static LoadSheetFragment newInstance(LoadSheetDetail loadSheet) {
-        if (loadSheet == null) {
-            throw new IllegalArgumentException("null loadSheet");
+    public static LoadSheetFragment newInstance(LoadSheetDetail loadSheetDetail) {
+        if (loadSheetDetail == null) {
+            throw new IllegalArgumentException("null loadSheetDetail");
         }
 
         LoadSheetFragment frag = new LoadSheetFragment();
         Bundle args = new Bundle();
-        args.putSerializable("loadSheet", loadSheet);
+        args.putSerializable("loadSheetDetail", loadSheetDetail);
         frag.setArguments(args);
         return frag;
     }
@@ -39,50 +39,43 @@ public class LoadSheetFragment extends Fragment {
                 throw new IllegalStateException("null args");
             }
 
-
-            LoadSheetDetail loadSheet = (LoadSheetDetail) args.getSerializable("loadSheet");
-            if (loadSheet == null) {
-                throw new IllegalStateException("null loadSheet");
+            LoadSheetDetail loadSheetDetail = (LoadSheetDetail) args.getSerializable("loadSheetDetail");
+            if (loadSheetDetail == null) {
+                throw new IllegalStateException("null loadSheetDetail");
             }
 
             TextView jobCodeView = view.findViewById(R.id.jobCode);
-            Integer jobCode = loadSheet.getJobCode();
-//            if (jobCode != null) {
-                jobCodeView.setText(String.format(Locale.getDefault(), "%d", jobCode));
-//            }
+            Integer jobCode = loadSheetDetail.getJobCode();
+            jobCodeView.setText(String.format(Locale.getDefault(), "%d", jobCode));
 
             TextView clientJobCodeView = view.findViewById(R.id.clientJobCode);
-            Integer clientJobCode = loadSheet.getClientJobCode();
-//            if (clientJobCode != null) {
-                clientJobCodeView.setText(String.format(Locale.getDefault(), "%d", loadSheet.getClientJobCode()));
-//            }
+            Integer clientJobCode = loadSheetDetail.getClientJobCode();
+            clientJobCodeView.setText(String.format(Locale.getDefault(), "%d", clientJobCode));
 
             TextView yearView = view.findViewById(R.id.year);
-            yearView.setText(loadSheet.getYearString());
+            yearView.setText(loadSheetDetail.getYearString());
 
             TextView productView = view.findViewById(R.id.product);
-            productView.setText(loadSheet.getProductName());
+            productView.setText(loadSheetDetail.getProductName());
 
             TextView fromView = view.findViewById(R.id.fromOperation);
-            Field fromField = loadSheet.getFromField();
+            Field fromField = loadSheetDetail.getFromField();
             if (fromField != null) {
                 fromView.setText(fromField.siteFarmField());
             }
 
             TextView toView = view.findViewById(R.id.toOperation);
-            Field toField = loadSheet.getToField();
+            Field toField = loadSheetDetail.getToField();
             if (toField != null) {
                 toView.setText(toField.siteFarmField());
             }
 
             TextView plannedView = view.findViewById(R.id.plannedAmount);
-            Double plannedAmount = loadSheet.getAmount();
-//            if (plannedAmount != null) {
-                plannedView.setText(String.format(Locale.getDefault(), "%.2f", loadSheet.getAmount()));
-//            }
+            Double plannedAmount = loadSheetDetail.getAmount();
+            plannedView.setText(String.format(Locale.getDefault(), "%.2f", plannedAmount));
 
 //            TextView hauledView = view.findViewById(R.id.hauledAmount);
-//            Double hauledAmount = loadSheet.getHauledAmount();
+//            Double hauledAmount = loadSheetDetail.getHauledAmount();
 //            if (hauledAmount != null) {
 //                hauledView.setText(String.format(Locale.getDefault(), "%.2f", hauledAmount));
 //            }
