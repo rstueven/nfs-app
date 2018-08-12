@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.Field;
+import com.agsimplified.android.database.StorageInventory;
 import com.agsimplified.android.model.LoadSheetDetail;
 
 import java.util.Locale;
@@ -60,15 +61,26 @@ public class LoadSheetFragment extends Fragment {
 
             TextView fromView = view.findViewById(R.id.fromOperation);
             Field fromField = loadSheetDetail.getFromField();
+            StorageInventory fromStorageInventory = loadSheetDetail.getFromStorageInventory();
             if (fromField != null) {
                 fromView.setText(fromField.siteFarmField());
+            } else if (fromStorageInventory != null) {
+                fromView.setText(fromStorageInventory.siteStorageName());
+            } else {
+                fromView.setText("");
             }
 
             TextView toView = view.findViewById(R.id.toOperation);
             Field toField = loadSheetDetail.getToField();
+            StorageInventory toStorageInventory = loadSheetDetail.getToStorageInventory();
             if (toField != null) {
                 toView.setText(toField.siteFarmField());
+            } else if (toStorageInventory != null) {
+                toView.setText(toStorageInventory.siteStorageName());
+            } else {
+                toView.setText("");
             }
+
 
             TextView plannedView = view.findViewById(R.id.plannedAmount);
             Double plannedAmount = loadSheetDetail.getAmount();

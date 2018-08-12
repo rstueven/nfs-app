@@ -63,7 +63,7 @@ public class LoadSheetMapFragment extends Fragment
 
             FragmentManager fm = getChildFragmentManager();
 
-            DirectionsFragment directionsFragment = DirectionsFragment.newInstance("DIRECTIONS");
+            DirectionsFragment directionsFragment = DirectionsFragment.newInstance(loadSheet.getDistributionSale().getDirections());
 
             SupportMapFragment mapFragment = new SupportMapFragment();
 
