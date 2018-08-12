@@ -45,7 +45,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     }
 
     public static DbOpenHelper getInstance() {
-        Log.d("nfs", "DbOpenHelper.getInstance()");
+//        Log.d("nfs", "DbOpenHelper.getInstance()");
         return mInstance;
     }
 

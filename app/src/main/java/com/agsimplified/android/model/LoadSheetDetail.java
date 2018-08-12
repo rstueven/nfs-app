@@ -13,6 +13,7 @@ import com.agsimplified.android.database.LoadSheet;
 import com.agsimplified.android.database.Product;
 import com.agsimplified.android.database.Site;
 import com.agsimplified.android.database.StorageInventory;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -133,6 +134,16 @@ public class LoadSheetDetail implements Serializable {
         }
 
         return list;
+    }
+
+    public LatLng toLatLng() {
+        if (toField != null) {
+            return toField.getLatLng();
+        } else if (toStorageInventory != null) {
+            return toField.getLatLng();
+        } else {
+            return null;
+        }
     }
 
     public int getJobCode() {

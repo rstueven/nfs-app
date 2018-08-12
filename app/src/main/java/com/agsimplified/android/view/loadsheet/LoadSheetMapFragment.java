@@ -15,6 +15,7 @@ import com.agsimplified.android.R;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.view.AgSimplifiedActivity;
 import com.agsimplified.android.view.DirectionsFragment;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,6 +23,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.maps.android.data.geojson.GeoJsonLayer;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by rstueven on 3/13/18.
@@ -30,17 +37,18 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class LoadSheetMapFragment extends Fragment
         implements OnMapReadyCallback, AgSimplifiedActivity.LocationListener {
+    private LoadSheetDetail loadSheetDetail;
     private GoogleMap mMap;
 
-    public static LoadSheetMapFragment newInstance(LoadSheetDetail loadSheet) {
+    public static LoadSheetMapFragment newInstance(LoadSheetDetail loadSheetDetail) {
         Log.d("nfs", "LoadSheetMapFragment.newInstance()");
-        if (loadSheet == null) {
-            throw new IllegalArgumentException("null loadSheet");
+        if (loadSheetDetail == null) {
+            throw new IllegalArgumentException("null loadSheetDetail");
         }
 
         LoadSheetMapFragment frag = new LoadSheetMapFragment();
         Bundle args = new Bundle();
-        args.putSerializable("loadSheet", loadSheet);
+        args.putSerializable("loadSheetDetail", loadSheetDetail);
         frag.setArguments(args);
         return frag;
     }
@@ -56,14 +64,14 @@ public class LoadSheetMapFragment extends Fragment
                 throw new IllegalStateException("null args");
             }
 
-            LoadSheetDetail loadSheet = (LoadSheetDetail) args.getSerializable("loadSheet");
-            if (loadSheet == null) {
-                throw new IllegalStateException("null loadSheet");
+            loadSheetDetail = (LoadSheetDetail) args.getSerializable("loadSheetDetail");
+            if (loadSheetDetail == null) {
+                throw new IllegalStateException("null loadSheetDetail");
             }
 
             FragmentManager fm = getChildFragmentManager();
 
-            DirectionsFragment directionsFragment = DirectionsFragment.newInstance(loadSheet.getDistributionSale().getDirections());
+            DirectionsFragment directionsFragment = DirectionsFragment.newInstance(loadSheetDetail.getDistributionSale().getDirections());
 
             SupportMapFragment mapFragment = new SupportMapFragment();
 
@@ -98,22 +106,53 @@ public class LoadSheetMapFragment extends Fragment
             throw new IllegalStateException("null activity");
         }
 
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(41.736533, -95.701810))
-                .zoom(17)
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        GeoJsonLayer layer;
+        LatLngBounds toBounds = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(loadSheetDetail.getToField().getGeoJson());
+            JSONObject firstFeature = jsonObject.getJSONArray("features").getJSONObject(0);
+            JSONObject geometry = firstFeature.getJSONObject("geometry");
+            JSONArray coordinates = geometry.getJSONArray("coordinates").getJSONArray(0);
+
+            JSONArray coord;
+
+            if (coordinates.length() > 0) {
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                for (int i = 0; i < coordinates.length(); i++) {
+                    coord = coordinates.getJSONArray(0);
+                    builder.include(new LatLng(coord.getDouble(1), coord.getDouble(0)));
+                }
+                toBounds = builder.build();
+            }
+
+            layer = new GeoJsonLayer(mMap, jsonObject);
+        } catch (JSONException e) {
+            Log.w("nfs", "LoadSheetMapFragment.onMapReady(): " + e.getLocalizedMessage());
+            layer = null;
+        }
+
+        if (toBounds != null) {
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(toBounds, 25);
+            mMap.animateCamera(cameraUpdate);
+        }
+
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target(new LatLng(41.736533, -95.701810))
+//                .zoom(17)
+//                .build();
+//        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         activity.registerLocationListener(this);
     }
 
     @Override
     public void onLocationUpdated(Location location) {
-        Log.d("nfs", "LoadSheetMapFragment.onLocationUpdated()");
-        Log.d("nfs", "LOAD SHEET MAP FRAG LOCATION");
-        if (location != null) {
-            Log.d("nfs", location.toString());
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-        }
+//        Log.d("nfs", "LoadSheetMapFragment.onLocationUpdated()");
+//        Log.d("nfs", "LOAD SHEET MAP FRAG LOCATION");
+//        if (location != null) {
+//            Log.d("nfs", location.toString());
+//            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+//        }
     }
 }

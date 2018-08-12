@@ -20,7 +20,6 @@ import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.database.Field;
-import com.agsimplified.android.database.LoadSheet;
 import com.agsimplified.android.database.StorageInventory;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
@@ -72,16 +71,16 @@ public class MainActivity extends AgSimplifiedActivity
 
     public void searchLoadSheets(Integer client, Integer year, Integer jobCode, Integer clientJobCode, Integer fromId, Integer toId, Integer productId) {
         Log.d("nfs", "searchLoadSheets(" + client + ", " + year + ", " + jobCode + ", " + clientJobCode + ", " + fromId + ", " + toId + ", " + productId + ")");
-        List<LoadSheetDetail> loadSheets = LoadSheetDetail.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
-        if (loadSheets.size() > 0) {
-            LoadSheetAdapter loadSheetAdapter = new LoadSheetAdapter(this, loadSheets);
+        List<LoadSheetDetail> loadSheetDetails = LoadSheetDetail.search(client, year, jobCode, clientJobCode, fromId, toId, productId);
+        if (loadSheetDetails.size() > 0) {
+            LoadSheetAdapter loadSheetAdapter = new LoadSheetAdapter(this, loadSheetDetails);
             searchResultsView.setAdapter(loadSheetAdapter);
             searchResultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    LoadSheetDetail loadSheet = (LoadSheetDetail) adapterView.getItemAtPosition(i);
+                    LoadSheetDetail loadSheetDetail = (LoadSheetDetail) adapterView.getItemAtPosition(i);
                     Intent intent = new Intent(MainActivity.this, LoadSheetActivity.class);
-                    intent.putExtra("loadSheet", loadSheet);
+                    intent.putExtra("loadSheetDetail", loadSheetDetail);
                     startActivity(intent);
                 }
             });
@@ -98,9 +97,9 @@ public class MainActivity extends AgSimplifiedActivity
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            LoadSheetDetail loadSheet = getItem(position);
-            if (loadSheet == null) {
-                throw new IllegalStateException("null loadSheet");
+            LoadSheetDetail loadSheetDetail = getItem(position);
+            if (loadSheetDetail == null) {
+                throw new IllegalStateException("null loadSheetDetail");
             }
 
             if (convertView == null) {
@@ -114,12 +113,12 @@ public class MainActivity extends AgSimplifiedActivity
             TextView fromView = convertView.findViewById(R.id.fromOperation);
             TextView toView = convertView.findViewById(R.id.toOperation);
 
-            jobCodeView.setText(loadSheet.getJobCodeString());
-            clientJobCodeView.setText(loadSheet.getClientJobCodeString());
-            yearView.setText(loadSheet.getYearString());
-            productView.setText(loadSheet.getProductName());
-            Field fromField = loadSheet.getFromField();
-            StorageInventory fromStorageInventory = loadSheet.getFromStorageInventory();
+            jobCodeView.setText(loadSheetDetail.getJobCodeString());
+            clientJobCodeView.setText(loadSheetDetail.getClientJobCodeString());
+            yearView.setText(loadSheetDetail.getYearString());
+            productView.setText(loadSheetDetail.getProductName());
+            Field fromField = loadSheetDetail.getFromField();
+            StorageInventory fromStorageInventory = loadSheetDetail.getFromStorageInventory();
             if (fromField != null) {
                 fromView.setText(fromField.siteFarmField());
             } else if (fromStorageInventory != null) {
@@ -127,8 +126,8 @@ public class MainActivity extends AgSimplifiedActivity
             } else {
                 fromView.setText("");
             }
-            Field toField = loadSheet.getToField();
-            StorageInventory toStorageInventory = loadSheet.getToStorageInventory();
+            Field toField = loadSheetDetail.getToField();
+            StorageInventory toStorageInventory = loadSheetDetail.getToStorageInventory();
             if (toField != null) {
                 toView.setText(toField.siteFarmField());
             } else if (toStorageInventory != null) {

@@ -29,23 +29,23 @@ public class LoadSheetActivity extends AgSimplifiedActivity {
         setContentView(R.layout.load_sheet_activity);
 
         Intent intent = getIntent();
-        LoadSheetDetail loadSheet = (LoadSheetDetail) intent.getSerializableExtra("loadSheet");
-        if (loadSheet == null) {
-            throw new IllegalStateException("null loadSheet");
+        LoadSheetDetail loadSheetDetail = (LoadSheetDetail) intent.getSerializableExtra("loadSheetDetail");
+        if (loadSheetDetail == null) {
+            throw new IllegalStateException("null loadSheetDetail");
         }
 
-        LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(loadSheet);
-        loadSheetMapFragment = LoadSheetMapFragment.newInstance(loadSheet);
-        loadSheetDetailsFragment = LoadSheetDetailsFragment.newInstance(loadSheet);
+        LoadSheetFragment loadSheetFragment = LoadSheetFragment.newInstance(loadSheetDetail);
+        loadSheetMapFragment = LoadSheetMapFragment.newInstance(loadSheetDetail);
+        loadSheetDetailsFragment = LoadSheetDetailsFragment.newInstance(loadSheetDetail);
 
         FragmentManager fm = getSupportFragmentManager();
 
         fm.beginTransaction()
-                .add(R.id.loadSheetFrame, loadSheetFragment, "loadSheet")
+                .add(R.id.loadSheetFrame, loadSheetFragment, "loadSheetDetail")
                 .commit();
 
         ViewPager mPager = findViewById(R.id.pager);
-        PagerAdapter mPagerAdapter = new LoadSheetPagerAdapter(getSupportFragmentManager(), loadSheet);
+        PagerAdapter mPagerAdapter = new LoadSheetPagerAdapter(getSupportFragmentManager(), loadSheetDetail);
         mPager.setAdapter(mPagerAdapter);
     }
 

@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -203,6 +205,10 @@ public class Field implements Serializable {
         }
 
         return s;
+    }
+
+    public LatLng getLatLng() {
+        return null;
     }
 
     public int getId() {
