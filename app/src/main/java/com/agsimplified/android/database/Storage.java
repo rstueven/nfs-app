@@ -79,6 +79,7 @@ public class Storage implements Serializable, GeoJsonable {
 
         if (cursor != null) {
             cursor.moveToFirst();
+            // TODO: storageable_type == Field ...?
             item = new Storage(cursor);
             cursor.close();
         }
