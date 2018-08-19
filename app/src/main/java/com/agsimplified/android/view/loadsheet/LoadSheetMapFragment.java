@@ -24,8 +24,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 
@@ -109,9 +112,6 @@ public class LoadSheetMapFragment extends Fragment
             throw new IllegalStateException("null activity");
         }
 
-//        GeoJsonLayer layer;
-        LatLngBounds toBounds = null;
-
         try {
             GeoJsonable destination = loadSheetDetail.getDestination();
             if (destination == null) {
@@ -121,43 +121,56 @@ public class LoadSheetMapFragment extends Fragment
                 JSONObject jsonObject = new JSONObject(destination.getGeoJson());
                 JSONObject firstFeature = jsonObject.getJSONArray("features").getJSONObject(0);
                 JSONObject geometry = firstFeature.getJSONObject("geometry");
-                JSONArray coordinates = geometry.getJSONArray("coordinates").getJSONArray(0);
-
+                String geoType = geometry.getString("type");
+                JSONArray coordinates = geometry.getJSONArray("coordinates");
                 JSONArray coord;
+                LatLng point;
 
-                if (coordinates.length() > 0) {
-                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                    PolygonOptions pOpts = new PolygonOptions().strokeColor(Color.GREEN);
-                    LatLng point;
+                switch (geoType) {
+                    case "Point":
+                        point = new LatLng(coordinates.getDouble(1), coordinates.getDouble(0));
+                        mMap.addMarker(new MarkerOptions()
+                                .position(point)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                        );
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(point)
+                                .zoom(17)
+                                .build();
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        break;
+                    case "Polygon":
+                        LatLngBounds toBounds = null;
+                        // TODO: What if there are more than one coordinates arrays?
+                        coordinates = coordinates.getJSONArray(0);
+                        if (coordinates.length() > 0) {
+                            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                            PolygonOptions pOpts = new PolygonOptions().strokeColor(Color.GREEN);
 
-                    for (int i = 0; i < coordinates.length(); i++) {
-                        coord = coordinates.getJSONArray(i);
-                        Log.d("nfs", coord.toString());
-                        point = new LatLng(coord.getDouble(1), coord.getDouble(0));
-                        builder.include(point);
-                        pOpts.add(point);
-                    }
-                    toBounds = builder.build();
-                    map.addPolygon(pOpts);
+                            for (int i = 0; i < coordinates.length(); i++) {
+                                coord = coordinates.getJSONArray(i);
+                                point = new LatLng(coord.getDouble(1), coord.getDouble(0));
+                                builder.include(point);
+                                pOpts.add(point);
+                            }
+                            toBounds = builder.build();
+                            map.addPolygon(pOpts);
+                        }
+
+                        if (toBounds != null) {
+                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(toBounds, 25);
+                            mMap.animateCamera(cameraUpdate);
+                        }
+                        break;
+                    default:
+                        Log.w("nfs", "UNKNOWN geoType <" + geoType + ">");
                 }
 
-//                layer = new GeoJsonLayer(mMap, jsonObject);
+
             }
         } catch (JSONException e) {
             Log.w("nfs", "LoadSheetMapFragment.onMapReady(): " + e.getLocalizedMessage());
-//            layer = null;
         }
-
-        if (toBounds != null) {
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(toBounds, 25);
-            mMap.animateCamera(cameraUpdate);
-        }
-
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(new LatLng(41.736533, -95.701810))
-//                .zoom(17)
-//                .build();
-//        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         activity.registerLocationListener(this);
     }
