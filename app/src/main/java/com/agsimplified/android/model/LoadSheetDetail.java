@@ -12,6 +12,7 @@ import com.agsimplified.android.database.JobPlan;
 import com.agsimplified.android.database.LoadSheet;
 import com.agsimplified.android.database.Product;
 import com.agsimplified.android.database.Site;
+import com.agsimplified.android.database.Storage;
 import com.agsimplified.android.database.StorageInventory;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -261,6 +262,10 @@ public class LoadSheetDetail implements Serializable {
 
     public void setLoadSheets(List<LoadSheet> loadSheets) {
         this.loadSheets = loadSheets;
+    }
+
+    public GeoJsonable getDestination() {
+        return toField != null ? toField : Storage.find(toStorageInventory.getStorageableId());
     }
 
     @Override

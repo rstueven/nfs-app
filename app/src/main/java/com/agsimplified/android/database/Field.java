@@ -4,9 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Log;
 
+import com.agsimplified.android.model.GeoJsonable;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Field implements Serializable {
+public class Field implements Serializable, GeoJsonable {
     public Field() {
     }
 
@@ -363,6 +363,7 @@ public class Field implements Serializable {
         this.hel = hel;
     }
 
+    @Override
     public String getGeoJson() {
         return geoJson;
     }

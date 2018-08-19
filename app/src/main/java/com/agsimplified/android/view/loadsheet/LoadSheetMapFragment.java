@@ -1,6 +1,7 @@
 package com.agsimplified.android.view.loadsheet;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
+import com.agsimplified.android.database.Field;
+import com.agsimplified.android.model.GeoJsonable;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.view.AgSimplifiedActivity;
 import com.agsimplified.android.view.DirectionsFragment;
@@ -21,9 +24,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 
 import org.json.JSONArray;
@@ -106,30 +109,43 @@ public class LoadSheetMapFragment extends Fragment
             throw new IllegalStateException("null activity");
         }
 
-        GeoJsonLayer layer;
+//        GeoJsonLayer layer;
         LatLngBounds toBounds = null;
 
         try {
-            JSONObject jsonObject = new JSONObject(loadSheetDetail.getToField().getGeoJson());
-            JSONObject firstFeature = jsonObject.getJSONArray("features").getJSONObject(0);
-            JSONObject geometry = firstFeature.getJSONObject("geometry");
-            JSONArray coordinates = geometry.getJSONArray("coordinates").getJSONArray(0);
+            GeoJsonable destination = loadSheetDetail.getDestination();
+            if (destination == null) {
+                Log.w("nfs", "NULL DESTINATION");
+            } else {
+                Log.d("nfs", destination.toString());
+                JSONObject jsonObject = new JSONObject(destination.getGeoJson());
+                JSONObject firstFeature = jsonObject.getJSONArray("features").getJSONObject(0);
+                JSONObject geometry = firstFeature.getJSONObject("geometry");
+                JSONArray coordinates = geometry.getJSONArray("coordinates").getJSONArray(0);
 
-            JSONArray coord;
+                JSONArray coord;
 
-            if (coordinates.length() > 0) {
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                for (int i = 0; i < coordinates.length(); i++) {
-                    coord = coordinates.getJSONArray(0);
-                    builder.include(new LatLng(coord.getDouble(1), coord.getDouble(0)));
+                if (coordinates.length() > 0) {
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    PolygonOptions pOpts = new PolygonOptions().strokeColor(Color.GREEN);
+                    LatLng point;
+
+                    for (int i = 0; i < coordinates.length(); i++) {
+                        coord = coordinates.getJSONArray(i);
+                        Log.d("nfs", coord.toString());
+                        point = new LatLng(coord.getDouble(1), coord.getDouble(0));
+                        builder.include(point);
+                        pOpts.add(point);
+                    }
+                    toBounds = builder.build();
+                    map.addPolygon(pOpts);
                 }
-                toBounds = builder.build();
-            }
 
-            layer = new GeoJsonLayer(mMap, jsonObject);
+//                layer = new GeoJsonLayer(mMap, jsonObject);
+            }
         } catch (JSONException e) {
             Log.w("nfs", "LoadSheetMapFragment.onMapReady(): " + e.getLocalizedMessage());
-            layer = null;
+//            layer = null;
         }
 
         if (toBounds != null) {

@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.agsimplified.android.model.GeoJsonable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Storage implements Serializable {
+public class Storage implements Serializable, GeoJsonable {
     public Storage() {}
 
     public static String TABLE_NAME = "storages";
@@ -171,6 +173,7 @@ public class Storage implements Serializable {
         this.status = status;
     }
 
+    @Override
     public String getGeoJson() {
         return geoJson;
     }
