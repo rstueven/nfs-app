@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.agsimplified.android.model.GeoJsonable;
+import com.agsimplified.android.model.Destinationable;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Field implements Serializable, GeoJsonable {
+public class Field implements Serializable, Destinationable {
     public Field() {
     }
 
@@ -138,10 +138,12 @@ public class Field implements Serializable, GeoJsonable {
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
 
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount() == 1) {
             cursor.moveToFirst();
             item = new Field(cursor);
             cursor.close();
+        } else {
+            Log.w("nfs", "FIELD(" + id + ") NOT FOUND");
         }
 
         return item;

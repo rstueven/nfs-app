@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.agsimplified.android.model.GeoJsonable;
+import com.agsimplified.android.model.Destinationable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Storage implements Serializable, GeoJsonable {
+public class Storage implements Serializable, Destinationable {
     public Storage() {}
 
     public static String TABLE_NAME = "storages";
@@ -77,11 +77,12 @@ public class Storage implements Serializable, GeoJsonable {
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
 
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount() == 1) {
             cursor.moveToFirst();
-            // TODO: storageable_type == Field ...?
             item = new Storage(cursor);
             cursor.close();
+        } else {
+            Log.w("nfs", "STORAGE(" + id + ") NOT FOUND");
         }
 
         return item;

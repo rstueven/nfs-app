@@ -75,10 +75,12 @@ public class StorageInventory implements Serializable {
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
 
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount() == 1) {
             cursor.moveToFirst();
             item = new StorageInventory(cursor);
             cursor.close();
+        } else {
+            Log.w("nfs", "STORAGEINVENTORY(" + id + ") NOT FOUND");
         }
 
         return item;

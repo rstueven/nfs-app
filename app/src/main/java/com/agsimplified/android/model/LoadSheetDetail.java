@@ -264,8 +264,21 @@ public class LoadSheetDetail implements Serializable {
         this.loadSheets = loadSheets;
     }
 
-    public GeoJsonable getDestination() {
-        return toField != null ? toField : Storage.find(toStorageInventory.getStorageableId());
+    public Destinationable getDestination() {
+        if (toField != null) {
+            return toField;
+        } else if (toStorageInventory != null) {
+            switch (toStorageInventory.getStorageableType()) {
+                case "Storage":
+                    return Storage.find(toStorageInventory.getStorageableId());
+                case "Field":
+                    return Field.find(toStorageInventory.getStorageableId());
+                default:
+                    throw new IllegalArgumentException("unknown storageableType <" + toStorageInventory.getStorageableType() + ">");
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.agsimplified.android.R;
 import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.database.Field;
 import com.agsimplified.android.database.StorageInventory;
+import com.agsimplified.android.model.Destinationable;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
@@ -126,15 +127,22 @@ public class MainActivity extends AgSimplifiedActivity
             } else {
                 fromView.setText("");
             }
-            Field toField = loadSheetDetail.getToField();
-            StorageInventory toStorageInventory = loadSheetDetail.getToStorageInventory();
-            if (toField != null) {
-                toView.setText(toField.siteFarmField());
-            } else if (toStorageInventory != null) {
-                toView.setText(toStorageInventory.siteStorageName());
+
+            Destinationable destination = loadSheetDetail.getDestination();
+            if (destination != null) {
+                toView.setText(destination.getName());
             } else {
                 toView.setText("");
             }
+//            Field toField = loadSheetDetail.getToField();
+//            StorageInventory toStorageInventory = loadSheetDetail.getToStorageInventory();
+//            if (toField != null) {
+//                toView.setText(toField.siteFarmField());
+//            } else if (toStorageInventory != null) {
+//                toView.setText(toStorageInventory.siteStorageName());
+//            } else {
+//                toView.setText("");
+//            }
 
             convertView.setBackgroundColor(Color.parseColor(position % 2 == 0 ? "#ffffff" : "#e0e0e0"));
 

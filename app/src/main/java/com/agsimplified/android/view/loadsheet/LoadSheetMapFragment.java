@@ -13,8 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.database.Field;
-import com.agsimplified.android.model.GeoJsonable;
+import com.agsimplified.android.model.Destinationable;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.view.AgSimplifiedActivity;
 import com.agsimplified.android.view.DirectionsFragment;
@@ -30,7 +29,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.maps.android.data.geojson.GeoJsonLayer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,7 +111,7 @@ public class LoadSheetMapFragment extends Fragment
         }
 
         try {
-            GeoJsonable destination = loadSheetDetail.getDestination();
+            Destinationable destination = loadSheetDetail.getDestination();
             if (destination == null) {
                 Log.w("nfs", "NULL DESTINATION");
             } else {

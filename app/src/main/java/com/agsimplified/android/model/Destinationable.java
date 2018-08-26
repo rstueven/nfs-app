@@ -1,5 +1,6 @@
 package com.agsimplified.android.model;
 
-public interface GeoJsonable {
+public interface Destinationable {
+    String getName();
     String getGeoJson();
 }
