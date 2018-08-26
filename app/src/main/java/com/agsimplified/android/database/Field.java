@@ -3,6 +3,7 @@ package com.agsimplified.android.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -368,6 +369,42 @@ public class Field implements Serializable, Destinationable {
     @Override
     public String getGeoJson() {
         return geoJson;
+    }
+
+    @Override
+    public LatLng getLocation() {
+        // TODO: Calculate this when you create the object.
+        LatLng location = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(getGeoJson());
+            JSONObject firstFeature = null;
+            firstFeature = jsonObject.getJSONArray("features").getJSONObject(0);
+            JSONObject geometry = firstFeature.getJSONObject("geometry");
+            JSONArray coordinates = geometry.getJSONArray("coordinates").getJSONArray(0);
+
+            int n = coordinates.length();
+            if (n > 0) {
+                JSONArray coord;
+                LatLng point;
+                double x = 0.0;
+                double y = 0.0;
+                for (int i = 0; i < n; i++) {
+                    coord = coordinates.getJSONArray(i);
+                    x += coord.getDouble(1);
+                    y += coord.getDouble(0);
+                }
+
+                x /= n;
+                y /= n;
+
+                location = new LatLng(x, y);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return location;
     }
 
     public void setGeoJson(String geoJson) {

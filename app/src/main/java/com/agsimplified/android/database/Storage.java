@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.agsimplified.android.model.Destinationable;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -178,6 +179,23 @@ public class Storage implements Serializable, Destinationable {
     @Override
     public String getGeoJson() {
         return geoJson;
+    }
+
+    @Override
+    public LatLng getLocation() {
+        LatLng location = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(getGeoJson());
+            JSONObject firstFeature = jsonObject.getJSONArray("features").getJSONObject(0);
+            JSONObject geometry = firstFeature.getJSONObject("geometry");
+            JSONArray coordinates = geometry.getJSONArray("coordinates");
+            location = new LatLng(coordinates.getDouble(1), coordinates.getDouble(0));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return location;
     }
 
     public void setGeoJson(String geoJson) {

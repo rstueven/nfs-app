@@ -138,10 +138,9 @@ public class LoadSheetDetail implements Serializable {
     }
 
     public LatLng toLatLng() {
-        if (toField != null) {
-            return toField.getLatLng();
-        } else if (toStorageInventory != null) {
-            return toField.getLatLng();
+        Destinationable destination = getDestination();
+        if (destination != null) {
+            return destination.getLocation();
         } else {
             return null;
         }
@@ -179,8 +178,6 @@ public class LoadSheetDetail implements Serializable {
     }
 
     public Site getFromSite() {
-//        return (fromSite != null) ? fromSite.getName() : null;
-
         return fromSite;
     }
 
@@ -268,13 +265,16 @@ public class LoadSheetDetail implements Serializable {
         if (toField != null) {
             return toField;
         } else if (toStorageInventory != null) {
-            switch (toStorageInventory.getStorageableType()) {
+            String type = toStorageInventory.getStorageableType();
+            int id = toStorageInventory.getStorageableId();
+
+            switch (type) {
                 case "Storage":
-                    return Storage.find(toStorageInventory.getStorageableId());
+                    return Storage.find(id);
                 case "Field":
-                    return Field.find(toStorageInventory.getStorageableId());
+                    return Field.find(id);
                 default:
-                    throw new IllegalArgumentException("unknown storageableType <" + toStorageInventory.getStorageableType() + ">");
+                    throw new IllegalArgumentException("unknown storageableType <" + type + ">");
             }
         } else {
             return null;

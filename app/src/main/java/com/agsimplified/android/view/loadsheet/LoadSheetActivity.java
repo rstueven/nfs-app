@@ -1,6 +1,7 @@
 package com.agsimplified.android.view.loadsheet;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,15 +13,18 @@ import android.util.Log;
 import com.agsimplified.android.R;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.view.AgSimplifiedActivity;
+import com.agsimplified.android.view.DirectionsFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by rstueven on 3/20/18.
  * <p>The Load Sheet page</p>
  */
 
-public class LoadSheetActivity extends AgSimplifiedActivity {
+public class LoadSheetActivity extends AgSimplifiedActivity implements DirectionsFragment.Directionable {
     LoadSheetMapFragment loadSheetMapFragment;
     LoadSheetDetailsFragment loadSheetDetailsFragment;
+    LoadSheetDetail loadSheetDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +33,7 @@ public class LoadSheetActivity extends AgSimplifiedActivity {
         setContentView(R.layout.load_sheet_activity);
 
         Intent intent = getIntent();
-        LoadSheetDetail loadSheetDetail = (LoadSheetDetail) intent.getSerializableExtra("loadSheetDetail");
+        loadSheetDetail = (LoadSheetDetail) intent.getSerializableExtra("loadSheetDetail");
         if (loadSheetDetail == null) {
             throw new IllegalStateException("null loadSheetDetail");
         }
@@ -52,6 +56,11 @@ public class LoadSheetActivity extends AgSimplifiedActivity {
     public void addLoad(float amount) {
         Log.d("nfs", "LoadSheetActivity");
         loadSheetDetailsFragment.addLoad(amount);
+    }
+
+    @Override
+    public LatLng getDestinationLocation() {
+        return loadSheetDetail.toLatLng();
     }
 
     private class LoadSheetPagerAdapter extends FragmentPagerAdapter {
