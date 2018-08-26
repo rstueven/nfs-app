@@ -43,6 +43,7 @@ public class LoadSheetMapFragment extends Fragment
         implements OnMapReadyCallback, AgSimplifiedActivity.LocationListener {
     private LoadSheetDetail loadSheetDetail;
     private GoogleMap mMap;
+    private DirectionsFragment directionsFragment;
 
     public static LoadSheetMapFragment newInstance(LoadSheetDetail loadSheetDetail) {
         Log.d("nfs", "LoadSheetMapFragment.newInstance()");
@@ -75,7 +76,7 @@ public class LoadSheetMapFragment extends Fragment
 
             FragmentManager fm = getChildFragmentManager();
 
-            DirectionsFragment directionsFragment = DirectionsFragment.newInstance(loadSheetDetail.getDistributionSale().getDirections());
+            directionsFragment = DirectionsFragment.newInstance(loadSheetDetail.getDistributionSale().getDirections());
 
             SupportMapFragment mapFragment = new SupportMapFragment();
 
@@ -163,14 +164,18 @@ public class LoadSheetMapFragment extends Fragment
                     default:
                         Log.w("nfs", "UNKNOWN geoType <" + geoType + ">");
                 }
-
-
             }
+
+            directionsFragment.loadCurrentDirections(mMap);
         } catch (JSONException e) {
             Log.w("nfs", "LoadSheetMapFragment.onMapReady(): " + e.getLocalizedMessage());
         }
 
         activity.registerLocationListener(this);
+    }
+
+    public GoogleMap getMap() {
+        return mMap;
     }
 
     @Override

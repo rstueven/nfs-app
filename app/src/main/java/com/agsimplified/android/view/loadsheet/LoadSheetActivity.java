@@ -14,6 +14,7 @@ import com.agsimplified.android.R;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.view.AgSimplifiedActivity;
 import com.agsimplified.android.view.DirectionsFragment;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -61,6 +62,11 @@ public class LoadSheetActivity extends AgSimplifiedActivity implements Direction
     @Override
     public LatLng getDestinationLocation() {
         return loadSheetDetail.toLatLng();
+    }
+
+    @Override
+    public GoogleMap getMap() {
+        return loadSheetMapFragment.getMap();
     }
 
     private class LoadSheetPagerAdapter extends FragmentPagerAdapter {

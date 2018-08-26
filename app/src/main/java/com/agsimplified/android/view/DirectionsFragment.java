@@ -1,5 +1,6 @@
 package com.agsimplified.android.view;
 
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,17 +18,27 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class DirectionsFragment extends Fragment {
     TextView directionsView;
 
     public interface Directionable {
         LatLng getDestinationLocation();
+        GoogleMap getMap();
     }
 
     public static DirectionsFragment newInstance(String directions) {
@@ -52,15 +63,17 @@ public class DirectionsFragment extends Fragment {
 
             directionsView = view.findViewById(R.id.directions);
             directionsView.setText(Html.fromHtml(directions));
-
-            loadCurrentDirections();
-
         }
 
         return view;
     }
 
-    private void loadCurrentDirections() {
+    // THIS SHOULDN'T BE NECESSARY!
+    public void loadCurrentDirections() {
+        loadCurrentDirections(null);
+    }
+
+    public void loadCurrentDirections(final GoogleMap map) {
         AgSimplifiedActivity activity = (AgSimplifiedActivity) getActivity();
         if (activity != null) {
             Location location = activity.getCurrentLocation();
@@ -68,7 +81,7 @@ public class DirectionsFragment extends Fragment {
                 LatLng fromLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 //                Log.d("nfs", "CURRENT LOCATION: " + location.toString());
 //                Log.d("nfs", "FROM LATLNG: " + fromLatLng.toString());
-                Directionable directionable = (Directionable) activity;
+                final Directionable directionable = (Directionable) activity;
                 LatLng toLatLng = directionable.getDestinationLocation();
 //                Log.d("nfs", "TO LATLNG: " + toLatLng.toString());
 
@@ -103,6 +116,31 @@ public class DirectionsFragment extends Fragment {
                                                 String stepDuration = step.getJSONObject("duration").getString("text");
                                                 directions.append(step.getString("html_instructions")).append("<br>");
                                                 directions.append(stepDistance).append("&nbsp;&mdash;&nbsp;").append(stepDuration).append("<br><br>");
+                                            }
+
+                                            if (map != null) {
+                                                JSONObject b = route.getJSONObject("bounds");
+                                                JSONObject ne = b.getJSONObject("northeast");
+                                                double neLat = ne.getDouble("lat");
+                                                double neLng = ne.getDouble("lng");
+                                                JSONObject sw = b.getJSONObject("southwest");
+                                                double swLat = sw.getDouble("lat");
+                                                double swLng = sw.getDouble("lng");
+
+                                                LatLngBounds bounds = new LatLngBounds(new LatLng(swLat, swLng), new LatLng(neLat, neLng));
+                                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 64);
+                                                map.animateCamera(cameraUpdate);
+
+                                                String polyline = route.getJSONObject("overview_polyline").getString("points");
+                                                List<LatLng> points = PolyUtil.decode(polyline);
+                                                PolylineOptions pathOpts = new PolylineOptions()
+                                                        .width(5)
+                                                        .color(Color.WHITE);
+                                                Polyline path = map.addPolyline(pathOpts);
+                                                path.setPoints(points);
+
+                                            } else {
+                                                Log.w("nfs", "DirectionsFragment.loadCurrentDirections(): null map");
                                             }
                                         } else {
                                             directions.append("<b>No legs found in the route.</b>");
