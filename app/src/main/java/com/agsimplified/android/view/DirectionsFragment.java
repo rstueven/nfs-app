@@ -75,13 +75,13 @@ public class DirectionsFragment extends Fragment {
                 }
             });
 
-            ImageButton refreshBtn = view.findViewById(R.id.refreshButton);
-            refreshBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    refreshDirections();
-                }
-            });
+//            ImageButton refreshBtn = view.findViewById(R.id.refreshButton);
+//            refreshBtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    refreshDirections();
+//                }
+//            });
         }
 
         return view;
@@ -195,7 +195,6 @@ public class DirectionsFragment extends Fragment {
     }
 
     public void startNavigation() {
-        Log.d("nfs", "START NAVIGATION");
         AgSimplifiedActivity activity = (AgSimplifiedActivity) getActivity();
         if (activity != null) {
             final Directionable directionable = (Directionable) activity;
@@ -207,7 +206,19 @@ public class DirectionsFragment extends Fragment {
         }
     }
 
-    public void refreshDirections() {
-        Log.d("nfs", "REFRESH DIRECTIONS");
-    }
+//    public void refreshDirections() {
+//        Log.d("nfs", "REFRESH DIRECTIONS");
+//        AgSimplifiedActivity activity = (AgSimplifiedActivity) getActivity();
+//        if (activity != null) {
+//            final Directionable directionable = (Directionable) activity;
+//            GoogleMap map = directionable.getMap();
+//            if (map != null) {
+//                loadCurrentDirections(map);
+//            } else {
+//                Log.w("nfs", "NO MAP");
+//            }
+//        } else {
+//            Log.w("nfs", "NULL ACTIVITY");
+//        }
+//    }
 }

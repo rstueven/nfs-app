@@ -33,17 +33,17 @@
             android:src="@android:drawable/ic_menu_directions"
             app:layout_constraintStart_toEndOf="@+id/directionsLabel" />
 
-        <ImageButton
-            android:id="@+id/refreshButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:src="@android:drawable/ic_popup_sync"
-            android:tint="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/navigationButton"
-            app:layout_constraintStart_toEndOf="@+id/navigationButton"
-            app:layout_constraintTop_toTopOf="@+id/navigationButton"
-            android:contentDescription="@string/refresh_directions" />
+        <!--<ImageButton-->
+            <!--android:id="@+id/refreshButton"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="24dp"-->
+            <!--android:src="@android:drawable/ic_popup_sync"-->
+            <!--android:tint="@android:color/black"-->
+            <!--app:layout_constraintBottom_toBottomOf="@+id/navigationButton"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/navigationButton"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/navigationButton"-->
+            <!--android:contentDescription="@string/refresh_directions" />-->
 
         <ScrollView
             android:layout_width="0dp"
