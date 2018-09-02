@@ -21,28 +21,29 @@
             android:textAllCaps="true"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/directionsButton"
+            app:layout_constraintBottom_toBottomOf="@+id/navigationButton"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
-            android:id="@+id/directionsButton"
+            android:id="@+id/navigationButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:contentDescription="@string/directions"
+            android:contentDescription="@string/start_navigator"
             android:src="@android:drawable/ic_menu_directions"
             app:layout_constraintStart_toEndOf="@+id/directionsLabel" />
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/mapButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="32dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:contentDescription="@string/map"-->
-            <!--android:src="@android:drawable/ic_menu_mapmode"-->
-            <!--app:layout_constraintStart_toEndOf="@+id/directionsButton"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <ImageButton
+            android:id="@+id/refreshButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:src="@android:drawable/ic_popup_sync"
+            android:tint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/navigationButton"
+            app:layout_constraintStart_toEndOf="@+id/navigationButton"
+            app:layout_constraintTop_toTopOf="@+id/navigationButton"
+            android:contentDescription="@string/refresh_directions" />
 
         <ScrollView
             android:layout_width="0dp"
@@ -54,7 +55,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/directionsLabel"
-            app:layout_constraintTop_toBottomOf="@+id/directionsButton">
+            app:layout_constraintTop_toBottomOf="@+id/navigationButton">
 
             <TextView
                 android:id="@+id/directions"

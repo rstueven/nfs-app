@@ -1,7 +1,9 @@
 package com.agsimplified.android.view;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.agsimplified.android.R;
@@ -62,7 +65,23 @@ public class DirectionsFragment extends Fragment {
             String directions = args.getString("directions");
 
             directionsView = view.findViewById(R.id.directions);
-            directionsView.setText(Html.fromHtml(directions));
+            directionsView.setText(Html.fromHtml(directions, Html.FROM_HTML_MODE_LEGACY));
+
+            ImageButton navBtn = view.findViewById(R.id.navigationButton);
+            navBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startNavigation();
+                }
+            });
+
+            ImageButton refreshBtn = view.findViewById(R.id.refreshButton);
+            refreshBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    refreshDirections();
+                }
+            });
         }
 
         return view;
@@ -152,7 +171,7 @@ public class DirectionsFragment extends Fragment {
                                     e.printStackTrace();
                                 }
 
-                                directionsView.setText(Html.fromHtml(directions.toString()));
+                                directionsView.setText(Html.fromHtml(directions.toString(), Html.FROM_HTML_MODE_LEGACY));
                             }
                         },
                         new Response.ErrorListener() {
@@ -173,5 +192,22 @@ public class DirectionsFragment extends Fragment {
             Log.e("nfs", "DirectionsFragment.loadCurrentDirections(): null activity");
 //                Toast.makeToast(activity, "Internal error.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void startNavigation() {
+        Log.d("nfs", "START NAVIGATION");
+        AgSimplifiedActivity activity = (AgSimplifiedActivity) getActivity();
+        if (activity != null) {
+            final Directionable directionable = (Directionable) activity;
+            LatLng toLatLng = directionable.getDestinationLocation();
+            String uri = "google.navigation:q=" + toLatLng.latitude + "," + toLatLng.longitude;
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        }
+    }
+
+    public void refreshDirections() {
+        Log.d("nfs", "REFRESH DIRECTIONS");
     }
 }

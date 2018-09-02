@@ -99,4 +99,6 @@
     <string name="depth">Depth</string>
     <string name="logout">Logout</string>
     <string name="Database_problem">Database problem</string>
+    <string name="refresh_directions">Refresh directions</string>
+    <string name="start_navigator">Start navigator</string>
 </resources>
