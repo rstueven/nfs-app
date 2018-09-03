@@ -9,6 +9,7 @@ import com.agsimplified.android.database.DbOpenHelper;
 import com.agsimplified.android.database.DistributionSale;
 import com.agsimplified.android.database.Field;
 import com.agsimplified.android.database.JobPlan;
+import com.agsimplified.android.database.Load;
 import com.agsimplified.android.database.LoadSheet;
 import com.agsimplified.android.database.Product;
 import com.agsimplified.android.database.Site;
@@ -299,6 +300,22 @@ public class LoadSheetDetail implements Serializable {
         } else {
             return null;
         }
+    }
+
+    public double getHauledAmount() {
+        double hauledAmount = 0.0;
+
+        int loadSheetId;
+        List<Load> loads;
+        for (LoadSheet loadSheet : loadSheets) {
+            loadSheetId = loadSheet.getId();
+            loads = Load.findByLoadSheetId(loadSheetId);
+            for (Load load : loads) {
+                hauledAmount += load.getAmount();
+            }
+        }
+
+        return hauledAmount;
     }
 
     @Override

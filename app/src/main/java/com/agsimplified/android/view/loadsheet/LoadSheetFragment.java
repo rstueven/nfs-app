@@ -89,11 +89,9 @@ public class LoadSheetFragment extends Fragment {
             Double plannedAmount = loadSheetDetail.getAmount();
             plannedView.setText(String.format(Locale.getDefault(), "%.2f", plannedAmount));
 
-//            TextView hauledView = view.findViewById(R.id.hauledAmount);
-//            Double hauledAmount = loadSheetDetail.getHauledAmount();
-//            if (hauledAmount != null) {
-//                hauledView.setText(String.format(Locale.getDefault(), "%.2f", hauledAmount));
-//            }
+            TextView hauledView = view.findViewById(R.id.hauledAmount);
+            double hauledAmount = loadSheetDetail.getHauledAmount();
+            hauledView.setText(String.format(Locale.getDefault(), "%.2f", hauledAmount));
 
             Button closeButton = view.findViewById(R.id.closeButton);
             closeButton.setOnClickListener(new View.OnClickListener() {

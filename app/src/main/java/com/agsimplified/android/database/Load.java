@@ -110,6 +110,24 @@ public class Load implements Serializable {
         return item;
     }
 
+    public static List<Load> findByLoadSheetId(int id) {
+        List<Load> loads = new ArrayList<>();
+
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, "load_sheet_id = ?", new String[]{Integer.toString(id)}, null, null, null);
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                loads.add(new Load(cursor));
+            }
+            cursor.close();
+        } else {
+            Log.w("nfs", "LOAD.findByLoadSheetId(" + id + ") NULL CURSOR");
+        }
+
+        return loads;
+    }
+
     public static List<Load> all() {
         String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
