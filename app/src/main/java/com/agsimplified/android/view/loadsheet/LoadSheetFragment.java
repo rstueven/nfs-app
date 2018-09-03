@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.Field;
 import com.agsimplified.android.database.StorageInventory;
+import com.agsimplified.android.model.GeoLocatable;
 import com.agsimplified.android.model.LoadSheetDetail;
 
 import java.util.Locale;
@@ -50,8 +52,16 @@ public class LoadSheetFragment extends Fragment {
             jobCodeView.setText(String.format(Locale.getDefault(), "%d", jobCode));
 
             TextView clientJobCodeView = view.findViewById(R.id.clientJobCode);
-            Integer clientJobCode = loadSheetDetail.getClientJobCode();
-            clientJobCodeView.setText(String.format(Locale.getDefault(), "%d", clientJobCode));
+            TextView clientJobCodeLabel = view.findViewById(R.id.clientJobCodeLabel);
+            String clientJobCode = loadSheetDetail.getClientJobCodeString();
+            if (TextUtils.isEmpty(clientJobCode)) {
+                clientJobCodeView.setVisibility(View.GONE);
+                clientJobCodeLabel.setVisibility(View.GONE);
+            } else {
+                clientJobCodeView.setText(loadSheetDetail.getClientJobCodeString());
+                clientJobCodeView.setVisibility(View.VISIBLE);
+                clientJobCodeLabel.setVisibility(View.VISIBLE);
+            }
 
             TextView yearView = view.findViewById(R.id.year);
             yearView.setText(loadSheetDetail.getYearString());
@@ -60,27 +70,20 @@ public class LoadSheetFragment extends Fragment {
             productView.setText(loadSheetDetail.getProductName());
 
             TextView fromView = view.findViewById(R.id.fromOperation);
-            Field fromField = loadSheetDetail.getFromField();
-            StorageInventory fromStorageInventory = loadSheetDetail.getFromStorageInventory();
-            if (fromField != null) {
-                fromView.setText(fromField.siteFarmField());
-            } else if (fromStorageInventory != null) {
-                fromView.setText(fromStorageInventory.siteStorageName());
+            GeoLocatable source = loadSheetDetail.getSource();
+            if (source != null) {
+                fromView.setText(source.getFullName());
             } else {
                 fromView.setText("");
             }
 
             TextView toView = view.findViewById(R.id.toOperation);
-            Field toField = loadSheetDetail.getToField();
-            StorageInventory toStorageInventory = loadSheetDetail.getToStorageInventory();
-            if (toField != null) {
-                toView.setText(toField.siteFarmField());
-            } else if (toStorageInventory != null) {
-                toView.setText(toStorageInventory.siteStorageName());
+            GeoLocatable destination = loadSheetDetail.getDestination();
+            if (destination != null) {
+                toView.setText(destination.getFullName());
             } else {
                 toView.setText("");
             }
-
 
             TextView plannedView = view.findViewById(R.id.plannedAmount);
             Double plannedAmount = loadSheetDetail.getAmount();

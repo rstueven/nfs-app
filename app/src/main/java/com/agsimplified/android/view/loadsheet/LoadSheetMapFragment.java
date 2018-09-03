@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agsimplified.android.R;
-import com.agsimplified.android.model.Destinationable;
+import com.agsimplified.android.model.GeoLocatable;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.view.AgSimplifiedActivity;
 import com.agsimplified.android.view.DirectionsFragment;
@@ -112,7 +112,7 @@ public class LoadSheetMapFragment extends Fragment
         }
 
         try {
-            Destinationable destination = loadSheetDetail.getDestination();
+            GeoLocatable destination = loadSheetDetail.getDestination();
             if (destination == null) {
                 Log.w("nfs", "NULL DESTINATION");
             } else {

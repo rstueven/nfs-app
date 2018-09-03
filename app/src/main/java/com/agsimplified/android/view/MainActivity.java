@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,7 @@ import android.widget.Toast;
 import com.agsimplified.android.AgSimplified;
 import com.agsimplified.android.R;
 import com.agsimplified.android.database.DbOpenHelper;
-import com.agsimplified.android.database.Field;
-import com.agsimplified.android.database.StorageInventory;
-import com.agsimplified.android.model.Destinationable;
+import com.agsimplified.android.model.GeoLocatable;
 import com.agsimplified.android.model.LoadSheetDetail;
 import com.agsimplified.android.model.fieldactivity.FieldActivity;
 import com.agsimplified.android.util.NetworkRequestQueue;
@@ -108,6 +107,7 @@ public class MainActivity extends AgSimplifiedActivity
             }
 
             TextView jobCodeView = convertView.findViewById(R.id.jobCode);
+            TextView clientJobCodeLabel = convertView.findViewById(R.id.clientJobCodeLabel);
             TextView clientJobCodeView = convertView.findViewById(R.id.clientJobCode);
             TextView yearView = convertView.findViewById(R.id.year);
             TextView productView = convertView.findViewById(R.id.product);
@@ -115,34 +115,33 @@ public class MainActivity extends AgSimplifiedActivity
             TextView toView = convertView.findViewById(R.id.toOperation);
 
             jobCodeView.setText(loadSheetDetail.getJobCodeString());
-            clientJobCodeView.setText(loadSheetDetail.getClientJobCodeString());
+
+            String clientJobCode = loadSheetDetail.getClientJobCodeString();
+            if (TextUtils.isEmpty(clientJobCode)) {
+                clientJobCodeView.setVisibility(View.GONE);
+                clientJobCodeLabel.setVisibility(View.GONE);
+            } else {
+                clientJobCodeView.setText(loadSheetDetail.getClientJobCodeString());
+                clientJobCodeView.setVisibility(View.VISIBLE);
+                clientJobCodeLabel.setVisibility(View.VISIBLE);
+            }
+
             yearView.setText(loadSheetDetail.getYearString());
             productView.setText(loadSheetDetail.getProductName());
-            Field fromField = loadSheetDetail.getFromField();
-            StorageInventory fromStorageInventory = loadSheetDetail.getFromStorageInventory();
-            if (fromField != null) {
-                fromView.setText(fromField.siteFarmField());
-            } else if (fromStorageInventory != null) {
-                fromView.setText(fromStorageInventory.siteStorageName());
+
+            GeoLocatable source = loadSheetDetail.getSource();
+            if (source != null) {
+                fromView.setText(source.getFullName());
             } else {
                 fromView.setText("");
             }
 
-            Destinationable destination = loadSheetDetail.getDestination();
+            GeoLocatable destination = loadSheetDetail.getDestination();
             if (destination != null) {
-                toView.setText(destination.getName());
+                toView.setText(destination.getFullName());
             } else {
                 toView.setText("");
             }
-//            Field toField = loadSheetDetail.getToField();
-//            StorageInventory toStorageInventory = loadSheetDetail.getToStorageInventory();
-//            if (toField != null) {
-//                toView.setText(toField.siteFarmField());
-//            } else if (toStorageInventory != null) {
-//                toView.setText(toStorageInventory.siteStorageName());
-//            } else {
-//                toView.setText("");
-//            }
 
             convertView.setBackgroundColor(Color.parseColor(position % 2 == 0 ? "#ffffff" : "#e0e0e0"));
 

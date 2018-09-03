@@ -3,11 +3,10 @@ package com.agsimplified.android.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.agsimplified.android.model.Destinationable;
+import com.agsimplified.android.model.GeoLocatable;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -18,7 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Field implements Serializable, Destinationable {
+public class Field implements Serializable, GeoLocatable {
     public Field() {
     }
 
@@ -200,10 +199,10 @@ public class Field implements Serializable, Destinationable {
 
         Farm farm = Farm.find(getFarmId());
         if (farm != null) {
-            s = farm.getName() + ":" + s;
+            s = farm.getName() + " : " + s;
             Site site = Site.find(farm.getSiteId());
             if (site != null) {
-                s = site.getName() + ":" + s;
+                s = site.getName() + " : " + s;
             }
         }
 
@@ -230,12 +229,18 @@ public class Field implements Serializable, Destinationable {
         this.farmId = farmId;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getFullName() {
+        return siteFarmField();
     }
 
     public String getFieldCLUNumber() {

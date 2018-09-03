@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.agsimplified.android.model.Destinationable;
+import com.agsimplified.android.model.GeoLocatable;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Storage implements Serializable, Destinationable {
+public class Storage implements Serializable, GeoLocatable {
     public Storage() {}
 
     public static String TABLE_NAME = "storages";
@@ -136,12 +136,24 @@ public class Storage implements Serializable, Destinationable {
         this.siteId = siteId;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getFullName() {
+        String s = getName();
+        Site site = Site.find(siteId);
+        if (site != null) {
+            s = site.getName() + " : " + s;
+        }
+
+        return s;
     }
 
     public String getDateConstructed() {

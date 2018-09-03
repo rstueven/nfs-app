@@ -138,7 +138,7 @@ public class LoadSheetDetail implements Serializable {
     }
 
     public LatLng toLatLng() {
-        Destinationable destination = getDestination();
+        GeoLocatable destination = getDestination();
         if (destination != null) {
             return destination.getLocation();
         } else {
@@ -261,7 +261,27 @@ public class LoadSheetDetail implements Serializable {
         this.loadSheets = loadSheets;
     }
 
-    public Destinationable getDestination() {
+    public GeoLocatable getSource() {
+        if (fromField != null) {
+            return fromField;
+        } else if (fromStorageInventory != null) {
+            String type = fromStorageInventory.getStorageableType();
+            int id = fromStorageInventory.getStorageableId();
+
+            switch (type) {
+                case "Storage":
+                    return Storage.find(id);
+                case "Field":
+                    return Field.find(id);
+                default:
+                    throw new IllegalArgumentException("unknown storageableType <" + type + ">");
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public GeoLocatable getDestination() {
         if (toField != null) {
             return toField;
         } else if (toStorageInventory != null) {
