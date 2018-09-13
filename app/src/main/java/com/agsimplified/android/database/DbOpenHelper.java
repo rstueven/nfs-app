@@ -12,6 +12,7 @@ import com.agsimplified.android.util.SharedPref;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.agsimplified.android.util.SharedPref.Pref.DB_IS_UPDATING;
 
@@ -20,8 +21,17 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "nfs";
     private static DbOpenHelper mInstance;
     private static List<LoadListener> loadListeners = new ArrayList<>();
+    private enum ListenerAction {
+        TABLE_LOAD_START,
+        TABLE_LOAD_PROGRESS,
+        TABLE_LOAD_END,
+        DB_LOADED
+    }
 
     public interface LoadListener {
+        void onTableLoadStart(String tableName, int recordCount);
+        void onTableLoadProgress(String tableName, int recordCount);
+        void onTableLoadEnd(String tableName);
         void onDatabaseLoaded();
     }
 
@@ -31,6 +41,47 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     public static void unregisterLoadListener(LoadListener listener) {
         loadListeners.remove(listener);
+    }
+
+    private static void notifyListeners(ListenerAction action) {
+        notifyListeners(action, null, 0);
+    }
+
+    private static void notifyListeners(ListenerAction action, String tableName) {
+        notifyListeners(action, tableName, 0);
+    }
+
+    private static void notifyListeners(ListenerAction action, String tableName, int recordCount) {
+        for (LoadListener listener : loadListeners) {
+            switch (action) {
+                case TABLE_LOAD_START:
+                    listener.onTableLoadStart(tableName, recordCount);
+                    break;
+                case TABLE_LOAD_PROGRESS:
+                    listener.onTableLoadProgress(tableName, recordCount);
+                    break;
+                case TABLE_LOAD_END:
+                    listener.onTableLoadEnd(tableName);
+                    break;
+                case DB_LOADED:
+                    listener.onDatabaseLoaded();
+                    break;
+                default:
+                    Log.w("nfs", "UNKNOWN ACTION <" + action + ">");
+            }
+        }
+    }
+
+    public void onTableLoadStart(String tableName, int recordCount) {
+        notifyListeners(ListenerAction.TABLE_LOAD_START, tableName, recordCount);
+    }
+
+    public void onTableLoadProgress(String tableName, int recordCount) {
+        notifyListeners(ListenerAction.TABLE_LOAD_PROGRESS, tableName, recordCount);
+    }
+
+    public void onTableLoadEnd(String tableName) {
+        notifyListeners(ListenerAction.TABLE_LOAD_END, tableName);
     }
 
     private DbOpenHelper(final Context context) {
@@ -53,7 +104,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.d("nfs", "DbOpenHelper.onCreate()");
         TableDefs tableDefs;
-        tableDefs = TableDefs.newInstance(DB_VERSION);
+        tableDefs = TableDefs.newInstance(this, DB_VERSION);
 
         if (!isUpdating()) {
             try {
@@ -86,7 +137,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d("nfs", "DbOpenHelper.onUpgrade()");
         for (int i = ++oldVersion; i <= newVersion; i++) {
-            TableDefs.newInstance(i).upgrade(db);
+            TableDefs.newInstance(this, i).upgrade(db);
         }
     }
 
@@ -99,12 +150,10 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         Log.d("nfs", "DbOpenHelper.onOpen()");
-        TableDefs.newInstance(DB_VERSION).loadData(db);
+        TableDefs.newInstance(this, DB_VERSION).loadData(db);
 
         // TODO: This needs to wait for all that other background stuff to finish.
-        for (LoadListener listener : loadListeners) {
-            listener.onDatabaseLoaded();
-        }
+//        notifyListeners(ListenerAction.DB_LOADED);
     }
 
     public boolean isUpdating() {

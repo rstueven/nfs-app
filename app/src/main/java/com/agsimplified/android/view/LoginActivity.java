@@ -1,5 +1,6 @@
 package com.agsimplified.android.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // http://lucatironi.net/tutorial/2012/10/16/ruby_rails_android_app_authentication_devise_tutorial_part_two/
-public class LoginActivity extends AgSimplifiedActivity implements DbOpenHelper.LoadListener{
+public class LoginActivity extends AgSimplifiedActivity {
     private EditText emailField;
 
     @Override
@@ -60,6 +61,7 @@ public class LoginActivity extends AgSimplifiedActivity implements DbOpenHelper.
             userParams.put("password", password);
             params.put("user", userParams);
 
+            final Context context = this;
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, params,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -67,24 +69,23 @@ public class LoginActivity extends AgSimplifiedActivity implements DbOpenHelper.
                             Log.i("nfs", "LoginActivity.request.onResponse(" + url +")");
                             Log.i("nfs", response.toString());
                             JSONObject data;
+
                             try {
                                 data = response.getJSONObject("data");
                                 String authToken = data.getString("auth_token");
                                 SharedPref.write(SharedPref.Pref.AUTH_TOKEN, authToken);
                             } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText(LoginActivity.this, "There was a problem saving your credentials.", Toast.LENGTH_LONG).show();
+                                Log.w("nfs", e.getLocalizedMessage());
+                                Toast.makeText(context, "There was a problem saving your credentials.", Toast.LENGTH_LONG).show();
                             }
 
-                            DbOpenHelper.registerLoadListener(LoginActivity.this);
-                            SQLiteDatabase mDb = DbOpenHelper.getInstance().getWritableDatabase();
-                            // Force data load
-                            mDb.rawQuery("SELECT 1", null).close();
+                            startActivity(new Intent(context, LoadDatabaseActivity.class));
+                            LoginActivity.this.finish();
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.e("nfs", "ERROR");
+                            Log.e("nfs", "VOLLEY ERROR");
                             Log.e("nfs", error.toString());
                             Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_LONG).show();
                         }
@@ -98,16 +99,8 @@ public class LoginActivity extends AgSimplifiedActivity implements DbOpenHelper.
 
             queue.add(request);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("nfs", e.getLocalizedMessage());
             Toast.makeText(LoginActivity.this, "There was a problem logging you in.", Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    public void onDatabaseLoaded() {
-        Log.d("nfs", "LoginActivity.onDatabaseLoaded()");
-        DbOpenHelper.unregisterLoadListener(this);
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
     }
 }

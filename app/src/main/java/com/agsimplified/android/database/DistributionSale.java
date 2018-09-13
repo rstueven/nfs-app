@@ -451,11 +451,13 @@ public class DistributionSale implements Serializable {
     }
 
     protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
+        private DbOpenHelper dbHelper;
         private SQLiteDatabase mDb;
 
-        PopulateAsync(SQLiteDatabase db) {
+        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
             super();
             Log.d("nfs", "DistributionSale.PopulateAsync()");
+            this.dbHelper = dbHelper;
             this.mDb = db;
         }
 
@@ -464,20 +466,23 @@ public class DistributionSale implements Serializable {
             Log.d("nfs", "DistributionSale.PopulateAsync.doInBackground()");
 
             DistributionSale[] array = jsonToArray(json[0]);
-            Log.d("nfs", "LOADING " + array.length + " DISTRIBUTION SALES");
+            Log.d("nfs", "LOADING " + array.length + " DISTRIBUTIONSALES");
+            dbHelper.onTableLoadStart(TABLE_NAME, array.length);
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
+            int n = 0;
             for (DistributionSale item : array) {
 //                    Log.d("nfs", item.toString());
                 if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
                     Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
                 }
+                dbHelper.onTableLoadProgress(TABLE_NAME, ++n);
             }
 
+            dbHelper.onTableLoadEnd(TABLE_NAME);
             Log.d("nfs", "DistributionSale.PopulateAsync() DONE");
 
             return null;
         }
     }
-
 }

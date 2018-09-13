@@ -101,4 +101,14 @@
     <string name="Database_problem">Database problem</string>
     <string name="refresh_directions">Refresh directions</string>
     <string name="start_navigator">Start navigator</string>
+    <string name="loading_the_database">Loading the Database</string>
+    <string name="clients">Clients</string>
+    <string name="distribution_sales">Distribution Sales</string>
+    <string name="farms">Farms</string>
+    <string name="fields">Fields</string>
+    <string name="job_plans">Job Plans</string>
+    <string name="products">Products</string>
+    <string name="sites">Sites</string>
+    <string name="storages">Storages</string>
+    <string name="storage_inventories">Storage Inventories</string>
 </resources>

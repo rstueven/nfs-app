@@ -391,11 +391,13 @@ public class Client implements Serializable {
     }
 
     protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
+        private DbOpenHelper dbHelper;
         private SQLiteDatabase mDb;
 
-        PopulateAsync(SQLiteDatabase db) {
+        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
             super();
             Log.d("nfs", "Client.PopulateAsync()");
+            this.dbHelper = dbHelper;
             this.mDb = db;
         }
 
@@ -405,15 +407,19 @@ public class Client implements Serializable {
 
             Client[] array = jsonToArray(json[0]);
             Log.d("nfs", "LOADING " + array.length + " CLIENTS");
+            dbHelper.onTableLoadStart(TABLE_NAME, array.length);
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
+            int n = 0;
             for (Client item : array) {
 //                    Log.d("nfs", item.toString());
                 if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
                     Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
                 }
+                dbHelper.onTableLoadProgress(TABLE_NAME, ++n);
             }
 
+            dbHelper.onTableLoadEnd(TABLE_NAME);
             Log.d("nfs", "Client.PopulateAsync() DONE");
 
             return null;

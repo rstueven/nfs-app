@@ -17,8 +17,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TableDefs_1 extends TableDefs {
-    TableDefs_1() {
+    private DbOpenHelper dbHelper;
+
+    TableDefs_1(DbOpenHelper dbHelper) {
         super();
+
+        if (dbHelper != null) {
+            this.dbHelper = dbHelper;
+        } else {
+            throw new IllegalArgumentException("null dbHelper");
+        }
     }
 
     @Override
@@ -85,15 +93,17 @@ public class TableDefs_1 extends TableDefs {
     @Override
     public void loadData(SQLiteDatabase db) {
         Log.d("nfs", "TableDefs_1.loadData()");
-        new LoadAsync(db).execute();
+        new LoadAsync(dbHelper, db).execute();
     }
 
     private static class LoadAsync extends AsyncTask<Void, Void, Void> {
+        final DbOpenHelper dbHelper;
         final SQLiteDatabase mDb;
 
-        LoadAsync(SQLiteDatabase db) {
+        LoadAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
             Log.d("nfs", "TableDefs_1.LoadAsync()");
-            mDb = db;
+            this.dbHelper = dbHelper;
+            this.mDb = db;
         }
 
         @Override
@@ -108,17 +118,17 @@ public class TableDefs_1 extends TableDefs {
                             Log.d("nfs", "TableDefs_1.LoadAsync.onResponse(" + url + ")");
                             try {
 //                                Log.d("nfs", response.toString(2));
-                                new Client.PopulateAsync(mDb).execute(response.getJSONArray(Client.TABLE_NAME));
-                                new JobPlan.PopulateAsync(mDb).execute(response.getJSONArray(JobPlan.TABLE_NAME));
-                                new DistributionSale.PopulateAsync(mDb).execute(response.getJSONArray(DistributionSale.TABLE_NAME));
-                                new Site.PopulateAsync(mDb).execute(response.getJSONArray(Site.TABLE_NAME));
-                                new Product.PopulateAsync(mDb).execute(response.getJSONArray(Product.TABLE_NAME));
-                                new Farm.PopulateAsync(mDb).execute(response.getJSONArray(Farm.TABLE_NAME));
-                                new Field.PopulateAsync(mDb).execute(response.getJSONArray(Field.TABLE_NAME));
-                                new LoadSheet.PopulateAsync(mDb).execute(response.getJSONArray(LoadSheet.TABLE_NAME));
-                                new Load.PopulateAsync(mDb).execute(response.getJSONArray(Load.TABLE_NAME));
-                                new StorageInventory.PopulateAsync(mDb).execute(response.getJSONArray(StorageInventory.TABLE_NAME));
-                                new Storage.PopulateAsync(mDb).execute(response.getJSONArray(Storage.TABLE_NAME));
+                                new Client.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Client.TABLE_NAME));
+                                new DistributionSale.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(DistributionSale.TABLE_NAME));
+                                new Farm.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Farm.TABLE_NAME));
+                                new Field.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Field.TABLE_NAME));
+                                new JobPlan.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(JobPlan.TABLE_NAME));
+                                new Load.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Load.TABLE_NAME));
+                                new LoadSheet.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(LoadSheet.TABLE_NAME));
+                                new Product.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Product.TABLE_NAME));
+                                new Site.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Site.TABLE_NAME));
+                                new Storage.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Storage.TABLE_NAME));
+                                new StorageInventory.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(StorageInventory.TABLE_NAME));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

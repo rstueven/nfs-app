@@ -310,11 +310,13 @@ public class JobPlan implements Serializable {
     }
 
     protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
+        private DbOpenHelper dbHelper;
         private SQLiteDatabase mDb;
 
-        PopulateAsync(SQLiteDatabase db) {
+        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
             super();
             Log.d("nfs", "JobPlan.PopulateAsync()");
+            this.dbHelper = dbHelper;
             this.mDb = db;
         }
 
@@ -324,15 +326,19 @@ public class JobPlan implements Serializable {
 
             JobPlan[] array = jsonToArray(json[0]);
             Log.d("nfs", "LOADING " + array.length + " JOB PLANS");
+            dbHelper.onTableLoadStart(TABLE_NAME, array.length);
             mDb.execSQL("DELETE FROM " + TABLE_NAME);
 
+            int n = 0;
             for (JobPlan item : array) {
 //                    Log.d("nfs", item.toString());
                 if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
                     Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
                 }
+                dbHelper.onTableLoadProgress(TABLE_NAME, ++n);
             }
 
+            dbHelper.onTableLoadEnd(TABLE_NAME);
             Log.d("nfs", "JobPlan.PopulateAsync() DONE");
 
             return null;

@@ -19,12 +19,12 @@ public abstract class TableDefs {
         initTableDefs();
     }
 
-    public static TableDefs newInstance(int version) {
+    public static TableDefs newInstance(DbOpenHelper dbHelper, int version) {
         TableDefs tableDefs;
 
         switch (version) {
             case 1:
-                tableDefs = new TableDefs_1();
+                tableDefs = new TableDefs_1(dbHelper);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid version: " + version);
