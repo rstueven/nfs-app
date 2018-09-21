@@ -2,7 +2,6 @@ package com.agsimplified.android.view;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -60,7 +59,7 @@ public class LoadDatabaseActivity extends AgSimplifiedActivity implements DbOpen
 
     @Override
     public void onTableLoadEnd(String tableName) {
-        Log.d("nfs", "onTableLoadEnd(" + tableName + ")");
+//        Log.d("nfs", "onTableLoadEnd(" + tableName + ")");
         progressBarMap.remove(tableName);
         if (progressBarMap.size() == 0) {
             onDatabaseLoaded();
@@ -69,9 +68,10 @@ public class LoadDatabaseActivity extends AgSimplifiedActivity implements DbOpen
 
     @Override
     public void onDatabaseLoaded() {
-        Log.d("nfs", "LoadDatabaseActivity.onDatabaseLoaded()");
+//        Log.d("nfs", "LoadDatabaseActivity.onDatabaseLoaded()");
         DbOpenHelper.unregisterLoadListener(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        this.finish();
     }
 }

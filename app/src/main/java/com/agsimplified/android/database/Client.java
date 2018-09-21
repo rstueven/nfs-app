@@ -10,14 +10,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Client implements Serializable {
-    public Client() {}
+public class Client extends AbstractTable {
+    public Client() {
+    }
 
-    public static String TABLE_NAME = "clients";
+    public static String getTableName() {
+        return "clients";
+    }
+
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "name TEXT NOT NULL",
@@ -112,40 +115,6 @@ public class Client implements Serializable {
         contactId = c.getInt(c.getColumnIndex("contact_id"));
         companyId = c.getInt(c.getColumnIndex("company_id"));
         notes = c.getString(c.getColumnIndex("notes"));
-    }
-
-    public static Client find(int id) {
-        Client item = null;
-
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
-
-        if (cursor != null && cursor.getCount() == 1) {
-            cursor.moveToFirst();
-            item = new Client(cursor);
-            cursor.close();
-        } else {
-            Log.w("nfs", "CLIENT(" + id + ") NOT FOUND");
-        }
-
-        return item;
-    }
-
-    public static List<Client> all() {
-        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
-        List<Client> list = new ArrayList<>();
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                list.add(new Client(cursor));
-            }
-
-            cursor.close();
-        }
-
-        return list;
     }
 
     public ContentValues getContentValues() {
@@ -348,46 +317,38 @@ public class Client implements Serializable {
         this.serviceLevelId = serviceLevelId;
     }
 
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address1='" + address1 + '\'' +
-                ", address2='" + address2 + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zip='" + zip + '\'' +
-                ", clientStatus='" + clientStatus + '\'' +
-                ", officePhone='" + officePhone + '\'' +
-                ", officeFax='" + officeFax + '\'' +
-                ", mobilePhone='" + mobilePhone + '\'' +
-                ", email='" + email + '\'' +
-                ", website='" + website + '\'' +
-                ", farm=" + farm +
-                ", feedlot=" + feedlot +
-                ", serviceProvider=" + serviceProvider +
-                ", contactId=" + contactId +
-                ", companyId=" + companyId +
-                ", notes='" + notes + '\'' +
-                ", serviceLevelId=" + serviceLevelId +
-                '}';
-    }
+    public static Client find(int id) {
+        Client item = null;
 
-    public static Client[] jsonToArray(JSONArray jsonArray) {
-        List<Client> list = new ArrayList<>();
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.query(getTableName(), null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
 
-        try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                list.add(new Client(jsonArray.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "Client.jsonToArray(): " + e.getLocalizedMessage());
-            Log.e("nfs", jsonArray.toString());
+        if (cursor != null && cursor.getCount() == 1) {
+            cursor.moveToFirst();
+            item = new Client(cursor);
+            cursor.close();
+        } else {
+            Log.w("nfs", "CLIENT(" + id + ") NOT FOUND");
         }
 
-        Client[] array = new Client[list.size()];
-        return list.toArray(array);
+        return item;
+    }
+
+    public static List<Client> all() {
+        String sql = "SELECT * FROM " + getTableName() + " ORDER BY name ASC";
+        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        List<Client> list = new ArrayList<>();
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                list.add(new Client(cursor));
+            }
+
+            cursor.close();
+        }
+
+        return list;
     }
 
     protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
@@ -404,22 +365,21 @@ public class Client implements Serializable {
         @Override
         protected Void doInBackground(JSONArray... json) {
             Log.d("nfs", "Client.PopulateAsync.doInBackground()");
-
-            Client[] array = jsonToArray(json[0]);
+            Client[] array = gson.fromJson(json[0].toString(), Client[].class);
             Log.d("nfs", "LOADING " + array.length + " CLIENTS");
-            dbHelper.onTableLoadStart(TABLE_NAME, array.length);
-            mDb.execSQL("DELETE FROM " + TABLE_NAME);
+            dbHelper.onTableLoadStart(getTableName(), array.length);
+            mDb.execSQL("DELETE FROM " + getTableName());
 
             int n = 0;
             for (Client item : array) {
-//                    Log.d("nfs", item.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
+                Log.d("nfs", item.toString());
+                if (mDb.insertOrThrow(getTableName(), null, item.getContentValues()) == -1) {
                     Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
                 }
-                dbHelper.onTableLoadProgress(TABLE_NAME, ++n);
+                dbHelper.onTableLoadProgress(getTableName(), ++n);
             }
 
-            dbHelper.onTableLoadEnd(TABLE_NAME);
+            dbHelper.onTableLoadEnd(getTableName());
             Log.d("nfs", "Client.PopulateAsync() DONE");
 
             return null;
