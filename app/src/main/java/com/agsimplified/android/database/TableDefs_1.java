@@ -33,9 +33,9 @@ public class TableDefs_1 extends TableDefs {
     protected void initTableDefs() {
         Log.d("nfs", "TableDefs_1.initTableDefs()");
 
-        createStatements.put(Client.getTableName(),
+        createStatements.put(Client.getTableName(Client.class),
                 "CREATE TABLE IF NOT EXISTS "
-                        + Client.getTableName() + " ("
+                        + Client.getTableName(Client.class) + " ("
                         + TextUtils.join(",", Client.COLUMNS)
                         + ")");
         createStatements.put(JobPlan.TABLE_NAME,
@@ -118,7 +118,7 @@ public class TableDefs_1 extends TableDefs {
                             Log.d("nfs", "TableDefs_1.LoadAsync.onResponse(" + url + ")");
                             try {
 //                                Log.d("nfs", response.toString(2));
-                                new Client.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Client.getTableName()));
+                                new Client.PopulateAsync<Client>(dbHelper, mDb).execute(response.getJSONArray(Client.getTableName(Client.class)));
                                 new DistributionSale.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(DistributionSale.TABLE_NAME));
                                 new Farm.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Farm.TABLE_NAME));
                                 new Field.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Field.TABLE_NAME));

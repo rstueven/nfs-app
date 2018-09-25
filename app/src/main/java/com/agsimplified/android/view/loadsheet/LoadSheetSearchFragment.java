@@ -59,11 +59,16 @@ public class LoadSheetSearchFragment extends DialogFragment {
         jobCodeView = view.findViewById(R.id.jobCode);
         clientJobCodeView = view.findViewById(R.id.clientJobCode);
 
-        List<Client> clients = Client.all();
+
+        try {
+        List<Client> clients = Client.all(Client.class);
         clients.add(0, null);
         clientSelect = view.findViewById(R.id.clientSelect);
         ArrayAdapter<Client> clientAdapter = new ClientSpinnerAdapter(getActivity(), R.layout.spinner_item, clients);
         clientSelect.setAdapter(clientAdapter);
+        } catch (java.lang.InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
         List<String> years = LoadSheetDetail.allYears();
 //        years.add(0, null);

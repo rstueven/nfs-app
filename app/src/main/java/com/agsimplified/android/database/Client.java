@@ -2,25 +2,8 @@ package com.agsimplified.android.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
-import android.util.Log;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Client extends AbstractTable {
-    public Client() {
-    }
-
-    public static String getTableName() {
-        return "clients";
-    }
-
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "name TEXT NOT NULL",
@@ -68,55 +51,7 @@ public class Client extends AbstractTable {
     private String notes;
     private int serviceLevelId;
 
-    public Client(JSONObject obj) {
-        try {
-            id = obj.optInt("id");
-            name = obj.getString("name");
-            address1 = obj.getString("address_1");
-            address2 = obj.getString("address_2");
-            city = obj.getString("city");
-            state = obj.getString("state");
-            zip = obj.getString("zip");
-            clientStatus = obj.getString("client_status");
-            officePhone = obj.getString("office_phone");
-            officeFax = obj.getString("office_fax");
-            mobilePhone = obj.getString("mobile_phone");
-            email = obj.getString("email");
-            website = obj.getString("website");
-            farm = obj.optBoolean("farm");
-            feedlot = obj.optBoolean("feedlot");
-            serviceProvider = obj.optBoolean("service_provider");
-            contactId = obj.optInt("contact_id");
-            companyId = obj.optInt("company_id");
-            notes = obj.getString("notes");
-        } catch (JSONException e) {
-            Log.e("nfs", "Client(): " + e.getLocalizedMessage());
-            Log.e("nfs", obj.toString());
-        }
-    }
-
-    public Client(Cursor c) {
-        id = c.getInt(c.getColumnIndex("_id"));
-        name = c.getString(c.getColumnIndex("name"));
-        address1 = c.getString(c.getColumnIndex("address1"));
-        address2 = c.getString(c.getColumnIndex("address2"));
-        city = c.getString(c.getColumnIndex("city"));
-        state = c.getString(c.getColumnIndex("state"));
-        zip = c.getString(c.getColumnIndex("zip"));
-        clientStatus = c.getString(c.getColumnIndex("client_status"));
-        officePhone = c.getString(c.getColumnIndex("office_phone"));
-        officeFax = c.getString(c.getColumnIndex("office_fax"));
-        mobilePhone = c.getString(c.getColumnIndex("mobile_phone"));
-        email = c.getString(c.getColumnIndex("email"));
-        website = c.getString(c.getColumnIndex("website"));
-        farm = c.getInt(c.getColumnIndex("farm")) == 1;
-        feedlot = c.getInt(c.getColumnIndex("feedlot")) == 1;
-        serviceProvider = c.getInt(c.getColumnIndex("service_provider")) == 1;
-        contactId = c.getInt(c.getColumnIndex("contact_id"));
-        companyId = c.getInt(c.getColumnIndex("company_id"));
-        notes = c.getString(c.getColumnIndex("notes"));
-    }
-
+    @Override
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);
@@ -139,6 +74,29 @@ public class Client extends AbstractTable {
         cv.put("company_id", companyId);
         cv.put("notes", notes);
         return cv;
+    }
+
+    @Override
+    void objectFromCursor(Cursor cursor) {
+        id = cursor.getInt(cursor.getColumnIndex("_id"));
+        name = cursor.getString(cursor.getColumnIndex("name"));
+        address1 = cursor.getString(cursor.getColumnIndex("address1"));
+        address2 = cursor.getString(cursor.getColumnIndex("address2"));
+        city = cursor.getString(cursor.getColumnIndex("city"));
+        state = cursor.getString(cursor.getColumnIndex("state"));
+        zip = cursor.getString(cursor.getColumnIndex("zip"));
+        clientStatus = cursor.getString(cursor.getColumnIndex("client_status"));
+        officePhone = cursor.getString(cursor.getColumnIndex("office_phone"));
+        officeFax = cursor.getString(cursor.getColumnIndex("office_fax"));
+        mobilePhone = cursor.getString(cursor.getColumnIndex("mobile_phone"));
+        email = cursor.getString(cursor.getColumnIndex("email"));
+        website = cursor.getString(cursor.getColumnIndex("website"));
+        farm = cursor.getInt(cursor.getColumnIndex("farm")) == 1;
+        feedlot = cursor.getInt(cursor.getColumnIndex("feedlot")) == 1;
+        serviceProvider = cursor.getInt(cursor.getColumnIndex("service_provider")) == 1;
+        contactId = cursor.getInt(cursor.getColumnIndex("contact_id"));
+        companyId = cursor.getInt(cursor.getColumnIndex("company_id"));
+        notes = cursor.getString(cursor.getColumnIndex("notes"));
     }
 
     public int getId() {
@@ -317,72 +275,40 @@ public class Client extends AbstractTable {
         this.serviceLevelId = serviceLevelId;
     }
 
-    public static Client find(int id) {
-        Client item = null;
-
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(getTableName(), null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
-
-        if (cursor != null && cursor.getCount() == 1) {
-            cursor.moveToFirst();
-            item = new Client(cursor);
-            cursor.close();
-        } else {
-            Log.w("nfs", "CLIENT(" + id + ") NOT FOUND");
-        }
-
-        return item;
-    }
-
-    public static List<Client> all() {
-        String sql = "SELECT * FROM " + getTableName() + " ORDER BY name ASC";
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
-        List<Client> list = new ArrayList<>();
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                list.add(new Client(cursor));
-            }
-
-            cursor.close();
-        }
-
-        return list;
-    }
-
-    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
-        private DbOpenHelper dbHelper;
-        private SQLiteDatabase mDb;
-
-        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
-            super();
-            Log.d("nfs", "Client.PopulateAsync()");
-            this.dbHelper = dbHelper;
-            this.mDb = db;
-        }
-
-        @Override
-        protected Void doInBackground(JSONArray... json) {
-            Log.d("nfs", "Client.PopulateAsync.doInBackground()");
-            Client[] array = gson.fromJson(json[0].toString(), Client[].class);
-            Log.d("nfs", "LOADING " + array.length + " CLIENTS");
-            dbHelper.onTableLoadStart(getTableName(), array.length);
-            mDb.execSQL("DELETE FROM " + getTableName());
-
-            int n = 0;
-            for (Client item : array) {
-                Log.d("nfs", item.toString());
-                if (mDb.insertOrThrow(getTableName(), null, item.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
-                }
-                dbHelper.onTableLoadProgress(getTableName(), ++n);
-            }
-
-            dbHelper.onTableLoadEnd(getTableName());
-            Log.d("nfs", "Client.PopulateAsync() DONE");
-
-            return null;
-        }
-    }
+//    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
+//        private DbOpenHelper dbHelper;
+//        private SQLiteDatabase mDb;
+//
+//        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
+//            super();
+//            Log.d("nfs", "Client.PopulateAsync()");
+//            this.dbHelper = dbHelper;
+//            this.mDb = db;
+//        }
+//
+//        @Override
+//        protected Void doInBackground(JSONArray... json) {
+//            Log.d("nfs", "Client.PopulateAsync.doInBackground()");
+//            Class clazz = Client.class;
+//            String tableName = getTableName(clazz);
+//            Client[] array = gson.fromJson(json[0].toString(), Client[].class);
+//            Log.d("nfs", "LOADING " + array.length + " CLIENTS");
+//            dbHelper.onTableLoadStart(tableName, array.length);
+//            mDb.execSQL("DELETE FROM " + tableName);
+//
+//            int n = 0;
+//            for (Client item : array) {
+//                Log.d("nfs", item.toString());
+//                if (mDb.insertOrThrow(tableName, null, item.getContentValues()) == -1) {
+//                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
+//                }
+//                dbHelper.onTableLoadProgress(tableName, ++n);
+//            }
+//
+//            dbHelper.onTableLoadEnd(tableName);
+//            Log.d("nfs", "Client.PopulateAsync() DONE");
+//
+//            return null;
+//        }
+//    }
 }
