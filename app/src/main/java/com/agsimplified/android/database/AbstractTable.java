@@ -89,27 +89,30 @@ abstract class AbstractTable implements Serializable {
     static class PopulateAsync<T extends AbstractTable> extends AsyncTask<JSONArray, Void, Void> {
         private DbOpenHelper dbHelper;
         private SQLiteDatabase mDb;
+        private Class<T> clazz;
 
-        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
+        PopulateAsync(Class<T> clazz, DbOpenHelper dbHelper, SQLiteDatabase db) {
             super();
             Log.d("nfs", "PopulateAsync()");
             this.dbHelper = dbHelper;
             this.mDb = db;
+            this.clazz = clazz;
         }
 
         @Override
         protected Void doInBackground(JSONArray... jsonArrays) {
             Log.d("nfs", "PopulateAsync.doInBackground()");
-            Class objType = new TypeToken<T>(){}.getClass();
-            Type arrType = new TypeToken<T[]>(){}.getType();
-            String tableName = getTableName(objType);
-            T[] array = gson.fromJson(jsonArrays[0].toString(), arrType);
-            Log.d("nfs", "LOADING " + array.length + " CLIENTS");
-            dbHelper.onTableLoadStart(tableName, array.length);
+            String tableName = getTableName(clazz);
+//            Type arrType = new TypeToken<T[]>(){}.getType();
+//            List<T> array = listFromJson(arrType, jsonArrays[0].toString());
+            Type listType = new TypeToken<List<T>>(){}.getType();
+            List<T> list = gson.fromJson(jsonArrays[0].toString(), listType);
+            Log.d("nfs", "LOADING " + list.size() + " CLIENTS");
+            dbHelper.onTableLoadStart(tableName, list.size());
             mDb.execSQL("DELETE FROM " + tableName);
 
             int n = 0;
-            for (T item : array) {
+            for (T item : list) {
                 Log.d("nfs", item.toString());
                 if (mDb.insertOrThrow(tableName, null, item.getContentValues()) == -1) {
                     Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
