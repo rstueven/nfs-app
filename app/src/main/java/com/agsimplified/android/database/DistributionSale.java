@@ -63,6 +63,7 @@ public class DistributionSale extends AbstractTable {
     private String tillagePractices;
     private double plannedAcres;
 
+    @Override
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);

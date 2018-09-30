@@ -27,6 +27,7 @@ public class Farm extends AbstractTable {
     private String cropZone;
     private String guid;
 
+    @Override
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);

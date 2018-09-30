@@ -38,7 +38,7 @@ abstract class AbstractTable implements Serializable {
         }
     }
 
-    static <T> T fromJson(final Class<T> clazz, final String json) {
+    public static <T> T fromJson(final Class<T> clazz, final String json) {
         return gson.fromJson(json, clazz);
     }
 

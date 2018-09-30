@@ -43,6 +43,16 @@ public class TableDefs_1 extends TableDefs {
                         + DistributionSale.TABLE_NAME + " ("
                         + TextUtils.join(",", DistributionSale.COLUMNS)
                         + ")");
+        createStatements.put(Farm.TABLE_NAME,
+                "CREATE TABLE IF NOT EXISTS "
+                        + Farm.TABLE_NAME + " ("
+                        + TextUtils.join(",", Farm.COLUMNS)
+                        + ")");
+        createStatements.put(Field.TABLE_NAME,
+                "CREATE TABLE IF NOT EXISTS "
+                        + Field.TABLE_NAME + " ("
+                        + TextUtils.join(",", Field.COLUMNS)
+                        + ")");
         createStatements.put(JobPlan.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
                         + JobPlan.TABLE_NAME + " ("
@@ -57,16 +67,6 @@ public class TableDefs_1 extends TableDefs {
                 "CREATE TABLE IF NOT EXISTS "
                         + Product.TABLE_NAME + " ("
                         + TextUtils.join(",", Product.COLUMNS)
-                        + ")");
-        createStatements.put(Farm.TABLE_NAME,
-                "CREATE TABLE IF NOT EXISTS "
-                        + Farm.TABLE_NAME + " ("
-                        + TextUtils.join(",", Farm.COLUMNS)
-                        + ")");
-        createStatements.put(Field.TABLE_NAME,
-                "CREATE TABLE IF NOT EXISTS "
-                        + Field.TABLE_NAME + " ("
-                        + TextUtils.join(",", Field.COLUMNS)
                         + ")");
         createStatements.put(LoadSheet.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
@@ -121,8 +121,8 @@ public class TableDefs_1 extends TableDefs {
                                 new Client.PopulateAsync<Client>(Client.class, dbHelper, mDb).execute(response.getJSONArray(Client.TABLE_NAME));
                                 new DistributionSale.PopulateAsync<DistributionSale>(DistributionSale.class, dbHelper, mDb).execute(response.getJSONArray(DistributionSale.TABLE_NAME));
                                 new Farm.PopulateAsync<Farm>(Farm.class, dbHelper, mDb).execute(response.getJSONArray(Farm.TABLE_NAME));
-                                new Field.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Field.TABLE_NAME));
-                                new JobPlan.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(JobPlan.TABLE_NAME));
+                                new Field.PopulateAsync<Field>(Field.class, dbHelper, mDb).execute(response.getJSONArray(Field.TABLE_NAME));
+                                new JobPlan.PopulateAsync<JobPlan>(JobPlan.class, dbHelper, mDb).execute(response.getJSONArray(JobPlan.TABLE_NAME));
                                 new Load.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Load.TABLE_NAME));
                                 new LoadSheet.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(LoadSheet.TABLE_NAME));
                                 new Product.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Product.TABLE_NAME));

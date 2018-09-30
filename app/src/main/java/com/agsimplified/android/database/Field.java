@@ -2,8 +2,6 @@ package com.agsimplified.android.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.agsimplified.android.model.GeoLocatable;
@@ -13,14 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-public class Field implements Serializable, GeoLocatable {
-    public Field() {
-    }
-
+public class Field extends AbstractTable implements GeoLocatable {
     public static final String TABLE_NAME = "fields";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
@@ -74,98 +65,7 @@ public class Field implements Serializable, GeoLocatable {
     private String guid;
     private String status;
 
-    public Field(JSONObject obj) {
-        try {
-            id = obj.optInt("id");
-            farmId = obj.optInt("farm_id");
-            name = obj.getString("name");
-            fieldCLUNumber = obj.getString("field_clu_number");
-            soilType = obj.getString("soil_type");
-            fsaAcres = obj.optDouble("fsa_acres");
-            gpsAcres = obj.optDouble("gps_acres");
-            legal1 = obj.getString("legal_1");
-            legal2 = obj.getString("legal_2");
-            legalSec = obj.getString("legal_sec");
-            legalTier = obj.getString("legal_tier");
-            legalRange = obj.getString("legal_range");
-            legalState = obj.getString("legal_state");
-            township = obj.getString("township");
-            county = obj.getString("county");
-            tenantship = obj.getString("tenantship");
-            agreementTerms = obj.getString("agreement_terms");
-            spreadableAcres = obj.optDouble("spreadable_acres");
-            hel = obj.optBoolean("hel");
-            geoJson = obj.getString("geo_json");
-            rusle2 = obj.getString("rusle_2");
-            pIndex = obj.getString("p_index");
-            guid = obj.getString("guid");
-            status = obj.getString("status");
-        } catch (JSONException e) {
-            Log.e("nfs", "Field(): " + e.getLocalizedMessage());
-            Log.e("nfs", obj.toString());
-        }
-    }
-
-    public Field(Cursor c) {
-        id = c.getInt(c.getColumnIndex("_id"));
-        farmId = c.getInt(c.getColumnIndex("farm_id"));
-        name = c.getString(c.getColumnIndex("name"));
-        fieldCLUNumber = c.getString(c.getColumnIndex("field_clu_number"));
-        soilType = c.getString(c.getColumnIndex("soil_type"));
-        fsaAcres = c.getDouble(c.getColumnIndex("fsa_acres"));
-        gpsAcres = c.getDouble(c.getColumnIndex("gps_acres"));
-        legal1 = c.getString(c.getColumnIndex("legal_1"));
-        legal2 = c.getString(c.getColumnIndex("legal_2"));
-        legalSec = c.getString(c.getColumnIndex("legal_sec"));
-        legalRange = c.getString(c.getColumnIndex("legal_range"));
-        legalState = c.getString(c.getColumnIndex("legal_state"));
-        township = c.getString(c.getColumnIndex("township"));
-        county = c.getString(c.getColumnIndex("county"));
-        tenantship = c.getString(c.getColumnIndex("tenantship"));
-        agreementTerms = c.getString(c.getColumnIndex("agreement_terms"));
-        spreadableAcres = c.getDouble(c.getColumnIndex("spreadable_acres"));
-        hel = c.getInt(c.getColumnIndex("hel")) == 1;
-        geoJson = c.getString(c.getColumnIndex("geo_json"));
-        rusle2 = c.getString(c.getColumnIndex("rusle_2"));
-        pIndex = c.getString(c.getColumnIndex("p_index"));
-        guid = c.getString(c.getColumnIndex("guid"));
-        status = c.getString(c.getColumnIndex("status"));
-    }
-
-    public static Field find(int id) {
-        Field item = null;
-
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
-
-        if (cursor != null && cursor.getCount() == 1) {
-            cursor.moveToFirst();
-            item = new Field(cursor);
-            cursor.close();
-        } else {
-            Log.w("nfs", "FIELD(" + id + ") NOT FOUND");
-        }
-
-        return item;
-    }
-
-    public static List<Field> all() {
-        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
-        List<Field> list = new ArrayList<>();
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                list.add(new Field(cursor));
-            }
-
-            cursor.close();
-        }
-
-        return list;
-    }
-
+    @Override
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);
@@ -192,6 +92,33 @@ public class Field implements Serializable, GeoLocatable {
         cv.put("guid", guid);
         cv.put("status", status);
         return cv;
+    }
+
+    @Override
+    void objectFromCursor(Cursor cursor) {
+        id = cursor.getInt(cursor.getColumnIndex("_id"));
+        farmId = cursor.getInt(cursor.getColumnIndex("farm_id"));
+        name = cursor.getString(cursor.getColumnIndex("name"));
+        fieldCLUNumber = cursor.getString(cursor.getColumnIndex("field_clu_number"));
+        soilType = cursor.getString(cursor.getColumnIndex("soil_type"));
+        fsaAcres = cursor.getDouble(cursor.getColumnIndex("fsa_acres"));
+        gpsAcres = cursor.getDouble(cursor.getColumnIndex("gps_acres"));
+        legal1 = cursor.getString(cursor.getColumnIndex("legal_1"));
+        legal2 = cursor.getString(cursor.getColumnIndex("legal_2"));
+        legalSec = cursor.getString(cursor.getColumnIndex("legal_sec"));
+        legalRange = cursor.getString(cursor.getColumnIndex("legal_range"));
+        legalState = cursor.getString(cursor.getColumnIndex("legal_state"));
+        township = cursor.getString(cursor.getColumnIndex("township"));
+        county = cursor.getString(cursor.getColumnIndex("county"));
+        tenantship = cursor.getString(cursor.getColumnIndex("tenantship"));
+        agreementTerms = cursor.getString(cursor.getColumnIndex("agreement_terms"));
+        spreadableAcres = cursor.getDouble(cursor.getColumnIndex("spreadable_acres"));
+        hel = cursor.getInt(cursor.getColumnIndex("hel")) == 1;
+        geoJson = cursor.getString(cursor.getColumnIndex("geo_json"));
+        rusle2 = cursor.getString(cursor.getColumnIndex("rusle_2"));
+        pIndex = cursor.getString(cursor.getColumnIndex("p_index"));
+        guid = cursor.getString(cursor.getColumnIndex("guid"));
+        status = cursor.getString(cursor.getColumnIndex("status"));
     }
 
     public String siteFarmField() {
@@ -459,88 +386,6 @@ public class Field implements Serializable, GeoLocatable {
             return Farm.find(Farm.class, farmId);
         } catch (InstantiationException | IllegalAccessException e) {
             Log.e("nfs", "Field.getFarm(" + farmId +"): " + e.getLocalizedMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Field{" +
-                "id=" + id +
-                ", farmId=" + farmId +
-                ", name='" + name + '\'' +
-                ", fieldCLUNumber='" + fieldCLUNumber + '\'' +
-                ", soilType='" + soilType + '\'' +
-                ", fsaAcres=" + fsaAcres +
-                ", gpsAcres=" + gpsAcres +
-                ", legal1='" + legal1 + '\'' +
-                ", legal2='" + legal2 + '\'' +
-                ", legalSec='" + legalSec + '\'' +
-                ", legalTier='" + legalTier + '\'' +
-                ", legalRange='" + legalRange + '\'' +
-                ", legalState='" + legalState + '\'' +
-                ", township='" + township + '\'' +
-                ", county='" + county + '\'' +
-                ", tenantship='" + tenantship + '\'' +
-                ", agreementTerms='" + agreementTerms + '\'' +
-                ", spreadableAcres=" + spreadableAcres +
-                ", hel=" + hel +
-                ", geoJson='" + geoJson + '\'' +
-                ", rusle2='" + rusle2 + '\'' +
-                ", pIndex='" + pIndex + '\'' +
-                ", guid='" + guid + '\'' +
-                ", status='" + status + '\'' +
-                '}';
-    }
-
-    public static Field[] jsonToArray(JSONArray jsonArray) {
-        List<Field> list = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                list.add(new Field(jsonArray.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "Field.jsonToArray(): " + e.getLocalizedMessage());
-            Log.e("nfs", jsonArray.toString());
-        }
-
-        Field[] array = new Field[list.size()];
-        return list.toArray(array);
-    }
-
-    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
-        private DbOpenHelper dbHelper;
-        private SQLiteDatabase mDb;
-
-        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
-            super();
-            Log.d("nfs", "Field.PopulateAsync()");
-            this.dbHelper = dbHelper;
-            this.mDb = db;
-        }
-
-        @Override
-        protected Void doInBackground(JSONArray... json) {
-            Log.d("nfs", "Field.PopulateAsync.doInBackground()");
-
-            Field[] array = jsonToArray(json[0]);
-            Log.d("nfs", "LOADING " + array.length + " FIELDS");
-            dbHelper.onTableLoadStart(TABLE_NAME, array.length);
-            mDb.execSQL("DELETE FROM " + TABLE_NAME);
-
-            int n = 0;
-            for (Field item : array) {
-//                    Log.d("nfs", item.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
-                }
-                dbHelper.onTableLoadProgress(TABLE_NAME, ++n);
-            }
-
-            dbHelper.onTableLoadEnd(TABLE_NAME);
-            Log.d("nfs", "Field.PopulateAsync() DONE");
-
             return null;
         }
     }

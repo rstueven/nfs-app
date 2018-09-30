@@ -55,7 +55,13 @@ public class LoadSheetDetail implements Serializable {
                     null, null, null, null, "1");
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
-                jobPlan = new JobPlan(cursor);
+                try {
+                    jobPlan = JobPlan.fromCursor(JobPlan.class, cursor);
+                } catch (IllegalAccessException | InstantiationException e) {
+                    Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
+                } finally {
+                    cursor.close();
+                }
                 cursor.close();
             }
 
@@ -103,15 +109,26 @@ public class LoadSheetDetail implements Serializable {
                     null, null, null, null, "1");
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
-                fromField = new Field(cursor);
-                cursor.close();
+                try {
+                    fromField = Field.fromCursor(Field.class, cursor);
+                } catch (IllegalAccessException | InstantiationException e) {
+                    Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
+                } finally {
+                    cursor.close();
+                }
             }
 
             cursor = db.query(Field.TABLE_NAME, null, "_id = " + distributionSale.getToFieldId(),
                     null, null, null, null, "1");
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
-                toField = new Field(cursor);
+                try {
+                    toField = Field.fromCursor(Field.class, cursor);
+                } catch (IllegalAccessException | InstantiationException e) {
+                    Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
+                } finally {
+                    cursor.close();
+                }
                 cursor.close();
             }
 
@@ -146,42 +163,38 @@ public class LoadSheetDetail implements Serializable {
 
     public LatLng toLatLng() {
         GeoLocatable destination = getDestination();
-        if (destination != null) {
-            return destination.getLocation();
-        } else {
-            return null;
-        }
+        return destination != null ? destination.getLocation() : null;
     }
 
     public int getJobCode() {
-        return (jobPlan != null) ? jobPlan.getJobCode() : -1;
+        return jobPlan != null ? jobPlan.getJobCode() : -1;
     }
 
     public String getJobCodeString() {
         int jobCode = getJobCode();
-        return (jobCode > 0) ? Integer.toString(jobCode) : null;
+        return jobCode > 0 ? Integer.toString(jobCode) : null;
     }
 
     public int getClientJobCode() {
-        return (jobPlan != null) ? jobPlan.getClientJobCode() : -1;
+        return jobPlan != null ? jobPlan.getClientJobCode() : -1;
     }
 
     public String getClientJobCodeString() {
         int jobCode = getClientJobCode();
-        return (jobCode > 0) ? Integer.toString(jobCode) : null;
+        return jobCode > 0 ? Integer.toString(jobCode) : null;
     }
 
     public int getYear() {
-        return (distributionSale != null) ? distributionSale.getYear() : -1;
+        return distributionSale != null ? distributionSale.getYear() : -1;
     }
 
     public String getYearString() {
         int year = getYear();
-        return (year > 0) ? Integer.toString(year) : null;
+        return year > 0 ? Integer.toString(year) : null;
     }
 
     public String getProductName() {
-        return (product != null) ? product.getName() : null;
+        return product != null ? product.getName() : null;
     }
 
     public Site getFromSite() {
@@ -193,7 +206,7 @@ public class LoadSheetDetail implements Serializable {
     }
 
     public double getAmount() {
-        return (distributionSale != null) ? distributionSale.getAmount() : -1;
+        return distributionSale != null ? distributionSale.getAmount() : -1;
     }
 
     public DistributionSale getDistributionSale() {
@@ -275,13 +288,18 @@ public class LoadSheetDetail implements Serializable {
             String type = fromStorageInventory.getStorageableType();
             int id = fromStorageInventory.getStorageableId();
 
-            switch (type) {
-                case "Storage":
-                    return Storage.find(id);
-                case "Field":
-                    return Field.find(id);
-                default:
-                    throw new IllegalArgumentException("unknown storageableType <" + type + ">");
+            try {
+                switch (type) {
+                    case "Storage":
+                        return Storage.find(id);
+                    case "Field":
+                        return Field.find(Field.class, id);
+                    default:
+                        throw new IllegalArgumentException("unknown storageableType <" + type + ">");
+                }
+            } catch (IllegalAccessException | InstantiationException e) {
+                Log.e("nfs", "LoadSheetDetail.getSource(): " + e.getLocalizedMessage());
+                return null;
             }
         } else {
             return null;
@@ -295,13 +313,18 @@ public class LoadSheetDetail implements Serializable {
             String type = toStorageInventory.getStorageableType();
             int id = toStorageInventory.getStorageableId();
 
-            switch (type) {
-                case "Storage":
-                    return Storage.find(id);
-                case "Field":
-                    return Field.find(id);
-                default:
-                    throw new IllegalArgumentException("unknown storageableType <" + type + ">");
+            try {
+                switch (type) {
+                    case "Storage":
+                        return Storage.find(id);
+                    case "Field":
+                            return Field.find(Field.class, id);
+                    default:
+                        throw new IllegalArgumentException("unknown storageableType <" + type + ">");
+                }
+            } catch (InstantiationException | IllegalAccessException e) {
+                Log.e("nfs", "LoadSheetDetail.getDestination(): " + e.getLocalizedMessage());
+                return null;
             }
         } else {
             return null;
@@ -388,7 +411,7 @@ public class LoadSheetDetail implements Serializable {
         }
 
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.rawQuery(searchSql, selectionArgs.toArray(new String[selectionArgs.size()]));
+        Cursor cursor = db.rawQuery(searchSql, selectionArgs.toArray(new String[0]));
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
