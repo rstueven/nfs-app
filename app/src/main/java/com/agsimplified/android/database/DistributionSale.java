@@ -2,30 +2,10 @@ package com.agsimplified.android.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
-import android.text.TextUtils;
-import android.util.Log;
 
-import com.agsimplified.android.util.NetworkRequestQueue;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+public class DistributionSale extends AbstractTable {
+    public static final String TABLENAME = "distribution_sales";
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-public class DistributionSale implements Serializable {
-    public DistributionSale() {
-    }
-
-    public static String TABLE_NAME = "distribution_sales";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "job_plan_id INTEGER",
@@ -83,86 +63,6 @@ public class DistributionSale implements Serializable {
     private String tillagePractices;
     private double plannedAcres;
 
-    public DistributionSale(JSONObject obj) {
-        try {
-            id = obj.optInt("id");
-            jobPlanId = obj.optInt("job_plan_id");
-            year = obj.optInt("year");
-            fromId = obj.optInt("from_id");
-            toId = obj.optInt("to_id");
-            mileage = obj.optDouble("mileage");
-            amount = obj.optDouble("amount");
-            notes = obj.getString("notes");
-            fromType = obj.getString("from_type");
-            fromFieldId = obj.optInt("from_field_id");
-            fromStorageInventoryId = obj.optInt("from_storage_inventory_id");
-            toType = obj.getString("to_type");
-            toFieldId = obj.optInt("to_field_id");
-            toStorageInventoryId = obj.optInt("to_storage_inventory_id");
-            productId = obj.optInt("product_id");
-            productCost = obj.optDouble("product_cost");
-            directions = obj.getString("directions");
-            salePrice = obj.optDouble("sale_price");
-            spreadingCost = obj.optDouble("spreading_cost");
-            truckingCost = obj.optDouble("trucking_cost");
-            loadingCost = obj.optDouble("loading_cost");
-            previousCropId = obj.optInt("previous_crop_id");
-            plannedCropId = obj.optInt("planned_crop_id");
-            croppingRotation = obj.getString("cropping_rotation");
-            tillagePractices = obj.getString("tillage_practices");
-            plannedAcres = obj.optDouble("planned_acres");
-        } catch (JSONException e) {
-            Log.e("nfs", "DistributionSale(): " + e.getLocalizedMessage());
-            Log.e("nfs", obj.toString());
-        }
-    }
-
-    public DistributionSale(Cursor c) {
-        id = c.getInt(c.getColumnIndex("_id"));
-        jobPlanId = c.getInt(c.getColumnIndex("job_plan_id"));
-        year = c.getInt(c.getColumnIndex("year"));
-        fromId = c.getInt(c.getColumnIndex("from_id"));
-        toId = c.getInt(c.getColumnIndex("to_id"));
-        mileage = c.getDouble(c.getColumnIndex("mileage"));
-        amount = c.getDouble(c.getColumnIndex("amount"));
-        notes = c.getString(c.getColumnIndex("notes"));
-        fromType = c.getString(c.getColumnIndex("from_type"));
-        fromFieldId = c.getInt(c.getColumnIndex("from_field_id"));
-        fromStorageInventoryId = c.getInt(c.getColumnIndex("from_storage_inventory_id"));
-        toType = c.getString(c.getColumnIndex("to_type"));
-        toFieldId = c.getInt(c.getColumnIndex("to_field_id"));
-        toStorageInventoryId = c.getInt(c.getColumnIndex("to_storage_inventory_id"));
-        productId = c.getInt(c.getColumnIndex("product_id"));
-        productCost = c.getDouble(c.getColumnIndex("product_cost"));
-        directions = c.getString(c.getColumnIndex("directions"));
-        salePrice = c.getDouble(c.getColumnIndex("sale_price"));
-        spreadingCost = c.getDouble(c.getColumnIndex("spreading_cost"));
-        truckingCost = c.getDouble(c.getColumnIndex("trucking_cost"));
-        loadingCost = c.getDouble(c.getColumnIndex("loading_cost"));
-        previousCropId = c.getInt(c.getColumnIndex("previous_crop_id"));
-        plannedCropId = c.getInt(c.getColumnIndex("planned_crop_id"));
-        croppingRotation = c.getString(c.getColumnIndex("cropping_rotation"));
-        tillagePractices = c.getString(c.getColumnIndex("tillage_practices"));
-        plannedAcres = c.getDouble(c.getColumnIndex("planned_acres"));
-    }
-
-    public static DistributionSale find(int id) {
-        DistributionSale item = null;
-
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
-
-        if (cursor != null && cursor.getCount() == 1) {
-            cursor.moveToFirst();
-            item = new DistributionSale(cursor);
-            cursor.close();
-        } else {
-            Log.w("nfs", "DISTRIBUTIONSALE(" + id + ") NOT FOUND");
-        }
-
-        return item;
-    }
-
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);
@@ -192,6 +92,35 @@ public class DistributionSale implements Serializable {
         cv.put("tillage_practices", tillagePractices);
         cv.put("planned_acres", plannedAcres);
         return cv;
+    }
+
+    @Override
+    void objectFromCursor(Cursor cursor) {
+        id = cursor.getInt(cursor.getColumnIndex("_id"));
+        jobPlanId = cursor.getInt(cursor.getColumnIndex("job_plan_id"));
+        year = cursor.getInt(cursor.getColumnIndex("year"));
+        fromId = cursor.getInt(cursor.getColumnIndex("from_id"));
+        toId = cursor.getInt(cursor.getColumnIndex("to_id"));
+        mileage = cursor.getDouble(cursor.getColumnIndex("mileage"));
+        amount = cursor.getDouble(cursor.getColumnIndex("amount"));
+        notes = cursor.getString(cursor.getColumnIndex("notes"));
+        fromType = cursor.getString(cursor.getColumnIndex("from_type"));
+        fromFieldId = cursor.getInt(cursor.getColumnIndex("from_field_id"));
+        fromStorageInventoryId = cursor.getInt(cursor.getColumnIndex("from_storage_inventory_id"));
+        toType = cursor.getString(cursor.getColumnIndex("to_type"));
+        toFieldId = cursor.getInt(cursor.getColumnIndex("to_field_id"));
+        toStorageInventoryId = cursor.getInt(cursor.getColumnIndex("to_storage_inventory_id"));
+        productId = cursor.getInt(cursor.getColumnIndex("product_id"));
+        directions = cursor.getString(cursor.getColumnIndex("directions"));
+        salePrice = cursor.getDouble(cursor.getColumnIndex("sale_price"));
+        spreadingCost = cursor.getDouble(cursor.getColumnIndex("spreading_cost"));
+        truckingCost = cursor.getDouble(cursor.getColumnIndex("trucking_cost"));
+        loadingCost = cursor.getDouble(cursor.getColumnIndex("loading_cost"));
+        previousCropId = cursor.getInt(cursor.getColumnIndex("previous_crop_id"));
+        plannedCropId = cursor.getInt(cursor.getColumnIndex("planned_crop_id"));
+        croppingRotation = cursor.getString(cursor.getColumnIndex("cropping_rotation"));
+        tillagePractices = cursor.getString(cursor.getColumnIndex("tillage_practices"));
+        plannedAcres = cursor.getDouble(cursor.getColumnIndex("planned_acres"));
     }
 
     public int getId() {
@@ -400,89 +329,5 @@ public class DistributionSale implements Serializable {
 
     public void setPlannedAcres(double plannedAcres) {
         this.plannedAcres = plannedAcres;
-    }
-
-    @Override
-    public String toString() {
-        return "DistributionSale{" +
-                "id=" + id +
-                ", jobPlanId=" + jobPlanId +
-                ", year=" + year +
-                ", fromId=" + fromId +
-                ", toId=" + toId +
-                ", mileage=" + mileage +
-                ", amount=" + amount +
-                ", notes='" + notes + '\'' +
-                ", fromType='" + fromType + '\'' +
-                ", fromFieldId=" + fromFieldId +
-                ", fromStorageInventoryId=" + fromStorageInventoryId +
-                ", toType='" + toType + '\'' +
-                ", toFieldId=" + toFieldId +
-                ", toStorageInventoryId=" + toStorageInventoryId +
-                ", productId=" + productId +
-                ", productCost=" + productCost +
-                ", directions='" + directions + '\'' +
-                ", salePrice=" + salePrice +
-                ", spreadingCost=" + spreadingCost +
-                ", truckingCost=" + truckingCost +
-                ", loadingCost=" + loadingCost +
-                ", previousCropId=" + previousCropId +
-                ", plannedCropId=" + plannedCropId +
-                ", croppingRotation='" + croppingRotation + '\'' +
-                ", tillagePractices='" + tillagePractices + '\'' +
-                ", plannedAcres=" + plannedAcres +
-                '}';
-    }
-
-    public static DistributionSale[] jsonToArray(JSONArray jsonArray) {
-        List<DistributionSale> list = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                list.add(new DistributionSale(jsonArray.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "DistributionSale.jsonToArray(): " + e.getLocalizedMessage());
-            Log.e("nfs", jsonArray.toString());
-        }
-
-        DistributionSale[] array = new DistributionSale[list.size()];
-        return list.toArray(array);
-    }
-
-    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
-        private DbOpenHelper dbHelper;
-        private SQLiteDatabase mDb;
-
-        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
-            super();
-            Log.d("nfs", "DistributionSale.PopulateAsync()");
-            this.dbHelper = dbHelper;
-            this.mDb = db;
-        }
-
-        @Override
-        protected Void doInBackground(JSONArray... json) {
-            Log.d("nfs", "DistributionSale.PopulateAsync.doInBackground()");
-
-            DistributionSale[] array = jsonToArray(json[0]);
-            Log.d("nfs", "LOADING " + array.length + " DISTRIBUTIONSALES");
-            dbHelper.onTableLoadStart(TABLE_NAME, array.length);
-            mDb.execSQL("DELETE FROM " + TABLE_NAME);
-
-            int n = 0;
-            for (DistributionSale item : array) {
-//                    Log.d("nfs", item.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
-                }
-                dbHelper.onTableLoadProgress(TABLE_NAME, ++n);
-            }
-
-            dbHelper.onTableLoadEnd(TABLE_NAME);
-            Log.d("nfs", "DistributionSale.PopulateAsync() DONE");
-
-            return null;
-        }
     }
 }

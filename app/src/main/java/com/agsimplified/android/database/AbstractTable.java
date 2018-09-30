@@ -29,15 +29,12 @@ abstract class AbstractTable implements Serializable {
         return gson.toJson(this);
     }
 
-    static String getTableName(Class clazz) {
-        String clazzName = clazz.getName();
-        String className = clazzName.substring(clazzName.lastIndexOf('.') + 1);
-
-        switch (className) {
-            case "Client":
-                return "clients";
-            default:
-                throw new IllegalArgumentException("unknown class <" + clazzName + ">");
+    public static String getTableName(Class clazz) {
+        try {
+            return (String) clazz.getField("TABLENAME").get(null);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            Log.e("nfs", "getTableName(" + clazz.getSimpleName() + ": " + e.getLocalizedMessage());
+            return null;
         }
     }
 
@@ -50,7 +47,7 @@ abstract class AbstractTable implements Serializable {
         return listFromJson(clazz, arr.toString());
     }
 
-    public static <T> List<T> listFromJson(final Class<T[]> clazz, final String json) {
+    private static <T> List<T> listFromJson(final Class<T[]> clazz, final String json) {
         if (TextUtils.isEmpty(json)) {
             return new ArrayList<>();
         } else {
@@ -58,7 +55,7 @@ abstract class AbstractTable implements Serializable {
         }
     }
 
-    static <T extends AbstractTable> T fromCursor(final Class<T> clazz, final Cursor cursor) throws IllegalAccessException, InstantiationException {
+    public static <T extends AbstractTable> T fromCursor(final Class<T> clazz, final Cursor cursor) throws IllegalAccessException, InstantiationException {
         T obj = clazz.newInstance();
         obj.objectFromCursor(cursor);
         return obj;

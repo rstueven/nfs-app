@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 public class Client extends AbstractTable {
+    public static final String TABLENAME = "clients";
+
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "name TEXT NOT NULL",
@@ -274,41 +276,4 @@ public class Client extends AbstractTable {
     public void setServiceLevelId(int serviceLevelId) {
         this.serviceLevelId = serviceLevelId;
     }
-
-//    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
-//        private DbOpenHelper dbHelper;
-//        private SQLiteDatabase mDb;
-//
-//        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
-//            super();
-//            Log.d("nfs", "Client.PopulateAsync()");
-//            this.dbHelper = dbHelper;
-//            this.mDb = db;
-//        }
-//
-//        @Override
-//        protected Void doInBackground(JSONArray... json) {
-//            Log.d("nfs", "Client.PopulateAsync.doInBackground()");
-//            Class clazz = Client.class;
-//            String tableName = getTableName(clazz);
-//            Client[] array = gson.fromJson(json[0].toString(), Client[].class);
-//            Log.d("nfs", "LOADING " + array.length + " CLIENTS");
-//            dbHelper.onTableLoadStart(tableName, array.length);
-//            mDb.execSQL("DELETE FROM " + tableName);
-//
-//            int n = 0;
-//            for (Client item : array) {
-//                Log.d("nfs", item.toString());
-//                if (mDb.insertOrThrow(tableName, null, item.getContentValues()) == -1) {
-//                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
-//                }
-//                dbHelper.onTableLoadProgress(tableName, ++n);
-//            }
-//
-//            dbHelper.onTableLoadEnd(tableName);
-//            Log.d("nfs", "Client.PopulateAsync() DONE");
-//
-//            return null;
-//        }
-//    }
 }

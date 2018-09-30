@@ -33,20 +33,20 @@ public class TableDefs_1 extends TableDefs {
     protected void initTableDefs() {
         Log.d("nfs", "TableDefs_1.initTableDefs()");
 
-        createStatements.put(Client.getTableName(Client.class),
+        createStatements.put(Client.TABLENAME,
                 "CREATE TABLE IF NOT EXISTS "
-                        + Client.getTableName(Client.class) + " ("
+                        + Client.TABLENAME + " ("
                         + TextUtils.join(",", Client.COLUMNS)
+                        + ")");
+        createStatements.put(DistributionSale.TABLENAME,
+                "CREATE TABLE IF NOT EXISTS "
+                        + DistributionSale.TABLENAME + " ("
+                        + TextUtils.join(",", DistributionSale.COLUMNS)
                         + ")");
         createStatements.put(JobPlan.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
                         + JobPlan.TABLE_NAME + " ("
                         + TextUtils.join(",", JobPlan.COLUMNS)
-                        + ")");
-        createStatements.put(DistributionSale.TABLE_NAME,
-                "CREATE TABLE IF NOT EXISTS "
-                        + DistributionSale.TABLE_NAME + " ("
-                        + TextUtils.join(",", DistributionSale.COLUMNS)
                         + ")");
         createStatements.put(Site.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
@@ -118,8 +118,8 @@ public class TableDefs_1 extends TableDefs {
                             Log.d("nfs", "TableDefs_1.LoadAsync.onResponse(" + url + ")");
                             try {
 //                                Log.d("nfs", response.toString(2));
-                                new Client.PopulateAsync<Client>(Client.class, dbHelper, mDb).execute(response.getJSONArray(Client.getTableName(Client.class)));
-                                new DistributionSale.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(DistributionSale.TABLE_NAME));
+                                new Client.PopulateAsync<Client>(Client.class, dbHelper, mDb).execute(response.getJSONArray(Client.TABLENAME));
+                                new DistributionSale.PopulateAsync<DistributionSale>(DistributionSale.class, dbHelper, mDb).execute(response.getJSONArray(DistributionSale.TABLENAME));
                                 new Farm.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Farm.TABLE_NAME));
                                 new Field.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Field.TABLE_NAME));
                                 new JobPlan.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(JobPlan.TABLE_NAME));
