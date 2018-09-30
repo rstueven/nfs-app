@@ -4,25 +4,30 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 abstract class AbstractTable implements Serializable {
-    static Gson gson = new Gson();
+    private static Gson gson = new Gson();
 
     abstract ContentValues getContentValues();
 
     abstract void objectFromCursor(final Cursor cursor);
+
+    @Override
+    public String toString() {
+        return gson.toJson(this);
+    }
 
     static String getTableName(Class clazz) {
         String clazzName = clazz.getName();
@@ -40,10 +45,17 @@ abstract class AbstractTable implements Serializable {
         return gson.fromJson(json, clazz);
     }
 
-    static <T> List<T> listFromJson(final Class<T[]> clazz, final String json) {
-        T[] arr = gson.fromJson(json, clazz);
-        List<T> list = new ArrayList<>(Arrays.asList(arr));
-        return list;
+    // https://stackoverflow.com/a/28805158
+    public static <T> List<T> listFromJson(final Class<T[]> clazz, final JSONArray arr) {
+        return listFromJson(clazz, arr.toString());
+    }
+
+    public static <T> List<T> listFromJson(final Class<T[]> clazz, final String json) {
+        if (TextUtils.isEmpty(json)) {
+            return new ArrayList<>();
+        } else {
+            return new ArrayList<>(Arrays.asList(gson.fromJson(json, clazz)));
+        }
     }
 
     static <T extends AbstractTable> T fromCursor(final Class<T> clazz, final Cursor cursor) throws IllegalAccessException, InstantiationException {
@@ -69,6 +81,10 @@ abstract class AbstractTable implements Serializable {
         return item;
     }
 
+    public static <T> String listToJson(List<T> list) {
+        return gson.toJson(list);
+    }
+
     public static <T extends AbstractTable> List<T> all(Class<T> clazz) throws InstantiationException, IllegalAccessException {
         String sql = "SELECT * FROM " + getTableName(clazz) + " ORDER BY name ASC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
@@ -77,7 +93,7 @@ abstract class AbstractTable implements Serializable {
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                list.add((T) fromCursor(clazz, cursor));
+                list.add(fromCursor(clazz, cursor));
             }
 
             cursor.close();
@@ -101,27 +117,36 @@ abstract class AbstractTable implements Serializable {
 
         @Override
         protected Void doInBackground(JSONArray... jsonArrays) {
-            Log.d("nfs", "PopulateAsync.doInBackground()");
             String tableName = getTableName(clazz);
-//            Type arrType = new TypeToken<T[]>(){}.getType();
-//            List<T> array = listFromJson(arrType, jsonArrays[0].toString());
-            Type listType = new TypeToken<List<T>>(){}.getType();
-            List<T> list = gson.fromJson(jsonArrays[0].toString(), listType);
-            Log.d("nfs", "LOADING " + list.size() + " CLIENTS");
-            dbHelper.onTableLoadStart(tableName, list.size());
-            mDb.execSQL("DELETE FROM " + tableName);
+            Log.d("nfs", "PopulateAsync.doInBackground(" + tableName + ")");
 
-            int n = 0;
-            for (T item : list) {
-                Log.d("nfs", item.toString());
-                if (mDb.insertOrThrow(tableName, null, item.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
+            JSONArray jsonArray = jsonArrays[0];
+            String json;
+            T item;
+
+            try {
+                int count = jsonArray.length();
+                Log.d("nfs", "LOADING " + tableName + ": " + count + " RECORDS");
+                dbHelper.onTableLoadStart(tableName, count);
+
+                mDb.execSQL("DELETE FROM " + tableName);
+
+                for (int i = 0; i < count; i++) {
+                    json = jsonArray.getJSONObject(i).toString();
+                    item = gson.fromJson(json, clazz);
+
+                    if (mDb.insertOrThrow(tableName, null, item.getContentValues()) == -1) {
+                        Log.e("nfs", "FAILED TO INSERT " + tableName + " <" + item.toString() + ">");
+                    }
+
+                    dbHelper.onTableLoadProgress(tableName, i+1);
                 }
-                dbHelper.onTableLoadProgress(tableName, ++n);
+            } catch (JSONException e) {
+                Log.e("nfs", "JSON ERROR " + tableName + ": " + e.getLocalizedMessage());
             }
 
             dbHelper.onTableLoadEnd(tableName);
-            Log.d("nfs", "PopulateAsync() DONE");
+            Log.d("nfs", "PopulateAsync(" + tableName + ") DONE");
 
             return null;
         }
