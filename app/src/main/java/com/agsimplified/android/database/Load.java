@@ -17,7 +17,7 @@ import java.util.List;
 public class Load implements Serializable {
     public Load(){}
 
-    public static String TABLE_NAME = "loads";
+    public static final String TABLE_NAME = "loads";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "load_sheet_id INTEGER",

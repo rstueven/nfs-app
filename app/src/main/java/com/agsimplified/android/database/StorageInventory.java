@@ -17,7 +17,7 @@ import java.util.List;
 public class StorageInventory implements Serializable {
     public StorageInventory(){}
 
-    public static String TABLE_NAME = "storage_inventories";
+    public static final String TABLE_NAME = "storage_inventories";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "storage_capacity REAL",

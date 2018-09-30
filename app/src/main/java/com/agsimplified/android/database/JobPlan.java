@@ -24,7 +24,7 @@ public class JobPlan implements Serializable {
     public JobPlan() {
     }
 
-    public static String TABLE_NAME = "job_plans";
+    public static final String TABLE_NAME = "job_plans";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "client_id INTEGER",

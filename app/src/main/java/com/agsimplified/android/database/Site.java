@@ -24,7 +24,7 @@ public class Site implements Serializable {
     public Site() {
     }
 
-    public static String TABLE_NAME = "sites";
+    public static final String TABLE_NAME = "sites";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "name TEXT",

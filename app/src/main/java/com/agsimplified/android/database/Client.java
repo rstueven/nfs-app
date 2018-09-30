@@ -4,8 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 public class Client extends AbstractTable {
-    public static final String TABLENAME = "clients";
-
+    public static final String TABLE_NAME = "clients";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "name TEXT NOT NULL",

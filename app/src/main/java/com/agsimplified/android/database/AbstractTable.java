@@ -31,7 +31,7 @@ abstract class AbstractTable implements Serializable {
 
     public static String getTableName(Class clazz) {
         try {
-            return (String) clazz.getField("TABLENAME").get(null);
+            return (String) clazz.getField("TABLE_NAME").get(null);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             Log.e("nfs", "getTableName(" + clazz.getSimpleName() + ": " + e.getLocalizedMessage());
             return null;

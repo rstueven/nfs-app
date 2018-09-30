@@ -20,7 +20,7 @@ import java.util.List;
 public class Storage implements Serializable, GeoLocatable {
     public Storage() {}
 
-    public static String TABLE_NAME = "storages";
+    public static final String TABLE_NAME = "storages";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "site_id INTEGER",

@@ -24,7 +24,7 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public static String TABLE_NAME = "products";
+    public static final String TABLE_NAME = "products";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "name TEXT",

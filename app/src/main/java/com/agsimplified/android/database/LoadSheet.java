@@ -18,7 +18,7 @@ import java.util.List;
 public class LoadSheet implements Serializable {
     public LoadSheet(){}
 
-    public static String TABLE_NAME = "load_sheets";
+    public static final String TABLE_NAME = "load_sheets";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "contact_id INTEGER",

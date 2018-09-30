@@ -21,7 +21,7 @@ public class Field implements Serializable, GeoLocatable {
     public Field() {
     }
 
-    public static String TABLE_NAME = "fields";
+    public static final String TABLE_NAME = "fields";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
             "farm_id INTEGER",
@@ -197,13 +197,19 @@ public class Field implements Serializable, GeoLocatable {
     public String siteFarmField() {
         String s = getName();
 
-        Farm farm = Farm.find(getFarmId());
-        if (farm != null) {
-            s = farm.getName() + " : " + s;
-            Site site = Site.find(farm.getSiteId());
-            if (site != null) {
-                s = site.getName() + " : " + s;
+        Farm farm = null;
+        try {
+            farm = Farm.find(Farm.class, getFarmId());
+            if (farm != null) {
+                s = farm.getName() + " : " + s;
+                Site site = Site.find(farm.getSiteId());
+                if (site != null) {
+                    s = site.getName() + " : " + s;
+                }
             }
+        } catch (InstantiationException | IllegalAccessException e) {
+            Log.e("nfs", "Field.siteFarmField(" + s +"): " + e.getLocalizedMessage());
+            s += " (ERROR)";
         }
 
         return s;
@@ -449,7 +455,12 @@ public class Field implements Serializable, GeoLocatable {
     }
 
     public Farm getFarm() {
-        return Farm.find(farmId);
+        try {
+            return Farm.find(Farm.class, farmId);
+        } catch (InstantiationException | IllegalAccessException e) {
+            Log.e("nfs", "Field.getFarm(" + farmId +"): " + e.getLocalizedMessage());
+            return null;
+        }
     }
 
     @Override

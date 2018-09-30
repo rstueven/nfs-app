@@ -37,7 +37,7 @@ public class LoadSheetDetail implements Serializable {
     public LoadSheetDetail(int dsId) {
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
 
-        Cursor cursor = db.query(DistributionSale.TABLENAME, null, "_id = " + dsId,
+        Cursor cursor = db.query(DistributionSale.TABLE_NAME, null, "_id = " + dsId,
                 null, null, null, null, "1");
         if (cursor != null && cursor.getCount() == 1) {
             cursor.moveToFirst();
@@ -127,7 +127,7 @@ public class LoadSheetDetail implements Serializable {
     }
 
     public static List<String> allYears() {
-        String sql = "SELECT DISTINCT year FROM " + DistributionSale.TABLENAME + " ORDER BY year DESC";
+        String sql = "SELECT DISTINCT year FROM " + DistributionSale.TABLE_NAME + " ORDER BY year DESC";
         SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         List<String> list = new ArrayList<>();
