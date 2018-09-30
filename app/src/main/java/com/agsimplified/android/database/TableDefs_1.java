@@ -123,7 +123,7 @@ public class TableDefs_1 extends TableDefs {
                                 new Farm.PopulateAsync<Farm>(Farm.class, dbHelper, mDb).execute(response.getJSONArray(Farm.TABLE_NAME));
                                 new Field.PopulateAsync<Field>(Field.class, dbHelper, mDb).execute(response.getJSONArray(Field.TABLE_NAME));
                                 new JobPlan.PopulateAsync<JobPlan>(JobPlan.class, dbHelper, mDb).execute(response.getJSONArray(JobPlan.TABLE_NAME));
-                                new Load.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Load.TABLE_NAME));
+                                new Load.PopulateAsync<Load>(Load.class, dbHelper, mDb).execute(response.getJSONArray(Load.TABLE_NAME));
                                 new LoadSheet.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(LoadSheet.TABLE_NAME));
                                 new Product.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Product.TABLE_NAME));
                                 new Site.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Site.TABLE_NAME));
