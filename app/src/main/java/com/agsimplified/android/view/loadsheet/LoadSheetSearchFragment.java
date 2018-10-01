@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,8 +89,14 @@ public class LoadSheetSearchFragment extends DialogFragment {
         ArrayAdapter<Site> toAdapter = new SiteSpinnerAdapter(getActivity(), R.layout.spinner_item, toSites);
         toSelect.setAdapter(toAdapter);
 
-        List<Product> products = Product.all();
-        products.add(0, null);
+        List<Product> products = null;
+        try {
+            products = Product.all(Product.class);
+            products.add(0, null);
+        } catch (java.lang.InstantiationException | IllegalAccessException e) {
+            Log.e("nfs", "LoadSheetSearchFragment.onCreateDialog(): " + e.getLocalizedMessage());
+        }
+
         productSelect = view.findViewById(R.id.productSelect);
         ArrayAdapter<Product> productAdapter = new ProductSpinnerAdapter(getActivity(), R.layout.spinner_item, products);
         productSelect.setAdapter(productAdapter);

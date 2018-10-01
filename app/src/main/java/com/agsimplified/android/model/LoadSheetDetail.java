@@ -62,14 +62,19 @@ public class LoadSheetDetail implements Serializable {
                 } finally {
                     cursor.close();
                 }
-                cursor.close();
             }
 
             cursor = db.query(Product.TABLE_NAME, null, "_id = " + distributionSale.getProductId(),
                     null, null, null, null, "1");
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
-                product = new Product(cursor);
+                try {
+                    product = Product.fromCursor(Product.class, cursor);
+                } catch (IllegalAccessException | InstantiationException e) {
+                    Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
+                } finally {
+                    cursor.close();
+                }
                 cursor.close();
             }
 

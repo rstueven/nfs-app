@@ -58,35 +58,35 @@ public class TableDefs_1 extends TableDefs {
                         + JobPlan.TABLE_NAME + " ("
                         + TextUtils.join(",", JobPlan.COLUMNS)
                         + ")");
-        createStatements.put(Site.TABLE_NAME,
+        createStatements.put(Load.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
-                        + Site.TABLE_NAME + " ("
-                        + TextUtils.join(",", Site.COLUMNS)
-                        + ")");
-        createStatements.put(Product.TABLE_NAME,
-                "CREATE TABLE IF NOT EXISTS "
-                        + Product.TABLE_NAME + " ("
-                        + TextUtils.join(",", Product.COLUMNS)
+                        + Load.TABLE_NAME + " ("
+                        + TextUtils.join(",", Load.COLUMNS)
                         + ")");
         createStatements.put(LoadSheet.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
                         + LoadSheet.TABLE_NAME + " ("
                         + TextUtils.join(",", LoadSheet.COLUMNS)
                         + ")");
-        createStatements.put(Load.TABLE_NAME,
+        createStatements.put(Product.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
-                        + Load.TABLE_NAME + " ("
-                        + TextUtils.join(",", Load.COLUMNS)
+                        + Product.TABLE_NAME + " ("
+                        + TextUtils.join(",", Product.COLUMNS)
                         + ")");
-        createStatements.put(StorageInventory.TABLE_NAME,
+        createStatements.put(Site.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
-                        + StorageInventory.TABLE_NAME + " ("
-                        + TextUtils.join(",", StorageInventory.COLUMNS)
+                        + Site.TABLE_NAME + " ("
+                        + TextUtils.join(",", Site.COLUMNS)
                         + ")");
         createStatements.put(Storage.TABLE_NAME,
                 "CREATE TABLE IF NOT EXISTS "
                         + Storage.TABLE_NAME + " ("
                         + TextUtils.join(",", Storage.COLUMNS)
+                        + ")");
+        createStatements.put(StorageInventory.TABLE_NAME,
+                "CREATE TABLE IF NOT EXISTS "
+                        + StorageInventory.TABLE_NAME + " ("
+                        + TextUtils.join(",", StorageInventory.COLUMNS)
                         + ")");
     }
 
@@ -125,7 +125,7 @@ public class TableDefs_1 extends TableDefs {
                                 new JobPlan.PopulateAsync<JobPlan>(JobPlan.class, dbHelper, mDb).execute(response.getJSONArray(JobPlan.TABLE_NAME));
                                 new Load.PopulateAsync<Load>(Load.class, dbHelper, mDb).execute(response.getJSONArray(Load.TABLE_NAME));
                                 new LoadSheet.PopulateAsync<LoadSheet>(LoadSheet.class, dbHelper, mDb).execute(response.getJSONArray(LoadSheet.TABLE_NAME));
-                                new Product.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Product.TABLE_NAME));
+                                new Product.PopulateAsync<Product>(Product.class, dbHelper, mDb).execute(response.getJSONArray(Product.TABLE_NAME));
                                 new Site.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Site.TABLE_NAME));
                                 new Storage.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Storage.TABLE_NAME));
                                 new StorageInventory.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(StorageInventory.TABLE_NAME));
