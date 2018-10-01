@@ -129,7 +129,7 @@ public class Field extends AbstractTable implements GeoLocatable {
             farm = Farm.find(Farm.class, getFarmId());
             if (farm != null) {
                 s = farm.getName() + " : " + s;
-                Site site = Site.find(farm.getSiteId());
+                Site site = Site.find(Site.class, farm.getSiteId());
                 if (site != null) {
                     s = site.getName() + " : " + s;
                 }

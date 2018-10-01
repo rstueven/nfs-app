@@ -2,28 +2,8 @@ package com.agsimplified.android.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
-import android.util.Log;
 
-import com.agsimplified.android.util.NetworkRequestQueue;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-public class Site implements Serializable {
-    public Site() {
-    }
-
+public class Site extends AbstractTable {
     public static final String TABLE_NAME = "sites";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
@@ -82,103 +62,7 @@ public class Site implements Serializable {
     private int serviceLevelId;
     private String license200a;
 
-    public Site(JSONObject obj) {
-        try {
-            id = obj.optInt("id");
-            name = obj.getString("name");
-            stateId = obj.getString("state_id");
-            address1 = obj.getString("address_1");
-            address2 = obj.getString("address_2");
-            city = obj.getString("city");
-            state = obj.getString("state");
-            zip = obj.getString("zip");
-            county = obj.getString("county");
-            legal1 = obj.getString("legal_1");
-            legal2 = obj.getString("legal_2");
-            legalSec = obj.getString("legal_sec");
-            legalTier = obj.getString("legal_tier");
-            legalRange = obj.getString("legal_range");
-            legalState = obj.getString("legal_state");
-            township = obj.getString("township");
-            siteType = obj.getString("site_type");
-            npdesPermit = obj.getString("npdes_permit");
-            status = obj.getString("status");
-            nmpDueDate = obj.getString("nmp_due_date");
-            dateConstructed = obj.getString("date_constructed");
-            otherId = obj.getString("other_id");
-            weatherStationId = obj.optInt("weather_station_id");
-            guid = obj.getString("guid");
-            serviceLevelId = obj.optInt("service_level_id");
-            license200a = obj.getString("license_200a");
-        } catch (JSONException e) {
-            Log.e("nfs", "Site(): " + e.getLocalizedMessage());
-            Log.e("nfs", obj.toString());
-        }
-    }
-
-    public Site(Cursor c) {
-        id = c.getInt(c.getColumnIndex("_id"));
-        name = c.getString(c.getColumnIndex("name"));
-        stateId = c.getString(c.getColumnIndex("state_id"));
-        address1 = c.getString(c.getColumnIndex("address_1"));
-        address2 = c.getString(c.getColumnIndex("address_2"));
-        city = c.getString(c.getColumnIndex("city"));
-        state = c.getString(c.getColumnIndex("state"));
-        zip = c.getString(c.getColumnIndex("zip"));
-        county = c.getString(c.getColumnIndex("county"));
-        legal1 = c.getString(c.getColumnIndex("legal_1"));
-        legal2 = c.getString(c.getColumnIndex("legal_2"));
-        legalSec = c.getString(c.getColumnIndex("legal_sec"));
-        legalTier = c.getString(c.getColumnIndex("legal_tier"));
-        legalRange = c.getString(c.getColumnIndex("legal_range"));
-        legalState = c.getString(c.getColumnIndex("legal_state"));
-        township = c.getString(c.getColumnIndex("township"));
-        siteType = c.getString(c.getColumnIndex("site_type"));
-        npdesPermit = c.getString(c.getColumnIndex("npdes_permit"));
-        status = c.getString(c.getColumnIndex("status"));
-        nmpDueDate = c.getString(c.getColumnIndex("nmp_due_date"));
-        dateConstructed = c.getString(c.getColumnIndex("date_constructed"));
-        otherId = c.getString(c.getColumnIndex("other_id"));
-        weatherStationId = c.getInt(c.getColumnIndex("weather_station_id"));
-        guid = c.getString(c.getColumnIndex("guid"));
-        serviceLevelId = c.getInt(c.getColumnIndex("service_level_id"));
-        license200a = c.getString(c.getColumnIndex("license_200a"));
-    }
-
-    public static Site find(int id) {
-        Site item = null;
-
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
-
-        if (cursor != null && cursor.getCount() == 1) {
-            cursor.moveToFirst();
-            item = new Site(cursor);
-            cursor.close();
-        } else {
-            Log.w("nfs", "SITE(" + id + ") NOT FOUND");
-        }
-
-        return item;
-    }
-
-    public static List<Site> all() {
-        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
-        List<Site> list = new ArrayList<>();
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                list.add(new Site(cursor));
-            }
-
-            cursor.close();
-        }
-
-        return list;
-    }
-
+    @Override
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);
@@ -208,6 +92,36 @@ public class Site implements Serializable {
         cv.put("service_level_id", serviceLevelId);
         cv.put("license_200a", license200a);
         return cv;
+    }
+
+    @Override
+    void objectFromCursor(Cursor cursor) {
+        id = cursor.getInt(cursor.getColumnIndex("_id"));
+        name = cursor.getString(cursor.getColumnIndex("name"));
+        stateId = cursor.getString(cursor.getColumnIndex("state_id"));
+        address1 = cursor.getString(cursor.getColumnIndex("address_1"));
+        address2 = cursor.getString(cursor.getColumnIndex("address_2"));
+        city = cursor.getString(cursor.getColumnIndex("city"));
+        state = cursor.getString(cursor.getColumnIndex("state"));
+        zip = cursor.getString(cursor.getColumnIndex("zip"));
+        county = cursor.getString(cursor.getColumnIndex("county"));
+        legal1 = cursor.getString(cursor.getColumnIndex("legal_1"));
+        legal2 = cursor.getString(cursor.getColumnIndex("legal_2"));
+        legalSec = cursor.getString(cursor.getColumnIndex("legal_sec"));
+        legalTier = cursor.getString(cursor.getColumnIndex("legal_tier"));
+        legalRange = cursor.getString(cursor.getColumnIndex("legal_range"));
+        legalState = cursor.getString(cursor.getColumnIndex("legal_state"));
+        township = cursor.getString(cursor.getColumnIndex("township"));
+        siteType = cursor.getString(cursor.getColumnIndex("site_type"));
+        npdesPermit = cursor.getString(cursor.getColumnIndex("npdes_permit"));
+        status = cursor.getString(cursor.getColumnIndex("status"));
+        nmpDueDate = cursor.getString(cursor.getColumnIndex("nmp_due_date"));
+        dateConstructed = cursor.getString(cursor.getColumnIndex("date_constructed"));
+        otherId = cursor.getString(cursor.getColumnIndex("other_id"));
+        weatherStationId = cursor.getInt(cursor.getColumnIndex("weather_station_id"));
+        guid = cursor.getString(cursor.getColumnIndex("guid"));
+        serviceLevelId = cursor.getInt(cursor.getColumnIndex("service_level_id"));
+        license200a = cursor.getString(cursor.getColumnIndex("license_200a"));
     }
 
     public int getId() {
@@ -416,89 +330,5 @@ public class Site implements Serializable {
 
     public void setLicense200a(String license200a) {
         this.license200a = license200a;
-    }
-
-    @Override
-    public String toString() {
-        return "Site{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", stateId='" + stateId + '\'' +
-                ", address1='" + address1 + '\'' +
-                ", address2='" + address2 + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zip='" + zip + '\'' +
-                ", county='" + county + '\'' +
-                ", legal1='" + legal1 + '\'' +
-                ", legal2='" + legal2 + '\'' +
-                ", legalSec='" + legalSec + '\'' +
-                ", legalTier='" + legalTier + '\'' +
-                ", legalRange='" + legalRange + '\'' +
-                ", legalState='" + legalState + '\'' +
-                ", township='" + township + '\'' +
-                ", siteType='" + siteType + '\'' +
-                ", npdesPermit='" + npdesPermit + '\'' +
-                ", status='" + status + '\'' +
-                ", nmpDueDate='" + nmpDueDate + '\'' +
-                ", dateConstructed='" + dateConstructed + '\'' +
-                ", otherId='" + otherId + '\'' +
-                ", weatherStationId=" + weatherStationId +
-                ", guid='" + guid + '\'' +
-                ", serviceLevelId=" + serviceLevelId +
-                ", license200a='" + license200a + '\'' +
-                '}';
-    }
-
-    public static Site[] jsonToArray(JSONArray jsonArray) {
-        List<Site> list = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                list.add(new Site(jsonArray.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "Site.jsonToArray(): " + e.getLocalizedMessage());
-            Log.e("nfs", jsonArray.toString());
-        }
-
-        Site[] array = new Site[list.size()];
-        return list.toArray(array);
-    }
-
-    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
-        private DbOpenHelper dbHelper;
-        private SQLiteDatabase mDb;
-
-        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
-            super();
-            Log.d("nfs", "Site.PopulateAsync()");
-            this.dbHelper = dbHelper;
-            this.mDb = db;
-        }
-
-        @Override
-        protected Void doInBackground(JSONArray... json) {
-            Log.d("nfs", "Site.PopulateAsync.doInBackground()");
-
-            Site[] array = jsonToArray(json[0]);
-            Log.d("nfs", "LOADING " + array.length + " SITES");
-            dbHelper.onTableLoadStart(TABLE_NAME, array.length);
-            mDb.execSQL("DELETE FROM " + TABLE_NAME);
-
-            int n = 0;
-            for (Site item : array) {
-//                    Log.d("nfs", item.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
-                }
-                dbHelper.onTableLoadProgress(TABLE_NAME, ++n);
-            }
-
-            dbHelper.onTableLoadEnd(TABLE_NAME);
-            Log.d("nfs", "Site.PopulateAsync() DONE");
-
-            return null;
-        }
     }
 }

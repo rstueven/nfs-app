@@ -75,23 +75,32 @@ public class LoadSheetDetail implements Serializable {
                 } finally {
                     cursor.close();
                 }
-                cursor.close();
             }
 
             cursor = db.query(Site.TABLE_NAME, null, "_id = " + distributionSale.getFromId(),
                     null, null, null, null, "1");
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
-                fromSite = new Site(cursor);
-                cursor.close();
+                try {
+                    fromSite = Site.fromCursor(Site.class, cursor);
+                } catch (IllegalAccessException | InstantiationException e) {
+                    Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
+                } finally {
+                    cursor.close();
+                }
             }
 
             cursor = db.query(Site.TABLE_NAME, null, "_id = " + distributionSale.getToId(),
                     null, null, null, null, "1");
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
-                toSite = new Site(cursor);
-                cursor.close();
+                try {
+                    toSite = Site.fromCursor(Site.class, cursor);
+                } catch (IllegalAccessException | InstantiationException e) {
+                    Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
+                } finally {
+                    cursor.close();
+                }
             }
 
             cursor = db.query(StorageInventory.TABLE_NAME, null, "_id = " + distributionSale.getFromStorageInventoryId(),

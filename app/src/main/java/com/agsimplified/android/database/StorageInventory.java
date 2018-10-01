@@ -123,9 +123,14 @@ public class StorageInventory implements Serializable {
         Storage storage = Storage.find(getStorageableId());
         if (storage != null) {
             s = storage.getName();
-            Site site = Site.find(storage.getSiteId());
-            if (site != null) {
-                s = site.getName() + ":" + s;
+            try {
+                Site site = Site.find(Site.class, storage.getSiteId());
+                if (site != null) {
+                    s = site.getName() + " : " + s;
+                }
+            } catch (InstantiationException | IllegalAccessException e) {
+                Log.e("nfs", "StorageInventory.siteStorageName(): " + e.getLocalizedMessage());
+                s += " (ERROR)";
             }
         }
 

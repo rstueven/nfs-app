@@ -62,13 +62,13 @@ public class LoadSheetSearchFragment extends DialogFragment {
 
 
         try {
-        List<Client> clients = Client.all(Client.class);
-        clients.add(0, null);
-        clientSelect = view.findViewById(R.id.clientSelect);
-        ArrayAdapter<Client> clientAdapter = new ClientSpinnerAdapter(getActivity(), R.layout.spinner_item, clients);
-        clientSelect.setAdapter(clientAdapter);
+            List<Client> clients = Client.all(Client.class);
+            clients.add(0, null);
+            clientSelect = view.findViewById(R.id.clientSelect);
+            ArrayAdapter<Client> clientAdapter = new ClientSpinnerAdapter(getActivity(), R.layout.spinner_item, clients);
+            clientSelect.setAdapter(clientAdapter);
         } catch (java.lang.InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            Log.e("nfs", "LoadSheetSearchFragment.onCreateDialog(): " + e.getLocalizedMessage());
         }
 
         List<String> years = LoadSheetDetail.allYears();
@@ -77,17 +77,25 @@ public class LoadSheetSearchFragment extends DialogFragment {
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, years);
         yearSelect.setAdapter(yearAdapter);
 
-        List<Site> fromSites = Site.all();
-        fromSites.add(0, null);
-        fromSelect = view.findViewById(R.id.fromSelect);
-        ArrayAdapter<Site> fromAdapter = new SiteSpinnerAdapter(getActivity(), R.layout.spinner_item, fromSites);
-        fromSelect.setAdapter(fromAdapter);
+        try {
+            List<Site> fromSites = Site.all(Site.class);
+            fromSites.add(0, null);
+            fromSelect = view.findViewById(R.id.fromSelect);
+            ArrayAdapter<Site> fromAdapter = new SiteSpinnerAdapter(getActivity(), R.layout.spinner_item, fromSites);
+            fromSelect.setAdapter(fromAdapter);
+        } catch (java.lang.InstantiationException | IllegalAccessException e) {
+            Log.e("nfs", "LoadSheetSearchFragment.onCreateDialog(): " + e.getLocalizedMessage());
+        }
 
-        List<Site> toSites = Site.all();
-        toSites.add(0, null);
-        toSelect = view.findViewById(R.id.toSelect);
-        ArrayAdapter<Site> toAdapter = new SiteSpinnerAdapter(getActivity(), R.layout.spinner_item, toSites);
-        toSelect.setAdapter(toAdapter);
+        try {
+            List<Site> toSites = Site.all(Site.class);
+            toSites.add(0, null);
+            toSelect = view.findViewById(R.id.toSelect);
+            ArrayAdapter<Site> toAdapter = new SiteSpinnerAdapter(getActivity(), R.layout.spinner_item, toSites);
+            toSelect.setAdapter(toAdapter);
+        } catch (java.lang.InstantiationException | IllegalAccessException e) {
+            Log.e("nfs", "LoadSheetSearchFragment.onCreateDialog(): " + e.getLocalizedMessage());
+        }
 
         List<Product> products = null;
         try {

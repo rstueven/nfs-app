@@ -148,9 +148,15 @@ public class Storage implements Serializable, GeoLocatable {
     @Override
     public String getFullName() {
         String s = getName();
-        Site site = Site.find(siteId);
-        if (site != null) {
-            s = site.getName() + " : " + s;
+        Site site = null;
+        try {
+            site = Site.find(Site.class, siteId);
+            if (site != null) {
+                s = site.getName() + " : " + s;
+            }
+        } catch (InstantiationException | IllegalAccessException e) {
+            Log.e("nfs", "Storage.getFullName(): " + e.getLocalizedMessage());
+            s += " (ERROR)";
         }
 
         return s;
