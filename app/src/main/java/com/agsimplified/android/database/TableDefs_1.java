@@ -127,7 +127,7 @@ public class TableDefs_1 extends TableDefs {
                                 new LoadSheet.PopulateAsync<LoadSheet>(LoadSheet.class, dbHelper, mDb).execute(response.getJSONArray(LoadSheet.TABLE_NAME));
                                 new Product.PopulateAsync<Product>(Product.class, dbHelper, mDb).execute(response.getJSONArray(Product.TABLE_NAME));
                                 new Site.PopulateAsync<Site>(Site.class, dbHelper, mDb).execute(response.getJSONArray(Site.TABLE_NAME));
-                                new Storage.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(Storage.TABLE_NAME));
+                                new Storage.PopulateAsync<Storage>(Storage.class, dbHelper, mDb).execute(response.getJSONArray(Storage.TABLE_NAME));
                                 new StorageInventory.PopulateAsync(dbHelper, mDb).execute(response.getJSONArray(StorageInventory.TABLE_NAME));
                             } catch (JSONException e) {
                                 e.printStackTrace();

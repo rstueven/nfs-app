@@ -2,8 +2,6 @@ package com.agsimplified.android.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.agsimplified.android.model.GeoLocatable;
@@ -13,13 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-public class Storage implements Serializable, GeoLocatable {
-    public Storage() {}
-
+public class Storage extends AbstractTable implements GeoLocatable {
     public static final String TABLE_NAME = "storages";
     static final String[] COLUMNS = {
             "_id INTEGER NOT NULL",
@@ -43,69 +35,6 @@ public class Storage implements Serializable, GeoLocatable {
     private String geoJson;
     private int storageTypeId;
 
-    public Storage(JSONObject obj) {
-        try {
-            id = obj.optInt("id");
-            siteId = obj.optInt("site_id");
-            name = obj.getString("name");
-            dateConstructed = obj.getString("date_constructed");
-            description = obj.getString("description");
-            gps = obj.getString("gps");
-            status = obj.getString("status");
-            geoJson = obj.getString("geo_json");
-            storageTypeId = obj.optInt("storage_type_id");
-        } catch (JSONException e) {
-            Log.e("nfs", "Storage(): " + e.getLocalizedMessage());
-            Log.e("nfs", obj.toString());
-        }
-    }
-
-    public Storage(Cursor c) {
-        id = c.getInt(c.getColumnIndex("_id"));
-        siteId = c.getInt(c.getColumnIndex("site_id"));
-        name = c.getString(c.getColumnIndex("name"));
-        dateConstructed = c.getString(c.getColumnIndex("date_constructed"));
-        description = c.getString(c.getColumnIndex("description"));
-        gps = c.getString(c.getColumnIndex("gps"));
-        status = c.getString(c.getColumnIndex("status"));
-        geoJson = c.getString(c.getColumnIndex("geo_json"));
-        storageTypeId = c.getInt(c.getColumnIndex("storage_type_id"));
-    }
-
-    public static Storage find(int id) {
-        Storage item = null;
-
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, null, "_id = ?", new String[]{Integer.toString(id)}, null, null, null);
-
-        if (cursor != null && cursor.getCount() == 1) {
-            cursor.moveToFirst();
-            item = new Storage(cursor);
-            cursor.close();
-        } else {
-            Log.w("nfs", "STORAGE(" + id + ") NOT FOUND");
-        }
-
-        return item;
-    }
-
-    public static List<Storage> all() {
-        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY name ASC";
-        SQLiteDatabase db = DbOpenHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
-        List<Storage> list = new ArrayList<>();
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                list.add(new Storage(cursor));
-            }
-
-            cursor.close();
-        }
-
-        return list;
-    }
-
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
         cv.put("_id", id);
@@ -118,6 +47,19 @@ public class Storage implements Serializable, GeoLocatable {
         cv.put("geo_json", geoJson);
         cv.put("storage_type_id", storageTypeId);
         return cv;
+    }
+
+    @Override
+    void objectFromCursor(Cursor cursor) {
+        id = cursor.getInt(cursor.getColumnIndex("_id"));
+        siteId = cursor.getInt(cursor.getColumnIndex("site_id"));
+        name = cursor.getString(cursor.getColumnIndex("name"));
+        dateConstructed = cursor.getString(cursor.getColumnIndex("date_constructed"));
+        description = cursor.getString(cursor.getColumnIndex("description"));
+        gps = cursor.getString(cursor.getColumnIndex("gps"));
+        status = cursor.getString(cursor.getColumnIndex("status"));
+        geoJson = cursor.getString(cursor.getColumnIndex("geo_json"));
+        storageTypeId = cursor.getInt(cursor.getColumnIndex("storage_type_id"));
     }
 
     public int getId() {
@@ -226,72 +168,5 @@ public class Storage implements Serializable, GeoLocatable {
 
     public void setStorageTypeId(int storageTypeId) {
         this.storageTypeId = storageTypeId;
-    }
-
-    @Override
-    public String toString() {
-        return "Storage{" +
-                "id=" + id +
-                ", siteId=" + siteId +
-                ", name='" + name + '\'' +
-                ", dateConstructed='" + dateConstructed + '\'' +
-                ", description='" + description + '\'' +
-                ", gps='" + gps + '\'' +
-                ", status='" + status + '\'' +
-                ", geoJson='" + geoJson + '\'' +
-                ", storageTypeId=" + storageTypeId +
-                '}';
-    }
-
-    public static Storage[] jsonToArray(JSONArray jsonArray) {
-        List<Storage> list = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                list.add(new Storage(jsonArray.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            Log.e("nfs", "Storage.jsonToArray(): " + e.getLocalizedMessage());
-            Log.e("nfs", jsonArray.toString());
-        }
-
-        Storage[] array = new Storage[list.size()];
-        return list.toArray(array);
-    }
-
-    protected static class PopulateAsync extends AsyncTask<JSONArray, Void, Void> {
-        private DbOpenHelper dbHelper;
-        private SQLiteDatabase mDb;
-
-        PopulateAsync(DbOpenHelper dbHelper, SQLiteDatabase db) {
-            super();
-            Log.d("nfs", "Storage.PopulateAsync()");
-            this.dbHelper = dbHelper;
-            this.mDb = db;
-        }
-
-        @Override
-        protected Void doInBackground(JSONArray... json) {
-            Log.d("nfs", "Storage.PopulateAsync.doInBackground()");
-
-            Storage[] array = jsonToArray(json[0]);
-            Log.d("nfs", "LOADING " + array.length + " STORAGES");
-            dbHelper.onTableLoadStart(TABLE_NAME, array.length);
-            mDb.execSQL("DELETE FROM " + TABLE_NAME);
-
-            int n = 0;
-            for (Storage item : array) {
-//                    Log.d("nfs", item.toString());
-                if (mDb.insertOrThrow(TABLE_NAME, null, item.getContentValues()) == -1) {
-                    Log.e("nfs", "FAILED TO INSERT <" + item.toString() + ">");
-                }
-                dbHelper.onTableLoadProgress(TABLE_NAME, ++n);
-            }
-
-            dbHelper.onTableLoadEnd(TABLE_NAME);
-            Log.d("nfs", "Storage.PopulateAsync() DONE");
-
-            return null;
-        }
     }
 }

@@ -45,9 +45,8 @@ public class LoadSheetDetail implements Serializable {
                 distributionSale = DistributionSale.fromCursor(DistributionSale.class, cursor);
             } catch (IllegalAccessException | InstantiationException e) {
                 Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
-            } finally {
-                cursor.close();
             }
+            cursor.close();
         }
 
         if (distributionSale != null) {
@@ -59,9 +58,8 @@ public class LoadSheetDetail implements Serializable {
                     jobPlan = JobPlan.fromCursor(JobPlan.class, cursor);
                 } catch (IllegalAccessException | InstantiationException e) {
                     Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
-                } finally {
-                    cursor.close();
                 }
+                cursor.close();
             }
 
             cursor = db.query(Product.TABLE_NAME, null, "_id = " + distributionSale.getProductId(),
@@ -72,9 +70,8 @@ public class LoadSheetDetail implements Serializable {
                     product = Product.fromCursor(Product.class, cursor);
                 } catch (IllegalAccessException | InstantiationException e) {
                     Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
-                } finally {
-                    cursor.close();
                 }
+                cursor.close();
             }
 
             cursor = db.query(Site.TABLE_NAME, null, "_id = " + distributionSale.getFromId(),
@@ -85,9 +82,8 @@ public class LoadSheetDetail implements Serializable {
                     fromSite = Site.fromCursor(Site.class, cursor);
                 } catch (IllegalAccessException | InstantiationException e) {
                     Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
-                } finally {
-                    cursor.close();
                 }
+                cursor.close();
             }
 
             cursor = db.query(Site.TABLE_NAME, null, "_id = " + distributionSale.getToId(),
@@ -98,9 +94,8 @@ public class LoadSheetDetail implements Serializable {
                     toSite = Site.fromCursor(Site.class, cursor);
                 } catch (IllegalAccessException | InstantiationException e) {
                     Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
-                } finally {
-                    cursor.close();
                 }
+                cursor.close();
             }
 
             cursor = db.query(StorageInventory.TABLE_NAME, null, "_id = " + distributionSale.getFromStorageInventoryId(),
@@ -127,9 +122,8 @@ public class LoadSheetDetail implements Serializable {
                     fromField = Field.fromCursor(Field.class, cursor);
                 } catch (IllegalAccessException | InstantiationException e) {
                     Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
-                } finally {
-                    cursor.close();
                 }
+                cursor.close();
             }
 
             cursor = db.query(Field.TABLE_NAME, null, "_id = " + distributionSale.getToFieldId(),
@@ -140,9 +134,8 @@ public class LoadSheetDetail implements Serializable {
                     toField = Field.fromCursor(Field.class, cursor);
                 } catch (IllegalAccessException | InstantiationException e) {
                     Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
-                } finally {
-                    cursor.close();
                 }
+                cursor.close();
             }
 
             cursor = db.query(LoadSheet.TABLE_NAME, null, "distribution_sale_id = " + distributionSale.getId(),
@@ -154,8 +147,8 @@ public class LoadSheetDetail implements Serializable {
                     } catch (IllegalAccessException | InstantiationException e) {
                         Log.e("nfs", "Failed to create LoadSheetDetail(" + dsId + "): " + e.getLocalizedMessage());
                     }
-                    cursor.close();
                 }
+                cursor.close();
             }
         }
     }
@@ -308,7 +301,7 @@ public class LoadSheetDetail implements Serializable {
             try {
                 switch (type) {
                     case "Storage":
-                        return Storage.find(id);
+                        return Storage.find(Storage.class, id);
                     case "Field":
                         return Field.find(Field.class, id);
                     default:
@@ -333,7 +326,7 @@ public class LoadSheetDetail implements Serializable {
             try {
                 switch (type) {
                     case "Storage":
-                        return Storage.find(id);
+                        return Storage.find(Storage.class, id);
                     case "Field":
                             return Field.find(Field.class, id);
                     default:
